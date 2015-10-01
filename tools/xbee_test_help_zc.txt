@@ -1,0 +1,25 @@
+ｺﾏﾝﾄﾞ   内容                使用例      使用例の動作内容
+--------------------------------------------------------------------------
+fo      ファイル送信        AT>fo=a.txt テキストファイルを子機へUART送信
+ee      暗号化              AT>ee0      ZigBee通信の暗号をOFFに設定
+                            AT>ee=ABC   パスワード「ABC」で暗号オン
+ed      End Deviceへ設定    AT>ed       子機を省電力(10秒待機)に設定
+--------------------------------------------------------------------------
+zb      汎用ZigBeeモード    AT>zb       ZigBee PROモードへ移行 ZS=2,AO=1
+xb      XBee ZigBeeモード   AT>xb       XBee ZBモードへ移行    ZS=0,AO=0
+zc      汎用ZigBeeコマンド  AT>zcXXXXXX ZigBeeコマンドを送信する
+                            AT>zc       予め設定したZigBeeコマンドを送信
+zcdt    宛先アドレス        AT>zcdtFFFE 宛先ショートアドレスをFFFEに設定
+zcse    Source End point    AT>zcse00   送信元エンドポイントを00に設定
+zcde    Dest. End point     AT>zcde00   宛先エンドポイントを00に設定
+zcci    Cluster ID          AT>zcci0000 クラスタIDを0000に設定
+zcpi    Profile ID          AT>zcpi0000 プロファイルIDを0000に設定
+zcrd    RaDius              AT>zcrd00   ホップ数を初期値に設定
+zcfc    Frame Control       AT>zcfc08   方向をサーバ→クライアントに設定
+zcsq    SeQuence number     AT>zcsq01   ZCLパケット番号を01に設定
+zccm    ZCL CoMmand         AT>zccm00   ZCL命令00リードを設定
+zcat    ZCL ATtribute       AT>zcat0000 ZCL属性を0000に設定
+--------------------------------------------------------------------------
+[Del]   入力中の1文字削除   Back spaceの動き（表示が更新されない場合あり）
+!       同じ命令を再実行    AT>!        前回と同じ命令を再実行
+q!      終了                AT>q!       正常に強制終了
