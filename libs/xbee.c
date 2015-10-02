@@ -235,6 +235,7 @@ XBee AT commands.
 						- xbee_end_deviceでRouterへ送信時にIR値を設定
 						　(従来はエラー応答だったが、設定後に正常応答)
 	2014/10/31	1.92	- ARM mbed対応
+	2015/10/03	1.93	- Raspberry Pi対応
 
 *********************************************************************/
 /*
@@ -242,7 +243,7 @@ XBee AT commands.
 */
 #ifndef VERSION
 
-	#define 	VERSION "1.92"		// 1.XX 4バイト形式 XXは半角文字
+	#define 	VERSION "1.93"		// 1.XX 4バイト形式 XXは半角文字
 
 #endif
 /*
@@ -1178,13 +1179,21 @@ byte sci_init( byte port ){
 		#else // PC  の時(ZigBeeシリアル or WiFi_LAN)
 			#ifndef XBEE_WIFI	// ZigBeeシリアル
 				/* tasasaki様よりポート11～64の拡張対応方法を教えていただいて追加した。*/
-				char modem_dev[12] = "/dev/ttyS00";
+				char modem_dev[13] = "/dev/ttyS00";
 				
 				if( port <= 10){
 					modem_dev[9] = (char)( port - 1 + (byte)'0' );
 					modem_dev[10]= '\0';
-				}else if( port <= 64 ){
-					snprintf(&modem_dev[9], 3, "%d", port - 1);
+				}else if( port < 64 ){									// COM64は使用不可
+					snprintf(&modem_dev[9], 3, "%02d", port - 1);
+				}else if( port < 73 ){
+					snprintf(&modem_dev[8], 2, "%1d", port - 64);		// tty0～9
+				}else if( port < 128 ){
+					snprintf(&modem_dev[8], 3, "%02d", port - 64);		// tty10～63
+				}else if( (port&0xF0) == 0xA0 ){
+					snprintf(&modem_dev[8], 5, "AMA%1X", port&0x0F);	// ttyAMA0～9
+				}else if( (port&0xF0) == 0xB0 ){
+					snprintf(&modem_dev[8], 5, "USB%1X", port&0x0F);	// ttyUSB0～9
 				}else{
 					fprintf(stderr,"ERR:sci_init port=%d\n",port);
 					return(0);
@@ -1196,8 +1205,20 @@ byte sci_init( byte port ){
 					fprintf(stderr,"Failed serial COM%d (%s)\n",port,modem_dev);
 					port = 0;
 				}else{
-					fprintf(stderr,"Serial port = COM%d (%s)\n",port,modem_dev);
+					fprintf(stderr,"Serial port = ");
+					if( port < 64){
+						fprintf(stderr,"COM%d",port);
+					}else if( port < 73 ){
+						fprintf(stderr,"%1d", port - 64);		// tty0～9
+					}else if( port < 128 ){
+						fprintf(stderr,"%02d", port - 64);		// tty10～63
+					}else if( (port&0xF0) == 0xA0 ){
+						fprintf(stderr,"AMA%1X", port&0x0F);	// ttyAMA0～9
+					}else if( (port&0xF0) == 0xB0 ){
+						fprintf(stderr,"USB%1X", port&0x0F);	// ttyUSB0～9
+					}
 					xbee_com_port = port;
+					fprintf(stderr," (%s,0x%02X)\n",modem_dev,port);
 				}
 				return( port );
 			#else	// XBEE_WIFI PC用
