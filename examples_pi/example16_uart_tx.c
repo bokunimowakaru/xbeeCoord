@@ -1,5 +1,5 @@
 /***************************************************************************************
-�q�@XBee��UART����V���A�����𑗐M����
+子機XBeeのUARTからシリアル情報を送信する
 
                                                        Copyright (c) 2013 Wataru KUNINO
 ***************************************************************************************/
@@ -8,27 +8,27 @@
 
 int main(int argc,char **argv){
 
-    char s[32];                                 // �������͗p
-    byte com=0;                                 // �V���A��COM�|�[�g�ԍ�
+    char s[32];                                 // 文字入力用
+    byte com=0xB0;                              // 拡張IOコネクタの場合は0xA0
     byte dev[]={0x00,0x00,0x00,0x00,0x00,0x00,0xFF,0xFF};
-                                                // ����XBee�A�h���X(�u���[�h�L���X�g)
+                                                // 宛先XBeeアドレス(ブロードキャスト)
 
-    if(argc==2) com=(byte)atoi(argv[1]);        // ����������Εϐ�com�ɑ������
-    xbee_init( com );                           // XBee�pCOM�|�[�g�̏�����
-    printf("Waiting for XBee Commissoning\n");  // �҂��󂯒��̕\��
-    if(xbee_atnj(30) != 0){                     // �f�o�C�X�̎Q���󂯓�����J�n
-        printf("Found a Device\n");             // XBee�q�@�f�o�C�X�̔����\��
-        xbee_from( dev );                       // �������q�@�̃A�h���X��ϐ�dev��
-        xbee_ratnj(dev,0);                      // �q�@�ɑ΂��đ��@�̎󂯓��ꐧ����ݒ�
-    }else{                                      // �q�@��������Ȃ������ꍇ
-        printf("no Devices\n");                 // ������Ȃ��������Ƃ�\��
-        exit(-1);                               // �ُ�I��
+    if(argc==2) com += atoi(argv[1]);           // 引数があれば変数comに代入する
+    xbee_init( com );                           // XBee用COMポートの初期化
+    printf("Waiting for XBee Commissoning\n");  // 待ち受け中の表示
+    if(xbee_atnj(30) != 0){                     // デバイスの参加受け入れを開始
+        printf("Found a Device\n");             // XBee子機デバイスの発見表示
+        xbee_from( dev );                       // 見つけた子機のアドレスを変数devへ
+        xbee_ratnj(dev,0);                      // 子機に対して孫機の受け入れ制限を設定
+    }else{                                      // 子機が見つからなかった場合
+        printf("no Devices\n");                 // 見つからなかったことを表示
+        exit(-1);                               // 異常終了
     }
     
     while(1){
-        /* �f�[�^���M */
-        printf("TX-> ");                        // �������͗��̕\��
-        gets( s );                              // ���͕�����ϐ�s�ɑ��
-        xbee_uart( dev , s );                   // �ϐ�s�̕����𑗐M
+        /* データ送信 */
+        printf("TX-> ");                        // 文字入力欄の表示
+        gets( s );                              // 入力文字を変数sに代入
+        xbee_uart( dev , s );                   // 変数sの文字を送信
     }
 }

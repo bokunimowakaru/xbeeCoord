@@ -1,23 +1,22 @@
 /***************************************************************************************
-XBee‚ÌLED‚ð“_–Å‚³‚¹‚Ä‚Ý‚éFƒpƒ\ƒRƒ“‚ÉÚ‘±‚µ‚½e‹@XBee‚ÌRSSI LED‚ð“_–Å
+XBeeã®LEDã‚’ç‚¹æ»…ã•ã›ã¦ã¿ã‚‹ï¼šãƒ‘ã‚½ã‚³ãƒ³ã«æŽ¥ç¶šã—ãŸè¦ªæ©ŸXBeeã®RSSI LEDã‚’ç‚¹æ»…
 
                                                        Copyright (c) 2013 Wataru KUNINO
 ***************************************************************************************/
 
-#include "../libs/xbee.c"               // XBeeƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒCƒ“ƒ|[ƒg
+#include "../libs/xbee.c"               // XBeeãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
 
 int main(int argc,char **argv){
-	
-//  byte com=0xA0;                      // ƒVƒŠƒAƒ‹(Šg’£ƒRƒlƒNƒ^)
-    byte com=0xB0;                      // ƒVƒŠƒAƒ‹(USB)
+
+    byte com=0xB0;                      // ã‚·ãƒªã‚¢ãƒ«(USB)ã€æ‹¡å¼µIOã‚³ãƒã‚¯ã‚¿ã®å ´åˆã¯0xA0
+    if(argc==2) com += atoi(argv[1]);   // å¼•æ•°ãŒã‚ã‚Œã°å¤‰æ•°comã«ä»£å…¥ã™ã‚‹
     
-    if(argc==2) com=(byte)atoi(argv[1]);// ˆø”‚ª‚ ‚ê‚Î•Ï”com‚É‘ã“ü‚·‚é
-    xbee_init( com );                   // XBee—pCOMƒ|[ƒg‚Ì‰Šú‰»(ˆø”‚Íƒ|[ƒg”Ô†)
+    xbee_init( com );                   // XBeeç”¨COMãƒãƒ¼ãƒˆã®åˆæœŸåŒ–(å¼•æ•°ã¯ãƒãƒ¼ãƒˆç•ªå·)
     
-    while(1){                           // ŒJ‚è•Ô‚µˆ—
-        xbee_at("ATP005");              // ƒ[ƒJƒ‹ATƒRƒ}ƒ“ƒhATP0(DIO10Ý’è)=05(o—Í'H')
-        delay( 1000 );                  // –ñ1000ms(1•bŠÔ)‚Ì‘Ò‚¿
-        xbee_at("ATP004");              // ƒ[ƒJƒ‹ATƒRƒ}ƒ“ƒhATP0(DIO10Ý’è)=04(o—Í'L')
-        delay( 1000 );                  // –ñ1000ms(1•bŠÔ)‚Ì‘Ò‚¿
+    while(1){                           // ç¹°ã‚Šè¿”ã—å‡¦ç†
+        xbee_at("ATP005");              // ãƒ­ãƒ¼ã‚«ãƒ«ATã‚³ãƒžãƒ³ãƒ‰ATP0(DIO10è¨­å®š)=05(å‡ºåŠ›'H')
+        delay( 1000 );                  // ç´„1000ms(1ç§’é–“)ã®å¾…ã¡
+        xbee_at("ATP004");              // ãƒ­ãƒ¼ã‚«ãƒ«ATã‚³ãƒžãƒ³ãƒ‰ATP0(DIO10è¨­å®š)=04(å‡ºåŠ›'L')
+        delay( 1000 );                  // ç´„1000ms(1ç§’é–“)ã®å¾…ã¡
     }
 }

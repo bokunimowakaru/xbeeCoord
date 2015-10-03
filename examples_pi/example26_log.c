@@ -1,54 +1,54 @@
 /***************************************************************************************
-æ“¾‚µ‚½î•ñ‚ğƒtƒ@ƒCƒ‹‚É•Û‘¶‚·‚éƒƒK[‚Ì»ì
+å–å¾—ã—ãŸæƒ…å ±ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜ã™ã‚‹ãƒ­ã‚¬ãƒ¼ã®è£½ä½œ
 
                                                        Copyright (c) 2013 Wataru KUNINO
 ***************************************************************************************/
 
 #include "../libs/xbee.c"
-#define S_MAX   255                             // •¶š—ñ•Ï”s‚ÌÅ‘å—e—Ê(•¶š”-1)‚ğ’è‹`
+#define S_MAX   255                             // æ–‡å­—åˆ—å¤‰æ•°sã®æœ€å¤§å®¹é‡(æ–‡å­—æ•°-1)ã‚’å®šç¾©
 
 int main(int argc,char **argv){
 
-    byte com=0;                                 // ƒVƒŠƒAƒ‹COMƒ|[ƒg”Ô†
-    byte dev[8];                                // XBeeq‹@ƒfƒoƒCƒX‚ÌƒAƒhƒŒƒX
-    float value;                                // óMƒf[ƒ^‚Ì‘ã“ü—p
-    XBEE_RESULT xbee_result;                    // óMƒf[ƒ^(Ú×)
+    byte com=0xB0;                              // æ‹¡å¼µIOã‚³ãƒã‚¯ã‚¿ã®å ´åˆã¯0xA0
+    byte dev[8];                                // XBeeå­æ©Ÿãƒ‡ãƒã‚¤ã‚¹ã®ã‚¢ãƒ‰ãƒ¬ã‚¹
+    float value;                                // å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã®ä»£å…¥ç”¨
+    XBEE_RESULT xbee_result;                    // å—ä¿¡ãƒ‡ãƒ¼ã‚¿(è©³ç´°)
 
-    FILE *fp;                                   // o—Íƒtƒ@ƒCƒ‹—p‚Ìƒ|ƒCƒ“ƒ^•Ï”fp‚ğ’è‹`
-    char filename[] = "data.csv";               // ƒtƒ@ƒCƒ‹–¼
-    time_t timer;                               // ƒ^ƒCƒ}[•Ï”‚Ì’è‹`
-    struct tm *time_st;                         // ƒ^ƒCƒ}[‚É‚æ‚éŠi”[—p‚Ì\‘¢‘Ì’è‹`
-    char s[S_MAX];                              // •¶š—ñ—p‚Ì•Ï”
+    FILE *fp;                                   // å‡ºåŠ›ãƒ•ã‚¡ã‚¤ãƒ«ç”¨ã®ãƒã‚¤ãƒ³ã‚¿å¤‰æ•°fpã‚’å®šç¾©
+    char filename[] = "data.csv";               // ãƒ•ã‚¡ã‚¤ãƒ«å
+    time_t timer;                               // ã‚¿ã‚¤ãƒãƒ¼å¤‰æ•°ã®å®šç¾©
+    struct tm *time_st;                         // ã‚¿ã‚¤ãƒãƒ¼ã«ã‚ˆã‚‹æ™‚åˆ»æ ¼ç´ç”¨ã®æ§‹é€ ä½“å®šç¾©
+    char s[S_MAX];                              // æ–‡å­—åˆ—ç”¨ã®å¤‰æ•°
 
-    if(argc==2) com=(byte)atoi(argv[1]);        // ˆø”‚ª‚ ‚ê‚Î•Ï”com‚É‘ã“ü‚·‚é
-    xbee_init( com );                           // XBee—pCOMƒ|[ƒg‚Ì‰Šú‰»
-    xbee_atnj( 0xFF );                          // q‹@XBeeƒfƒoƒCƒX‚ğí‚ÉQ‰Áó‚¯“ü‚ê
-    printf("Waiting for XBee Commissoning\n");  // ‘Ò‚¿ó‚¯’†‚Ì•\¦
+    if(argc==2) com += atoi(argv[1]);           // å¼•æ•°ãŒã‚ã‚Œã°å¤‰æ•°comã«ä»£å…¥ã™ã‚‹
+    xbee_init( com );                           // XBeeç”¨COMãƒãƒ¼ãƒˆã®åˆæœŸåŒ–
+    xbee_atnj( 0xFF );                          // å­æ©ŸXBeeãƒ‡ãƒã‚¤ã‚¹ã‚’å¸¸ã«å‚åŠ å—ã‘å…¥ã‚Œ
+    printf("Waiting for XBee Commissoning\n");  // å¾…ã¡å—ã‘ä¸­ã®è¡¨ç¤º
 
     while(1){
         
-        time(&timer);                               // Œ»İ‚Ì‚ğ•Ï”timer‚Éæ“¾‚·‚é
-        time_st = localtime(&timer);                // timer’l‚ğ‚É•ÏŠ·‚µ‚Ätime_st‚Ö
+        time(&timer);                               // ç¾åœ¨ã®æ™‚åˆ»ã‚’å¤‰æ•°timerã«å–å¾—ã™ã‚‹
+        time_st = localtime(&timer);                // timerå€¤ã‚’æ™‚åˆ»ã«å¤‰æ›ã—ã¦time_stã¸
         
-        xbee_rx_call( &xbee_result );               // ƒf[ƒ^‚ğóM
-        switch( xbee_result.MODE ){                 // óM‚µ‚½ƒf[ƒ^‚Ì“à—e‚É‰‚¶‚Ä
-            case MODE_GPIN:                         // q‹@XBee‚Ì©“®‘—M‚ÌóM
+        xbee_rx_call( &xbee_result );               // ãƒ‡ãƒ¼ã‚¿ã‚’å—ä¿¡
+        switch( xbee_result.MODE ){                 // å—ä¿¡ã—ãŸãƒ‡ãƒ¼ã‚¿ã®å†…å®¹ã«å¿œã˜ã¦
+            case MODE_GPIN:                         // å­æ©ŸXBeeã®è‡ªå‹•é€ä¿¡ã®å—ä¿¡
                 value = (float)xbee_result.ADCIN[1] * 3.55;
-                strftime(s,S_MAX,"%Y/%m/%d, %H:%M:%S", time_st);    // ¨•¶š—ñ•ÏŠ·
-                sprintf(s,"%s, %.1f", s , value );                  // ‘ª’èŒ‹‰Ê‚ğs‚É’Ç‰Á
-                printf("%s Lux\n" , s );                            // •¶š—ñs‚ğ•\¦
-                if( (fp = fopen(filename, "a")) ) {                 // ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“
-                    fprintf(fp,"%s\n" , s );                        // •¶š—ñs‚ğ‘‚«‚İ
-                    fclose(fp);                                     // ƒtƒ@ƒCƒ‹ƒNƒ[ƒY
+                strftime(s,S_MAX,"%Y/%m/%d, %H:%M:%S", time_st);    // æ™‚åˆ»â†’æ–‡å­—åˆ—å¤‰æ›
+                sprintf(s,"%s, %.1f", s , value );                  // æ¸¬å®šçµæœã‚’sã«è¿½åŠ 
+                printf("%s Lux\n" , s );                            // æ–‡å­—åˆ—sã‚’è¡¨ç¤º
+                if( (fp = fopen(filename, "a")) ) {                 // ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³
+                    fprintf(fp,"%s\n" , s );                        // æ–‡å­—åˆ—sã‚’æ›¸ãè¾¼ã¿
+                    fclose(fp);                                     // ãƒ•ã‚¡ã‚¤ãƒ«ã‚¯ãƒ­ãƒ¼ã‚º
                 }else printf("fopen Failed\n");
                 break;
-            case MODE_IDNT:                         // V‚µ‚¢ƒfƒoƒCƒX‚ğ”­Œ©
+            case MODE_IDNT:                         // æ–°ã—ã„ãƒ‡ãƒã‚¤ã‚¹ã‚’ç™ºè¦‹
                 printf("Found a New Device\n");
-                xbee_atnj(0);                       // q‹@XBeeƒfƒoƒCƒX‚ÌQ‰Á‚ğ§ŒÀ‚·‚é
-                bytecpy(dev, xbee_result.FROM, 8);  // ”­Œ©‚µ‚½ƒAƒhƒŒƒX‚ğdev‚ÉƒRƒs[‚·‚é
-                xbee_ratnj(dev,0);                  // q‹@‚É‘Î‚µ‚Ä‘·‹@‚Ìó‚¯“ü‚ê‚ğ§ŒÀ
-                xbee_gpio_config( dev, 1 , AIN );   // XBeeq‹@‚Ìƒ|[ƒg1‚ğƒAƒiƒƒO“ü—Í‚Ö
-                xbee_end_device( dev, 3, 3, 0);     // ‹N“®ŠÔŠu3•b,©“®‘ª’è3•b,S’[q–³Œø
+                xbee_atnj(0);                       // å­æ©ŸXBeeãƒ‡ãƒã‚¤ã‚¹ã®å‚åŠ ã‚’åˆ¶é™ã™ã‚‹
+                bytecpy(dev, xbee_result.FROM, 8);  // ç™ºè¦‹ã—ãŸã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’devã«ã‚³ãƒ”ãƒ¼ã™ã‚‹
+                xbee_ratnj(dev,0);                  // å­æ©Ÿã«å¯¾ã—ã¦å­«æ©Ÿã®å—ã‘å…¥ã‚Œã‚’åˆ¶é™
+                xbee_gpio_config( dev, 1 , AIN );   // XBeeå­æ©Ÿã®ãƒãƒ¼ãƒˆ1ã‚’ã‚¢ãƒŠãƒ­ã‚°å…¥åŠ›ã¸
+                xbee_end_device( dev, 3, 3, 0);     // èµ·å‹•é–“éš”3ç§’,è‡ªå‹•æ¸¬å®š3ç§’,Sç«¯å­ç„¡åŠ¹
                 break;
         }
     }

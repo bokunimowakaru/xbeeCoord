@@ -1,5 +1,5 @@
 /***************************************************************************************
-q‹@XBee‚ÌUART‚©‚ç‚ÌƒVƒŠƒAƒ‹î•ñ‚ğóM‚·‚é
+å­æ©ŸXBeeã®UARTã‹ã‚‰ã®ã‚·ãƒªã‚¢ãƒ«æƒ…å ±ã‚’å—ä¿¡ã™ã‚‹
 
                                                        Copyright (c) 2013 Wataru KUNINO
 ***************************************************************************************/
@@ -8,30 +8,30 @@
 
 int main(int argc,char **argv){
 
-    byte com=0;                                 // ƒVƒŠƒAƒ‹COMƒ|[ƒg”Ô†
-    byte dev[8];                                // XBeeq‹@ƒfƒoƒCƒX‚ÌƒAƒhƒŒƒX
-    XBEE_RESULT xbee_result;                    // óMƒf[ƒ^(Ú×)
+    byte com=0xB0;                              // æ‹¡å¼µIOã‚³ãƒã‚¯ã‚¿ã®å ´åˆã¯0xA0
+    byte dev[8];                                // XBeeå­æ©Ÿãƒ‡ãƒã‚¤ã‚¹ã®ã‚¢ãƒ‰ãƒ¬ã‚¹
+    XBEE_RESULT xbee_result;                    // å—ä¿¡ãƒ‡ãƒ¼ã‚¿(è©³ç´°)
 
-    if(argc==2) com=(byte)atoi(argv[1]);        // ˆø”‚ª‚ ‚ê‚Î•Ï”com‚É‘ã“ü‚·‚é
-    xbee_init( com );                           // XBee—pCOMƒ|[ƒg‚Ì‰Šú‰»
-    xbee_atnj( 0xFF );                          // q‹@XBeeƒfƒoƒCƒX‚ğí‚ÉQ‰Áó‚¯“ü‚ê
-    printf("Waiting for XBee Commissoning\n");  // ‘Ò‚¿ó‚¯’†‚Ì•\¦
+    if(argc==2) com += atoi(argv[1]);           // å¼•æ•°ãŒã‚ã‚Œã°å¤‰æ•°comã«ä»£å…¥ã™ã‚‹
+    xbee_init( com );                           // XBeeç”¨COMãƒãƒ¼ãƒˆã®åˆæœŸåŒ–
+    xbee_atnj( 0xFF );                          // å­æ©ŸXBeeãƒ‡ãƒã‚¤ã‚¹ã‚’å¸¸ã«å‚åŠ å—ã‘å…¥ã‚Œ
+    printf("Waiting for XBee Commissoning\n");  // å¾…ã¡å—ã‘ä¸­ã®è¡¨ç¤º
     
     while(1){
-        /* ƒf[ƒ^óM(‘Ò‚¿ó‚¯‚ÄóM‚·‚é) */
-        xbee_rx_call( &xbee_result );           // XBeeq‹@‚©‚ç‚Ìƒf[ƒ^‚ğóM
+        /* ãƒ‡ãƒ¼ã‚¿å—ä¿¡(å¾…ã¡å—ã‘ã¦å—ä¿¡ã™ã‚‹) */
+        xbee_rx_call( &xbee_result );           // XBeeå­æ©Ÿã‹ã‚‰ã®ãƒ‡ãƒ¼ã‚¿ã‚’å—ä¿¡
         
-        switch( xbee_result.MODE ){                 // óM‚µ‚½ƒf[ƒ^‚Ì“à—e‚É‰‚¶‚Ä
-            case MODE_UART:                         // q‹@XBee‚©‚ç‚ÌƒeƒLƒXƒgóM
-                printf("RX<- ");                    // óM‚ğ¯•Ê‚·‚é‚½‚ß‚Ì•\¦
-                printf("%s\n", xbee_result.DATA );  // óMŒ‹‰Ê(ƒeƒLƒXƒg)‚ğ•\¦
+        switch( xbee_result.MODE ){                 // å—ä¿¡ã—ãŸãƒ‡ãƒ¼ã‚¿ã®å†…å®¹ã«å¿œã˜ã¦
+            case MODE_UART:                         // å­æ©ŸXBeeã‹ã‚‰ã®ãƒ†ã‚­ã‚¹ãƒˆå—ä¿¡
+                printf("RX<- ");                    // å—ä¿¡ã‚’è­˜åˆ¥ã™ã‚‹ãŸã‚ã®è¡¨ç¤º
+                printf("%s\n", xbee_result.DATA );  // å—ä¿¡çµæœ(ãƒ†ã‚­ã‚¹ãƒˆ)ã‚’è¡¨ç¤º
                 break;
-            case MODE_IDNT:                         // V‚µ‚¢ƒfƒoƒCƒX‚ğ”­Œ©
+            case MODE_IDNT:                         // æ–°ã—ã„ãƒ‡ãƒã‚¤ã‚¹ã‚’ç™ºè¦‹
                 printf("Found a New Device\n");
-                xbee_atnj(0);                       // q‹@XBee‚Ìó‚¯“ü‚ê§ŒÀ‚ğİ’è
-                bytecpy(dev, xbee_result.FROM, 8);  // ”­Œ©‚µ‚½ƒAƒhƒŒƒX‚ğdev‚ÉƒRƒs[
-                xbee_ratnj(dev,0);                  // q‹@‚É‘Î‚µ‚Ä‘·‹@‚Ìó‚¯“ü‚ê§ŒÀ
-                xbee_ratd_myaddress( dev );         // q‹@‚É–{‹@‚ÌƒAƒhƒŒƒXİ’è‚ğs‚¤
+                xbee_atnj(0);                       // å­æ©ŸXBeeã®å—ã‘å…¥ã‚Œåˆ¶é™ã‚’è¨­å®š
+                bytecpy(dev, xbee_result.FROM, 8);  // ç™ºè¦‹ã—ãŸã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’devã«ã‚³ãƒ”ãƒ¼
+                xbee_ratnj(dev,0);                  // å­æ©Ÿã«å¯¾ã—ã¦å­«æ©Ÿã®å—ã‘å…¥ã‚Œåˆ¶é™
+                xbee_ratd_myaddress( dev );         // å­æ©Ÿã«æœ¬æ©Ÿã®ã‚¢ãƒ‰ãƒ¬ã‚¹è¨­å®šã‚’è¡Œã†
                 break;
         }
     }

@@ -1,31 +1,31 @@
 /***************************************************************************************
-�X�C�b�`��Ԃ������[�g�擾����A�ω��ʒm
+スイッチ状態をリモート取得する②変化通知
 
                                                        Copyright (c) 2013 Wataru KUNINO
 ***************************************************************************************/
 
 #include "../libs/xbee.c"
 
-// ���莝����XBee���W���[���q�@��IEEE�A�h���X�ɕύX���遫
+// お手持ちのXBeeモジュール子機のIEEEアドレスに変更する↓
 byte dev[] = {0x00,0x13,0xA2,0x00,0x40,0x30,0xC1,0x6F};
 
 int main(int argc,char **argv){
     
-    byte com=0;                                 // �V���A��COM�|�[�g�ԍ�
-    byte value;                                 // ��M�l
-    XBEE_RESULT xbee_result;                    // ��M�f�[�^(�ڍ�)
+    byte com=0xB0;                              // 拡張IOコネクタの場合は0xA0
+    byte value;                                 // 受信値
+    XBEE_RESULT xbee_result;                    // 受信データ(詳細)
 
-    if(argc==2) com=(byte)atoi(argv[1]);        // ����������Εϐ�com�ɑ������
-    xbee_init( com );                           // XBee�pCOM�|�[�g�̏�����
-    xbee_atnj( 0xFF );                          // �e�@XBee����ɃW���C������Ԃɂ���
-    xbee_gpio_init( dev );                      // �q�@��DIO��IO�ݒ���s��(���M)
+    if(argc==2) com += atoi(argv[1]);           // 引数があれば変数comに代入する
+    xbee_init( com );                           // XBee用COMポートの初期化
+    xbee_atnj( 0xFF );                          // 親機XBeeを常にジョイン許可状態にする
+    xbee_gpio_init( dev );                      // 子機のDIOにIO設定を行う(送信)
     
     while(1){
-        /* �f�[�^��M(�҂��󂯂Ď�M����) */
-        xbee_rx_call( &xbee_result );           // �f�[�^����M
-        if( xbee_result.MODE == MODE_GPIN){     // �q�@XBee�����DIO���͂̎��i�������j
-            value = xbee_result.GPI.PORT.D1;    // D1�|�[�g�̒l��ϐ�value�ɑ��
-            printf("Value =%d\n",value);        // �ϐ�value�̒l��\��
+        /* データ受信(待ち受けて受信する) */
+        xbee_rx_call( &xbee_result );           // データを受信
+        if( xbee_result.MODE == MODE_GPIN){     // 子機XBeeからのDIO入力の時（条件文）
+            value = xbee_result.GPI.PORT.D1;    // D1ポートの値を変数valueに代入
+            printf("Value =%d\n",value);        // 変数valueの値を表示
         }
     }
 }

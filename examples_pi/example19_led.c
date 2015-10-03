@@ -1,5 +1,5 @@
 /***************************************************************************************
-LED�������[�g���䂷��C�ʐM�̈Í���
+LEDをリモート制御する④通信の暗号化
 
                                                        Copyright (c) 2013 Wataru KUNINO
 ***************************************************************************************/
@@ -8,34 +8,34 @@ LED�������[�g���䂷��C�ʐM�̈Í���
 
 int main(int argc,char **argv){
     
-    byte com=0;                         // �V���A��COM�|�[�g�ԍ�
-    byte dev[8];                        // XBee�q�@�f�o�C�X�̃A�h���X
+    byte com=0xB0;                      // シリアル(USB)、拡張IOコネクタの場合は0xA0
+    byte dev[8];                        // XBee子機デバイスのアドレス
     
-    /* ������ */
-    if(argc==2) com=(byte)atoi(argv[1]);// ����������Εϐ�com�ɑ������
-    xbee_init( com );                   // XBee�pCOM�|�[�g�̏�����
-    /* �Í����L�� */
-    if( xbee_atee_on("password") <= 1){ // �Í���ON�ݒ�Bpassword��16�����܂�
+    /* 初期化 */
+    if(argc==2) com += atoi(argv[1]);   // 引数があれば変数comに代入する
+    xbee_init( com );                   // XBee用COMポートの初期化
+    /* 暗号化有効 */
+    if( xbee_atee_on("password") <= 1){ // 暗号化ON設定。passwordは16文字まで
         printf("Encryption On\n");      // "password" -> 70617373776F7264
     }else{
-        printf("Encryption Error\n");   // �Í����G���[�\��
+        printf("Encryption Error\n");   // 暗号化エラー表示
         exit(-1); 
     }
-    /* �y�A�����O */
-    printf("XBee in Commissioning\n");  // �҂��󂯒��̕\��
-    if(xbee_atnj(30)){                  // �f�o�C�X�̎Q���󂯓�����J�n�i�ő�30�b�ԁj
-        printf("Found a Device\n");     // XBee�q�@�f�o�C�X�̔����\��
-        xbee_from( dev );               // �������f�o�C�X�̃A�h���X��ϐ�dev�Ɏ捞��
-        xbee_ratnj(dev,0);              // �q�@�ɑ΂��đ��@�̎󂯓��ꐧ����ݒ�
+    /* ペアリング */
+    printf("XBee in Commissioning\n");  // 待ち受け中の表示
+    if(xbee_atnj(30)){                  // デバイスの参加受け入れを開始（最大30秒間）
+        printf("Found a Device\n");     // XBee子機デバイスの発見表示
+        xbee_from( dev );               // 見つけたデバイスのアドレスを変数devに取込む
+        xbee_ratnj(dev,0);              // 子機に対して孫機の受け入れ制限を設定
     }else{
-        printf("No Devices\n");         // �G���[���̕\��
-        exit(-1);                       // �ُ�I��
+        printf("No Devices\n");         // エラー時の表示
+        exit(-1);                       // 異常終了
     }
-    /* LED�̓_�Łi�Í����j */
-    while(1){                           // 5��̌J��Ԃ�����
-        xbee_gpo(dev, 4, 1);            // �����[�gXBee�̃|�[�g4���o��'H'�ɐݒ肷��
-        delay( 1000 );                  // 1000ms(1�b��)�̑҂�
-        xbee_gpo(dev, 4, 0);            // �����[�gXBee�̃|�[�g4���o��'L'�ɐݒ肷��
-        delay( 1000 );                  // 1000ms(1�b��)�̑҂�
+    /* LEDの点滅（暗号化） */
+    while(1){                           // 5回の繰り返し処理
+        xbee_gpo(dev, 4, 1);            // リモートXBeeのポート4を出力'H'に設定する
+        delay( 1000 );                  // 1000ms(1秒間)の待ち
+        xbee_gpo(dev, 4, 0);            // リモートXBeeのポート4を出力'L'に設定する
+        delay( 1000 );                  // 1000ms(1秒間)の待ち
     }
 }

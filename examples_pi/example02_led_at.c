@@ -1,26 +1,26 @@
 /***************************************************************************************
-LED‚ðƒŠƒ‚[ƒg§Œä‚·‚é‡@ƒŠƒ‚[ƒgATƒRƒ}ƒ“ƒhFƒŠƒ‚[ƒgŽq‹@‚ÌDIO4(XBee pin 11)‚ÌLED‚ð“_–ÅB
+LEDã‚’ãƒªãƒ¢ãƒ¼ãƒˆåˆ¶å¾¡ã™ã‚‹â‘ ãƒªãƒ¢ãƒ¼ãƒˆATã‚³ãƒžãƒ³ãƒ‰ï¼šãƒªãƒ¢ãƒ¼ãƒˆå­æ©Ÿã®DIO4(XBee pin 11)ã®LEDã‚’ç‚¹æ»…ã€‚
 
                                                        Copyright (c) 2013 Wataru KUNINO
 ***************************************************************************************/
 
 #include "../libs/xbee.c"
 
-// ‚¨ŽèŽ‚¿‚ÌXBeeƒ‚ƒWƒ…[ƒ‹Žq‹@‚ÌIEEEƒAƒhƒŒƒX‚É•ÏX‚·‚é«
+// ãŠæ‰‹æŒã¡ã®XBeeãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«å­æ©Ÿã®IEEEã‚¢ãƒ‰ãƒ¬ã‚¹ã«å¤‰æ›´ã™ã‚‹â†“
 byte dev[] = {0x00,0x13,0xA2,0x00,0x40,0x30,0xC1,0x6F};
 
 int main(int argc,char **argv){
     
-    byte com=0;                         // ƒVƒŠƒAƒ‹COMƒ|[ƒg”Ô†
-    
-    if(argc==2) com=(byte)atoi(argv[1]);// ˆø”‚ª‚ ‚ê‚Î•Ï”com‚É‘ã“ü‚·‚é
-    xbee_init( com );                   // XBee—pCOMƒ|[ƒg‚Ì‰Šú‰»
-    xbee_atnj( 0xFF );                  // e‹@XBee‚ðí‚ÉƒWƒ‡ƒCƒ“‹–‰Âó‘Ô‚É‚·‚é
+    byte com=0xB0;                      // ã‚·ãƒªã‚¢ãƒ«(USB)ã€æ‹¡å¼µIOã‚³ãƒã‚¯ã‚¿ã®å ´åˆã¯0xA0
 
-    while(1){                           // ŒJ‚è•Ô‚µˆ—
-        xbee_rat(dev,"ATD405");         // ƒŠƒ‚[ƒgATƒRƒ}ƒ“ƒhATD4(DIO4Ý’è)=05(o—Í'H')
-        delay( 1000 );                  // 1000ms(1•bŠÔ)‚Ì‘Ò‚¿
-        xbee_rat(dev,"ATD404");         // ƒŠƒ‚[ƒgATƒRƒ}ƒ“ƒhATD4(DIO4Ý’è)=04(o—Í'L')
-        delay( 1000 );                  // 1000ms(1•bŠÔ)‚Ì‘Ò‚¿
+    if(argc==2) com += atoi(argv[1]);   // å¼•æ•°ãŒã‚ã‚Œã°å¤‰æ•°comã«ä»£å…¥ã™ã‚‹
+    xbee_init( com );                   // XBeeç”¨COMãƒãƒ¼ãƒˆã®åˆæœŸåŒ–
+    xbee_atnj( 0xFF );                  // è¦ªæ©ŸXBeeã‚’å¸¸ã«ã‚¸ãƒ§ã‚¤ãƒ³è¨±å¯çŠ¶æ…‹ã«ã™ã‚‹
+
+    while(1){                           // ç¹°ã‚Šè¿”ã—å‡¦ç†
+        xbee_rat(dev,"ATD405");         // ãƒªãƒ¢ãƒ¼ãƒˆATã‚³ãƒžãƒ³ãƒ‰ATD4(DIO4è¨­å®š)=05(å‡ºåŠ›'H')
+        delay( 1000 );                  // 1000ms(1ç§’é–“)ã®å¾…ã¡
+        xbee_rat(dev,"ATD404");         // ãƒªãƒ¢ãƒ¼ãƒˆATã‚³ãƒžãƒ³ãƒ‰ATD4(DIO4è¨­å®š)=04(å‡ºåŠ›'L')
+        delay( 1000 );                  // 1000ms(1ç§’é–“)ã®å¾…ã¡
     }
 }

@@ -1,74 +1,74 @@
 /***************************************************************************************
-ŒºŠÖ‚ª–¾‚é‚­‚È‚Á‚½‚çƒŠƒrƒ“ƒO‚Ì‰Æ“d‚ğON‚É‚·‚é
+ç„é–¢ãŒæ˜ã‚‹ããªã£ãŸã‚‰ãƒªãƒ“ãƒ³ã‚°ã®å®¶é›»ã‚’ONã«ã™ã‚‹
 
                                                   Copyright (c) 2013-2014 Wataru KUNINO
 ***************************************************************************************/
 
 #include "../libs/xbee.c"
-#define FORCE_INTERVAL  250                     // ƒf[ƒ^—v‹ŠÔŠu(–ñ10`20ms‚Ì”{”)
+#define FORCE_INTERVAL  250                     // ãƒ‡ãƒ¼ã‚¿è¦æ±‚é–“éš”(ç´„10ï½20msã®å€æ•°)
 
 int main(int argc,char **argv){
 
-    byte com=0;                                     // ƒVƒŠƒAƒ‹COMƒ|[ƒg”Ô†
-    byte dev_sens[8];                               // q‹@XBee(©ìƒZƒ“ƒT)‚ÌƒAƒhƒŒƒX
-    byte dev_plug[8];                               // q‹@XBee(Smart Plug)‚ÌƒAƒhƒŒƒX
-    byte dev_sens_en=0;                             // q‹@XBee(©ìƒZƒ“ƒT)‚Ìó‘Ô
-    byte dev_plug_en=0;                             // q‹@XBee(Smart Plug)‚Ìó‘Ô
-    float value;                                    // óMƒf[ƒ^‚Ì‘ã“ü—p
-    XBEE_RESULT xbee_result;                        // óMƒf[ƒ^(Ú×)
+    byte com=0xB0;                                  // æ‹¡å¼µIOã‚³ãƒã‚¯ã‚¿ã®å ´åˆã¯0xA0
+    byte dev_sens[8];                               // å­æ©ŸXBee(è‡ªä½œã‚»ãƒ³ã‚µ)ã®ã‚¢ãƒ‰ãƒ¬ã‚¹
+    byte dev_plug[8];                               // å­æ©ŸXBee(Smart Plug)ã®ã‚¢ãƒ‰ãƒ¬ã‚¹
+    byte dev_sens_en=0;                             // å­æ©ŸXBee(è‡ªä½œã‚»ãƒ³ã‚µ)ã®çŠ¶æ…‹
+    byte dev_plug_en=0;                             // å­æ©ŸXBee(Smart Plug)ã®çŠ¶æ…‹
+    float value;                                    // å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã®ä»£å…¥ç”¨
+    XBEE_RESULT xbee_result;                        // å—ä¿¡ãƒ‡ãƒ¼ã‚¿(è©³ç´°)
 
-    if(argc==2) com=(byte)atoi(argv[1]);            // ˆø”‚ª‚ ‚ê‚Î•Ï”com‚É‘ã“ü‚·‚é
-    xbee_init( com );                               // XBee—pCOMƒ|[ƒg‚Ì‰Šú‰»
-    xbee_atnj(0xFF);                                // í‚ÉƒWƒ‡ƒCƒ“‹–‰Â‚Éİ’è
-    printf("Waiting for XBee Commissoning\n");      // ‘Ò‚¿ó‚¯’†‚Ì•\¦
+    if(argc==2) com += atoi(argv[1]);               // å¼•æ•°ãŒã‚ã‚Œã°å¤‰æ•°comã«ä»£å…¥ã™ã‚‹
+    xbee_init( com );                               // XBeeç”¨COMãƒãƒ¼ãƒˆã®åˆæœŸåŒ–
+    xbee_atnj(0xFF);                                // å¸¸ã«ã‚¸ãƒ§ã‚¤ãƒ³è¨±å¯ã«è¨­å®š
+    printf("Waiting for XBee Commissoning\n");      // å¾…ã¡å—ã‘ä¸­ã®è¡¨ç¤º
     
     while(1){        
-        xbee_rx_call( &xbee_result );                       // ƒf[ƒ^‚ğóM
+        xbee_rx_call( &xbee_result );                       // ãƒ‡ãƒ¼ã‚¿ã‚’å—ä¿¡
         switch( xbee_result.MODE ){
-            case MODE_GPIN:                                 // Æ“xƒZƒ“ƒT©“®‘—M‚©‚ç
-                if(bytecmp(xbee_result.FROM,dev_sens,8)==0){ // IEEEƒAƒhƒŒƒX‚ÌŠm”F
+            case MODE_GPIN:                                 // ç…§åº¦ã‚»ãƒ³ã‚µè‡ªå‹•é€ä¿¡ã‹ã‚‰
+                if(bytecmp(xbee_result.FROM,dev_sens,8)==0){ // IEEEã‚¢ãƒ‰ãƒ¬ã‚¹ã®ç¢ºèª
                     value=(float)xbee_result.ADCIN[1]*3.55; 
                     printf("Entrance %.1f Lux\n" , value );
                     if( dev_plug_en ){
-                        if( value > 10 ){                   // Æ“x‚ª10LuxˆÈ‰º‚Ì
-                            xbee_gpo(dev_plug,4,1);         // Smart Plug‚Ìƒ|[ƒg4‚ğH‚É
+                        if( value > 10 ){                   // ç…§åº¦ãŒ10Luxä»¥ä¸‹ã®æ™‚
+                            xbee_gpo(dev_plug,4,1);         // Smart Plugã®ãƒãƒ¼ãƒˆ4ã‚’Hã«
                         }else{
-                            xbee_gpo(dev_plug,4,0);         // Smart Plug‚Ìƒ|[ƒg4‚ğL‚É
+                            xbee_gpo(dev_plug,4,0);         // Smart Plugã®ãƒãƒ¼ãƒˆ4ã‚’Lã«
                         }
-                        xbee_force( dev_plug );             // Smart Plug‚ÌÆ“xæ“¾w¦
+                        xbee_force( dev_plug );             // Smart Plugã®ç…§åº¦å–å¾—æŒ‡ç¤º
                     }
                 }
                 break;
-            case MODE_RESP:                                 // xbee_force‚É‘Î‚·‚é‰“š
-                if(bytecmp(xbee_result.FROM,dev_plug,8)==0){ // IEEEƒAƒhƒŒƒX‚ÌŠm”F
+            case MODE_RESP:                                 // xbee_forceã«å¯¾ã™ã‚‹å¿œç­”æ™‚
+                if(bytecmp(xbee_result.FROM,dev_plug,8)==0){ // IEEEã‚¢ãƒ‰ãƒ¬ã‚¹ã®ç¢ºèª
                     value=xbee_sensor_result(&xbee_result,WATT);
                     printf("LivingRoom %.1f Watts, ",value);
-                    if( xbee_gpi(dev_plug ,4)==0 ){         // ƒ|[ƒg4‚Ìó‘Ô‚ğ“Ç‚İ‚Æ‚èA
-                        printf("OFF\n");                    // 0‚Ì‚ÍOFF‚Æ•\¦‚·‚é
+                    if( xbee_gpi(dev_plug ,4)==0 ){         // ãƒãƒ¼ãƒˆ4ã®çŠ¶æ…‹ã‚’èª­ã¿ã¨ã‚Šã€
+                        printf("OFF\n");                    // 0ã®æ™‚ã¯OFFã¨è¡¨ç¤ºã™ã‚‹
                     }else{
-                        printf("ON\n");                     // 1‚Ì‚ÍON‚Æ•\¦‚·‚é
+                        printf("ON\n");                     // 1ã®æ™‚ã¯ONã¨è¡¨ç¤ºã™ã‚‹
                     }
                 }
                 break;
-            case MODE_IDNT:                                 // V‚µ‚¢ƒfƒoƒCƒX‚ğ”­Œ©
+            case MODE_IDNT:                                 // æ–°ã—ã„ãƒ‡ãƒã‚¤ã‚¹ã‚’ç™ºè¦‹
                 if( xbee_ping( xbee_result.FROM ) != DEV_TYPE_PLUG){
-                    printf("Found a Sensor\n");             // Æ“xƒZƒ“ƒT‚Ì‚Ìˆ—
-                    bytecpy(dev_sens,xbee_result.FROM,8);   // ƒAƒhƒŒƒX‚ğdev_sens‚É‘ã“ü
-                    xbee_gpio_config(dev_sens,1,AIN);       // ƒ|[ƒg1‚ğƒAƒiƒƒO“ü—Í‚Ö
-                    xbee_end_device(dev_sens,3,3,0);        // ƒXƒŠ[ƒvİ’è
-                    dev_sens_en=1;                          // Æ“xƒZƒ“ƒT‚Ìó‘Ô‚É1‚ğ‘ã“ü
-                }else{                                      // Smart Plug‚Ì‚Ìˆ—
-                    printf("Found a Smart Plug\n");         // ”­Œ©•\¦
-                    bytecpy(dev_plug,xbee_result.FROM,8);   // ƒAƒhƒŒƒX‚ğdev_sens‚É‘ã“ü
-                    xbee_ratnj(dev_plug,0);                 // ƒWƒ‡ƒCƒ“•s‹–‰Â‚Éİ’è
-                    xbee_gpio_config(dev_plug, 1 , AIN );   // ƒ|[ƒg1‚ğƒAƒiƒƒO“ü—Í‚Ö
-                    xbee_gpio_config(dev_plug, 2 , AIN );   // ƒ|[ƒg2‚ğƒAƒiƒƒO“ü—Í‚Ö
-                    xbee_gpio_config(dev_plug, 3 , AIN );   // ƒ|[ƒg3‚ğƒAƒiƒƒO“ü—Í‚Ö
-                    xbee_gpio_config(dev_plug, 4 , DOUT_H); // ƒ|[ƒg4‚ğƒfƒWƒ^ƒ‹o—Í‚Ö
-                    dev_plug_en=1;                          // Smart Plug‚Ìó‘Ô‚É1‚ğ‘ã“ü
+                    printf("Found a Sensor\n");             // ç…§åº¦ã‚»ãƒ³ã‚µã®æ™‚ã®å‡¦ç†
+                    bytecpy(dev_sens,xbee_result.FROM,8);   // ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’dev_sensã«ä»£å…¥
+                    xbee_gpio_config(dev_sens,1,AIN);       // ãƒãƒ¼ãƒˆ1ã‚’ã‚¢ãƒŠãƒ­ã‚°å…¥åŠ›ã¸
+                    xbee_end_device(dev_sens,3,3,0);        // ã‚¹ãƒªãƒ¼ãƒ—è¨­å®š
+                    dev_sens_en=1;                          // ç…§åº¦ã‚»ãƒ³ã‚µã®çŠ¶æ…‹ã«1ã‚’ä»£å…¥
+                }else{                                      // Smart Plugã®æ™‚ã®å‡¦ç†
+                    printf("Found a Smart Plug\n");         // ç™ºè¦‹è¡¨ç¤º
+                    bytecpy(dev_plug,xbee_result.FROM,8);   // ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’dev_sensã«ä»£å…¥
+                    xbee_ratnj(dev_plug,0);                 // ã‚¸ãƒ§ã‚¤ãƒ³ä¸è¨±å¯ã«è¨­å®š
+                    xbee_gpio_config(dev_plug, 1 , AIN );   // ãƒãƒ¼ãƒˆ1ã‚’ã‚¢ãƒŠãƒ­ã‚°å…¥åŠ›ã¸
+                    xbee_gpio_config(dev_plug, 2 , AIN );   // ãƒãƒ¼ãƒˆ2ã‚’ã‚¢ãƒŠãƒ­ã‚°å…¥åŠ›ã¸
+                    xbee_gpio_config(dev_plug, 3 , AIN );   // ãƒãƒ¼ãƒˆ3ã‚’ã‚¢ãƒŠãƒ­ã‚°å…¥åŠ›ã¸
+                    xbee_gpio_config(dev_plug, 4 , DOUT_H); // ãƒãƒ¼ãƒˆ4ã‚’ãƒ‡ã‚¸ã‚¿ãƒ«å‡ºåŠ›ã¸
+                    dev_plug_en=1;                          // Smart Plugã®çŠ¶æ…‹ã«1ã‚’ä»£å…¥
                 }
                 if( dev_sens_en * dev_plug_en > 0 ){
-                    xbee_atnj(0);                           // e‹@XBee‚Éó‚¯“ü‚ê§ŒÀ
+                    xbee_atnj(0);                           // è¦ªæ©ŸXBeeã«å—ã‘å…¥ã‚Œåˆ¶é™
                 }
                 break;
         }
