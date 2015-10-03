@@ -235,7 +235,9 @@ XBee AT commands.
 						- xbee_end_deviceでRouterへ送信時にIR値を設定
 						　(従来はエラー応答だったが、設定後に正常応答)
 	2014/10/31	1.92	- ARM mbed対応
-	2015/10/03	1.93	- Raspberry Pi対応
+	2015/10/03	1.93	- Raspberry Pi対応、xbee_init引数の仕様変更
+						　　　0:自動, 1～63:COM, 64～127:tty0～63,
+						　　　0xA0～0xA9:AMA0～9, 0xB0～0xB9:USB0～9
 
 *********************************************************************/
 /*
@@ -1186,7 +1188,7 @@ byte sci_init( byte port ){
 					modem_dev[10]= '\0';
 				}else if( port < 64 ){									// COM64は使用不可
 					snprintf(&modem_dev[9], 3, "%02d", port - 1);
-				}else if( port < 73 ){
+				}else if( port < 74 ){
 					snprintf(&modem_dev[8], 2, "%1d", port - 64);		// tty0～9
 				}else if( port < 128 ){
 					snprintf(&modem_dev[8], 3, "%02d", port - 64);		// tty10～63
@@ -1202,25 +1204,26 @@ byte sci_init( byte port ){
 					wait_millisec( 100 );
 					close_serial_port();	// open出来ていないが念のために閉じる
 					wait_millisec( 100 );
-					fprintf(stderr,"Failed serial COM%d (%s)\n",port,modem_dev);
-					port = 0;
+					fprintf(stderr,"FAILED serial ");
+					xbee_com_port = 0;
 				}else{
 					fprintf(stderr,"Serial port = ");
-					if( port < 64){
-						fprintf(stderr,"COM%d",port);
-					}else if( port < 73 ){
-						fprintf(stderr,"%1d", port - 64);		// tty0～9
-					}else if( port < 128 ){
-						fprintf(stderr,"%02d", port - 64);		// tty10～63
-					}else if( (port&0xF0) == 0xA0 ){
-						fprintf(stderr,"AMA%1X", port&0x0F);	// ttyAMA0～9
-					}else if( (port&0xF0) == 0xB0 ){
-						fprintf(stderr,"USB%1X", port&0x0F);	// ttyUSB0～9
-					}
 					xbee_com_port = port;
-					fprintf(stderr," (%s,0x%02X)\n",modem_dev,port);
+				}				
+				if( port < 64){
+					fprintf(stderr,"COM%d",port);
+				}else if( port < 73 ){
+					fprintf(stderr,"%1d", port - 64);		// tty0～9
+				}else if( port < 128 ){
+					fprintf(stderr,"%02d", port - 64);		// tty10～63
+				}else if( (port&0xF0) == 0xA0 ){
+					fprintf(stderr,"AMA%1X", port&0x0F);	// ttyAMA0～9
+				}else if( (port&0xF0) == 0xB0 ){
+					fprintf(stderr,"USB%1X", port&0x0F);	// ttyUSB0～9
 				}
-				return( port );
+				fprintf(stderr," (%s,0x%02X)\n",modem_dev,port);
+				
+				return( xbee_com_port );
 			#else	// XBEE_WIFI PC用
 				byte i,j;
 				for(i=0;i<3;i++){
@@ -4968,8 +4971,10 @@ byte xbee_init( const byte port ){
 				j = sci_init( port );		// シリアル初期化
 			}else{
 				// ポート検索
-				for( i=10 ; i>0; i--){
-					j = sci_init( i );
+				for( i=14 ; i>0; i--){
+					if( i > 4 ) j = sci_init( i-4 );
+					else if(i>1) j = sci_init( 0xAE + i );
+					else j = sci_init( 0xA0 );
 					if( j != 0 ){
 						k = xbee_reset();
 						if( k > 0 ) i = 1; else j = 0;
