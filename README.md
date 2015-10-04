@@ -3,10 +3,15 @@
 
 ZB Coord API for XBee: This XBee library drives Digi XBee ZB Modules in API Operation mode. Most of XBee commands include remote communication are supported by the functions of this C language library. You can control XBee devices through the API software modules in this library, without using any XBee AT commands.
 
-XBee ZigBeeAXBee Wi-Fi ‚É‚æ‚éƒZƒ“ƒTƒlƒbƒgƒ[ƒN‚ğ\’z‚·‚é‚½‚ß‚Ìƒ‰ƒCƒuƒ‰ƒŠ‚Å‚·BXBee‚ÌAPIƒ‚[ƒh‚É‚æ‚éƒŠƒ‚[ƒgƒRƒ}ƒ“ƒh‚ğ—˜—p‚·‚é‚±‚Æ‚ªo—ˆ‚Ü‚·B
-–{ƒ\[ƒXƒŠƒXƒg‚¨‚æ‚Ñƒ\ƒtƒgƒEƒFƒA‚ÍAƒ‰ƒCƒZƒ“ƒXƒtƒŠ[‚Å‚·B
-—˜—pA•ÒWAÄ”z•z“™‚ª©—R‚És‚¦‚Ü‚·‚ªA’˜ìŒ •\¦‚Ì‰ü•Ï‚Í‹Ö~‚µ‚Ü‚·B
-
+XBee ZigBeeã€XBee Wi-Fi ã«ã‚ˆã‚‹ã‚»ãƒ³ã‚µãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚’æ§‹ç¯‰ã™ã‚‹ãŸã‚ã®ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã§ã™ã€‚XBeeã®APIãƒ¢ãƒ¼ãƒ‰ã«ã‚ˆã‚‹ãƒªãƒ¢ãƒ¼ãƒˆã‚³ãƒãƒ³ãƒ‰ã‚’åˆ©ç”¨ã™ã‚‹ã“ã¨ãŒå‡ºæ¥ã¾ã™ã€‚
+æœ¬ã‚½ãƒ¼ã‚¹ãƒªã‚¹ãƒˆãŠã‚ˆã³ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ã€ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ãƒ•ãƒªãƒ¼ã§ã™ã€‚
+åˆ©ç”¨ã€ç·¨é›†ã€å†é…å¸ƒç­‰ãŒè‡ªç”±ã«è¡Œãˆã¾ã™ãŒã€è‘—ä½œæ¨©è¡¨ç¤ºã®æ”¹å¤‰ã¯ç¦æ­¢ã—ã¾ã™ã€‚
+  
+- examples ï¼šCygwin for Windowsç”¨ã‚µãƒ³ãƒ—ãƒ«
+- examples_pi ï¼šRaspberry Piç”¨ã‚µãƒ³ãƒ—ãƒ«
+- xbee_arduino ï¼šArduinoç”¨
+- examples_h8 ï¼šH8 Tynyç”¨ã‚µãƒ³ãƒ—ãƒ«
+- xbee_mbed ï¼šNucleo Board STM32F401ç”¨ã‚µãƒ³ãƒ—ãƒ«
 
 							   Copyright (c) 2010-2015 Wataru KUNINO
 							   http://www.geocities.jp/bokunimowakaru/
