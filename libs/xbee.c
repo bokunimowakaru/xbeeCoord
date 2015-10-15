@@ -511,7 +511,7 @@ XBee AT commands.
 #ifndef XB_DEFINE_H
 	#define XB_DEFINE_H
 	#ifndef NAME
-		#ifdef LITE // BeeBee Lite by 蘭
+		#ifdef LITE // BeeBee Lite 
 			#define 	NAME		"BeeBee Lite"
 			#define 	COPYRIGHT	"by Wataru & Ran"
 		#else
@@ -536,7 +536,7 @@ XBee AT commands.
 	//	#define LED2_OUT	16				// 緑色ＬＥＤ(動作確認用)用デジタルポート(16=analog 2)
 	//	#define LCD_EN		 6				// 液晶用電源デジタルポート
 	//	#define BUTN		14				// ボタンの接続ポート(14 = analog 0)
-		#ifdef LITE // BeeBee Lite by 蘭
+		#ifdef LITE // BeeBee Lite 
 			#define 	API_SIZE	48		// 受信用APIデータ長(32～255)
 			#define 	API_TXSIZE	34		// 送信用APIデータ長(32～255) シリアル送信最大長=API_TXSIZE-18バイト
 			#define 	CALL_SIZE	16		// xbee_rx_call用戻りデータ(10～256)
@@ -584,7 +584,7 @@ XBee AT commands.
 			// #define DEBUG_RX 				// 受信パケットの表示
 			#define 	ERRLOG					// エラー時にログを出力
 		//	#define 	XBEE_ERROR_TIME 		// エラー時のログに日時を付与
-			#ifdef LITE // BeeBee Lite by 蘭
+			#ifdef LITE // BeeBee Lite 
 				#define 	API_SIZE	48		// 受信用APIデータ長(32～255)
 				#define 	API_TXSIZE	34		// 送信用APIデータ長(32～255)
 				#define 	CALL_SIZE	16		// xbee_rx_call用戻りデータ(10～256)
@@ -929,7 +929,7 @@ byte timera(void){
 }
 
 /* ミリ秒待ち（250ms以下の高精度用） 入力範囲＝4～250 ms */
-#ifndef ARDUINO // BeeBee Lite by 蘭
+#ifndef ARDUINO // BeeBee Lite 
 void wait_millisec_250( byte ms ){
 	#ifdef H3694
 		byte counter;
@@ -1288,7 +1288,7 @@ byte sci_read(byte timeout){
 		while( timer != timera() && SCI3_IN_DATA_CHECK() < 1 );
 		if( SCI3_IN_DATA_CHECK() ) ret=(byte)SCI3_IN_DATA();
 		return( ret );
-	#elif ARDUINO	// 蘭様による改良あり
+	#elif ARDUINO	// 濱崎様による改良あり
 		#ifndef XBEE_WIFI
 			byte timer;
 			timer = timera() + (timeout)+1; 	// timeout[ms] = timer/256*1000
@@ -1342,7 +1342,7 @@ byte sci_read(byte timeout){
 				FD_ZERO(&readfds);
 				FD_SET( xbeeComFd , &readfds);
 				tv.tv_sec = 0;
-				#ifdef LITE	// BeeBee Lite by 蘭
+				#ifdef LITE	// BeeBee Lite
 					/*
 					if( timeout > 50 ){
 						tv.tv_usec = timeout*600;
@@ -1999,7 +1999,7 @@ byte xbee_at_tx(const char *at, const byte *value, const byte value_len){
 			}
 			data_api[2]    =(char)len;
 			data_api[len+3]=(char)check;
-			#ifdef LITE	// BeeBee Lite by 蘭
+			#ifdef LITE	// BeeBee Lite
 				sci_write( data_api, (byte)(len+4) );
 				ret=len+3;
 			#else
@@ -2180,7 +2180,7 @@ byte xbee_at_rx(byte *data){
 		data[0] = sci_read( 1 );				// 1ms待ち受けで受信
 		if( data[0] == 0x7E ) { 				// 期待デリミタ0x7E時
 			for( i=1;i<=2;i++ ){
-				#ifdef LITE	// BeeBee Lite by 蘭
+				#ifdef LITE	// BeeBee Lite 
 					data[i] = sci_read( 35 );	// 1割だけ緩和しました。sci_read 32⇒35(Wataru)
 				#else
 					data[i] = sci_read( 50 );
@@ -2192,7 +2192,7 @@ byte xbee_at_rx(byte *data){
 			leni = (unsigned int)data[1] * 256 + (unsigned int)data[2] - (unsigned int)len;
 				// 通常は0。lenが本来の容量よりも少ない場合に不足分が代入されれる
 			for( i=0 ; i <= len ; i++){ // i = lenはチェックサムを入力する
-				#ifdef LITE	// BeeBee Lite by 蘭
+				#ifdef LITE	// BeeBee Lite 
 					data[i+3] = sci_read( 35 );	// 1割だけ緩和しました。sci_read 32⇒35(Wataru)
 				#else
 					data[i+3] = sci_read( 50 );
@@ -2549,7 +2549,7 @@ byte xbee_tx_rx(const char *at, byte *data, byte len){
 		byte i;
 	#endif
 	
-	#ifndef LITE	// BeeBee Lite by 蘭
+	#ifndef LITE	// BeeBee Lite 
 		sci_write_check();
 	#endif
 	#ifdef H3694
@@ -2566,7 +2566,12 @@ byte xbee_tx_rx(const char *at, byte *data, byte len){
 		}	
 		if( xbee_at_tx( at ,data ,len ) > 0){
 			err = 12;							// 受信なしエラー
+			#ifdef CACHE_RES
+			err = 0xFF;							// 受信バッファオーバー
+			if( CACHE_COUNTER < CACHE_RES ) for( retry = 10 ; ( retry > 0 && err != 0 ) ; retry-- ){
+			#else
 			for( retry = 10 ; ( retry > 0 && err != 0 ) ; retry-- ){
+			#endif
 				wait_millisec( 10 + (unsigned int)r_dat );	// 応答時間待ち AT 10～100ms / RAT 20～200ms
 				if( wait_add != 0 ){
 					wait_millisec( wait_add );	// 追加ウェイト
@@ -2709,6 +2714,9 @@ byte xbee_tx_rx(const char *at, byte *data, byte len){
 				case 14:
 					strcopy( ERR_LOG ,"ERR:tx_rx Diff.Adrs.");
 					break;
+				case 0xFF:
+					strcopy( ERR_LOG ,"ERR:tx_rx RX Buff OV");
+					break;
 				default:
 					strcopy( ERR_LOG ,"ERR:tx_rx AT unknown");
 					break;
@@ -2754,7 +2762,7 @@ void xbee_disp_5(unsigned int x);
 void xbee_log( const byte level, const char *err , const byte x );
 ***********************************************************************/
 
-#ifndef LITE	// BeeBee Lite by 蘭
+#ifndef LITE	// BeeBee Lite 
 byte xbee_putch( const char c ){
 	byte data[2];
 	byte len;
@@ -2781,7 +2789,7 @@ byte xbee_putstr( const char *s ){
 	return( i );
 }
 
-#ifndef LITE	// BeeBee Lite by 蘭
+#ifndef LITE	// BeeBee Lite 
 void xbee_disp_hex( const byte i ){
 	byte data[3];
 	data[0] = i&0xF0;
@@ -2970,7 +2978,7 @@ byte xbee_reset( void ){
 /*	XBeeモジュールのリセット
 	戻り値：0＝エラー、強制終了あり(PC版)、無限定しあり(H8版)
 */
-	#ifndef LITE	// BeeBee Lite by 蘭
+	#ifndef LITE	// BeeBee Lite 
 	byte i;
 	#endif
 	byte ret=0;	// 戻り値 0:異常終了
@@ -2980,14 +2988,14 @@ byte xbee_reset( void ){
 	#endif
 	
 	#ifndef XBEE_WIFI
-	#ifndef LITE	// BeeBee Lite by 蘭
+	#ifndef LITE	// BeeBee Lite 
 		sci_write_check();
 	#endif
 	sci_clear();						// シリアル異常をクリア
 	DEVICE_TYPE = 0x20; 				// タイプ名を初期化
 	#endif
 	
-	#ifdef LITE	// BeeBee Lite by 蘭
+	#ifdef LITE	// BeeBee Lite 
 		ret = xbee_tx_rx( "ATVR", value ,0 );	// ZigBee 種類の取得
 		if( ret == 0 ){
 			#ifdef ARDUINO
@@ -3975,7 +3983,7 @@ byte xbee_atnj(const byte timeout){
 									xbee_log( 1, "Found device " , ret );
 								#endif
 								for(i=0;i<8;i++) ADR_DEST[i]=ADR_FROM[i];			// 宛先を発見デバイスに設定
-								#ifndef LITE	// BeeBee Lite by 蘭
+								#ifndef LITE	// BeeBee Lite 
 									sci_write_check();
 								#endif
 								sci_clear();
@@ -4777,7 +4785,7 @@ byte xbee_rx_call( XBEE_RESULT *xbee_result ){
 					xbee_result->STATUS = data[14];
 				}
 				break;
-			#ifndef LITE	// BeeBee Lite by 蘭
+			#ifndef LITE	// BeeBee Lite 
 			case MODE_UAR2: // 0x91 UART data 2を受信するモード
 				for(i=0;i<8;i++) xbee_result->FROM[i] = data[4+i];		// アドレスはdata[4]から
 				#ifndef ARDUINO
@@ -4795,7 +4803,7 @@ byte xbee_rx_call( XBEE_RESULT *xbee_result ){
 				}
 				break;
 			#endif // LITE
-			#ifndef LITE	// BeeBee Lite by 蘭
+			#ifndef LITE	// BeeBee Lite 
 			case MODE_SENS: // 0x94 XB Sensor(1-wire)を受信するモード(未確認)
 				for(i=0;i<8;i++) xbee_result->FROM[i] = data[4+i];		// アドレスはdata[4]から
 				#ifndef ARDUINO
@@ -5022,7 +5030,7 @@ byte xbee_init( const byte port ){
 		#endif
 		xbee_log( 1, "xbee_reset" , 0 );
 	#endif
-	#ifdef LITE	// by 蘭
+	#ifdef LITE	// 
 		k = xbee_reset();
 		#ifndef H3694
 		#ifndef ARDUINO
@@ -5402,7 +5410,7 @@ byte xbee_delay(unsigned int ms){
 入力：unsigned int(shortを想定) ms	= 時間[ms]
 戻り値：受信パケット数
 */	
-	#ifdef LITE // BeeBee Lite by 蘭
+	#ifdef LITE // BeeBee Lite 
 		wait_millisec( ms );
 		return 0;
 	#else
