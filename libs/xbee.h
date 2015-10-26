@@ -92,7 +92,6 @@
 			#include "mbed.h"
 			#ifdef DEBUG
 				#define LCD_H
-				#define ERRLOG
 				#define 	LCD_ROW_1		0x00	//１行目先頭アドレス
 				#define 	LCD_ROW_2		0x40	//２行目先頭アドレス
 				#define 	LCD_ROW_3		0x14	//３行目先頭アドレス
@@ -142,7 +141,7 @@
 	#endif
 
 	#ifdef H3694
-		#define ERRLOG
+		#define ERRLOG		24				// エラーログ 24バイト
 		#define LED1_OUT	IO.PDR8.BIT.B0	// LED赤の接続ポート(エラー用)
 		#define LED2_OUT	IO.PDR8.BIT.B1	// LED緑の接続ポート(動作確認用)
 		#define LCD_EN		IO.PDR8.BIT.B6	// 液晶用電源
@@ -203,7 +202,6 @@
 			// #define DEBUG					// デバッグモード
 			// #define DEBUG_TX 				// 送信パケットの表示
 			// #define DEBUG_RX 				// 受信パケットの表示
-			#define 	ERRLOG					// エラー時にログを出力
 		//	#define 	XBEE_ERROR_TIME 		// エラー時のログに日時を付与
 			#ifdef LITE
 				#define 	API_SIZE	48		// 受信用APIデータ長(32～255)
