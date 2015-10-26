@@ -561,6 +561,11 @@ int main(int argc,char **argv){
 			i = (byte)at[j] - (byte)'0';
 			j = (byte)at[j+1] - (byte)'0';
 			printf("return(0x%02X)\n", xbee_gpo(dev,i,j) );
+		}else if( at[0] == 'G' && at[1] == 'P' && at[2] == 'I' ){
+			xbee_log(3,"Digital IO Input 'xbee_gpi' ",strlen(at)-3);
+			if( at[3] == '=' ) j=4; else j=3;
+			i = (byte)at[j] - (byte)'0';
+			printf("return(0x%02X)\n", xbee_gpi(dev,i) );
 		}else if( at[0] == 'I' && at[1] == 'S' ){
 			xbee_log(3,"Force Sample command (xbee_force) ",strlen(at)-2);
 			printf("return(0x%02X)\n", xbee_force(dev) );
