@@ -240,6 +240,7 @@ XBee AT commands.
 						　　　0xA0～0xA9:AMA0～9, 0xB0～0xB9:USB0～9
 						- API受信バッファの超過時処理を破棄→保留に変更
 						- xbee_gpiの不具合修正・簡易テスト完(PC+ZB)
+	2015/11/XX	1.94	- xbee_delayのwait方法を変更(while->usleep)
 
 *********************************************************************/
 /*
@@ -247,7 +248,7 @@ XBee AT commands.
 */
 #ifndef VERSION
 
-	#define 	VERSION "1.93"		// 1.XX 4バイト形式 XXは半角文字
+	#define 	VERSION "1.94"		// 1.XX 4バイト形式 XXは半角文字
 
 #endif
 /*
@@ -971,6 +972,7 @@ void wait_millisec( const unsigned int ms ){
 		#ifdef ARM_MBED
 			wait((float)ms/1000.0f);
 		#else // PC
+			/*
 			time_t target;
 			
 			target = (time_t)(clock()/(CLOCKS_PER_SEC/1000)) + (time_t)ms;
@@ -980,6 +982,8 @@ void wait_millisec( const unsigned int ms ){
 				while( (time_t)(clock()/(CLOCKS_PER_SEC/1000)) > (time_t)ms );		// クロックがリセットされるまで待つ
 				while( (time_t)(clock()/(CLOCKS_PER_SEC/1000)) <= target );
 			}
+			*/
+			usleep( ms*1000ul );
 		#endif
 	#endif
 }
