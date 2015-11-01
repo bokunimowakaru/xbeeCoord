@@ -241,6 +241,7 @@ XBee AT commands.
 						- API受信バッファの超過時処理を破棄→保留に変更
 						- xbee_gpiの不具合修正・簡易テスト完(PC+ZB)
 	2015/11/XX	1.94	- xbee_delayのwait方法を変更(while->usleep)
+						　　　0xAF～0xAA:AMA0～5(-1+0xB0->0xAF->AMA0)
 
 *********************************************************************/
 /*
@@ -1206,6 +1207,7 @@ byte sci_init( byte port ){
 				}else if( port < 128 ){
 					snprintf(&modem_dev[8], 3, "%02d", port - 64);		// tty10～63
 				}else if( (port&0xF0) == 0xA0 ){
+					if( port > 0xA9 ) port = 0xAF - (port&0xF);
 					snprintf(&modem_dev[8], 5, "AMA%1X", port&0x0F);	// ttyAMA0～9
 				}else if( (port&0xF0) == 0xB0 ){
 					snprintf(&modem_dev[8], 5, "USB%1X", port&0x0F);	// ttyUSB0～9
