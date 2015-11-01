@@ -21,6 +21,6 @@ int main(int argc,char **argv){
         /* XBee通信 */
         value = xbee_gpi(dev,1);        // リモート子機のポート1からデジタル値を入力
         printf("Value =%d\n",value);    // 変数valueの値を表示する
-        delay( 1000 );                  // 1000ms(1秒間)の待ち
+        xbee_delay( 1000 );             // 1000ms(1秒間)の待ち
     }
 }
