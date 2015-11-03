@@ -2,12 +2,12 @@
 AT／リモートATコマンド解析ツール for PC
 (リモートATコマンドの応答値確認用) 
 
-■■■■ PC専用 ■■■■■
+■■■■ PC ＆ Raspberry Pi専用 ■■■■■
 
 本ソースリストおよびソフトウェアは、ライセンスフリーです。
 利用、編集、再配布等が自由に行えますが、著作権表示の改変は禁止します。
 
-                               Copyright (c) 2010-2014 Wataru KUNINO
+                               Copyright (c) 2010-2015 Wataru KUNINO
                                http://www.geocities.jp/bokunimowakaru/
 *********************************************************************/
 
@@ -279,7 +279,15 @@ int main(int argc,char **argv){
 		
 	// 初期化処理
 	lcd_disp("Initializing");
-	if( argc==2 ) port = (byte)(atoi(argv[1]));
+	if( argc==2 ){
+		if( atoi(argv[1]) < 0 ){
+			port = 0x9F + (byte)(-atoi(argv[1])) ;
+		}else  if( ( argv[1][0]=='b' || argv[1][0]=='B' )&& argv[1][1]!='\0' ){
+			port = 0xB0 + ( argv[1][1] - '0');
+		}else  if( ( argv[1][0]=='a' || argv[1][0]=='A' )&& argv[1][1]!='\0' ){
+			port = 0xA0 + ( argv[1][1] - '0');
+		}else port = (byte)(atoi(argv[1]));
+	}
 	xbee_init( port );					// XBee用COMポートの初期化(引数はポート番号)
 	xbee_atnj( 0xFF );					// デバイスを常に参加受け入れ(テスト用)
 	printf("Press 'h'+Enter to help, 'q!'+Enter to quit.\n");
@@ -650,7 +658,7 @@ int main(int argc,char **argv){
 			for(i=4;i<8;i++) lcd_disp_hex( dev[i] ); lcd_putch( '\n' );
 			printf("xbee_rat(%s)\n",at);
 			printf("return(0x%02X)\n",xbee_rat(dev,at) );
-		}else if( at[0] == 'S' && at[1] == 'H' && at[2] == 'J' && at[3] == 'h' ){
+		}else if( at[0] == 'J' && at[1] == 'H' && at[2] == 'J' && at[3] == 'h' ){
 			// JHシステム（IEEE802.15.4）で使用されている無線方式を解析したところ
 			// ZigBee PROに近い仕様であることが判明。
 			// 使用しているクラスタIDはFD0C、プロファイルIDは0104、エンドポイントは14
