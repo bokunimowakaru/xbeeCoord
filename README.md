@@ -13,10 +13,10 @@ XBee ZigBee、XBee Wi-Fi によるセンサネットワークを構築するた�
 - xbee_mbed ：Nucleo Board STM32F401用サンプル  
 
 ボクにもわかるXBee用センサネットワーク：  
-http://www.geocities.jp/bokunimowakaru/diy/xbee/
+	http://www.geocities.jp/bokunimowakaru/diy/xbee/
   
 ボクにもわかるRaspberry Pi：  
-http://www.geocities.jp/bokunimowakaru/q/pi/
+	http://www.geocities.jp/bokunimowakaru/q/pi/
 
 							   Copyright (c) 2010-2015 Wataru KUNINO
 							   http://www.geocities.jp/bokunimowakaru/
