@@ -301,7 +301,7 @@ int main(int argc,char **argv){
 		do{
 			if ( kbhit() ){
 				c = (char)getchar();
-				//	printf("\n[%c]=%0X\n",c,(byte)c);	// キー確認用(OS依存)
+				//	printf("\n[%c]=%02X\n",c,(byte)c);	// キー確認用(OS依存)
 				if( (byte)c >= 0x20 && (byte)c < 0x7E ){
 					at[kb] = c;
 					kb++;
@@ -309,9 +309,20 @@ int main(int argc,char **argv){
 					if( kb >= 3 ){
 						kb -= 3;			// 5B 33 7E
 						at[kb] = '\0';
-						printf("\b \b");
+					//	printf("\b \b");
+					}else {
+						kb=0; at[0] = '\0';
 					}
+					printf("\nAT>%s",at);
+				}else if( (byte)c == 0x7F){	// TeraTerm
+					if( kb > 0 ){
+						kb -= 1; at[kb] = '\0';
+					}else {
+						kb=0; at[0] = '\0';
+					}
+					printf("\nAT>%s",at);
 				}
+				for(i=kb;i<AT_LEN;i++) at[i]=0x00;	// 終端を見ずにAT解析しているので必要
 			}
 			
 			/* データ受信(待ち受けて受信する) */
@@ -881,7 +892,7 @@ ZCL
 		}else{
 			/* 開発用：独自解析の開始 */
 			xbee_log(3,"XBee API Test ",strlen(at));
-			printf("Execute a ");
+			printf("Execute '%s'\n",at);
 			wait_add = 0;
 			switch( at[0] ){
 				case 'A':
