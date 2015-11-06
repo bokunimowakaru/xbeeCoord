@@ -31,6 +31,11 @@ PROGS = examples/sample01_led \
 		examples_wifi/sample4_uart \
 
 all: $(PROGS)
+		gcc -Wall -O1 -c libs/xbee.c -o libs/xbee.o
+		# ========================================
+		# XBeeCoord examples for PC (Cygwin)
+		#                         by Wataru KUNINO
+		# ========================================
 
 clean:
-	rm -f $(PROGS)
+		rm -f $(PROGS)

@@ -36,7 +36,12 @@ PROGS = ./example01_rssi \
 		./example69_sw_f \
 		./example70_uart \
 
+
 all: $(PROGS)
+		# ========================================
+		# XBeeCoord examples for Raspberry Pi
+		#                         by Wataru KUNINO
+		# ========================================
 
 clean:
 	rm -f $(PROGS)

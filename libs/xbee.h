@@ -117,7 +117,7 @@
 			#endif
 			#define BAUDRATE B9600
 			#ifndef LCD_ROW_1
-				#include "lcd_pc.c"
+				#include "lcd_pc.h"
 			#endif
 			#include <time.h>			// クロックタイマー用
 		#endif
@@ -292,6 +292,7 @@ public:
 	byte DATA[CALL_SIZE];	// ペイロードデータ／ZCLヘッダ＋受信データ
 } XBEE_RESULT;				// 構造体の型名
 #endif
+
 #ifdef ARM_MBED
 typedef unsigned char byte;
 typedef struct{
@@ -315,6 +316,50 @@ public:
 	byte DATA[CALL_SIZE];	// 受信データ
 } XBEE_RESULT;				// 構造体の型名
 #endif
+
+#ifndef ARDUINO
+#ifndef ARM_MBED	// PC
+#ifndef XB_GLOBAL_H
+	#define XB_GLOBAL_H
+	typedef unsigned char byte;
+	#define TIMER_SEC	time1s256() 	// TIMER_SECのカウントアップの代わり
+	volatile byte LED1_OUT;
+	volatile byte LED2_OUT;
+	volatile byte LCD_EN;
+	enum xbee_sensor_type{ LIGHT,TEMP,HUMIDITY,WATT,BATT,PRESS,VALUE,TIMES,NA };	// センサタイプの型
+	enum xbee_port_type{ DISABLE=0, VENDER=1, AIN=2, DIN=3, DOUT_L=4, DOUT_H=5 };
+															// GPIOの設定の型
+	typedef struct{
+		byte MODE;				// 受信モード(Frame Type)
+		byte FROM[8];			// 送信元IEEEアドレス
+		byte SHORT[2];			// 送信元ショートアドレス
+		byte AT[2]; 			// ATコマンド
+		byte ID;				// 応答パケットID(Frame ID)
+		byte STATUS;			// 応答結果(0:OK 1:ERROR)／AT結果／UART状態
+		union { 				// GPIOデータ
+			byte BYTE[2];
+			struct {
+				#ifdef H3694	// H8ではバイト毎に上位ビットから代入(ビッグエンディアン)
+				byte D7 :1; byte D6 :1; byte D5 :1; byte D4 :1; // BYTE[1]
+				byte D3 :1; byte D2 :1; byte D1 :1; byte D0 :1;
+				byte	:1; byte	:1; byte	:1; byte D12:1; // BYTE[0]
+				byte D11:1; byte D10:1; byte	:1; byte	:1;
+				#else			// PCではバイト毎に下位ビットから代入(リトルエンディアン)
+				byte D0 :1; byte D1 :1; byte D2 :1; byte D3 :1; // BYTE[1]
+				byte D4 :1; byte D5 :1; byte D6 :1; byte D7 :1;
+				byte	:1; byte	:1; byte D10:1; byte D11:1; // BYTE[0]
+				byte D12:1; byte	:1; byte	:1; byte	:1;
+				#endif
+			} PORT;
+		} GPI;
+		unsigned int ADCIN[4];	// ADCデータ
+		byte ZCL[6];			// [0]送信元EndPoint, [1]宛先EndPoint, [2-3]クラスタID, [4-5]プロファイルID
+		byte DATA[CALL_SIZE];	// ペイロードデータ／ZCLヘッダ＋受信データ
+	} XBEE_RESULT;
+#endif
+#endif
+#endif
+
 
 /*********************************************************************
 アプリ向け hardware 提供関数
