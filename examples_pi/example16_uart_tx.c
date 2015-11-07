@@ -28,7 +28,7 @@ int main(int argc,char **argv){
     while(1){
         /* データ送信 */
         printf("TX-> ");                        // 文字入力欄の表示
-        gets( s );                              // 入力文字を変数sに代入
+        fgets(s, 32, stdin);                    // 入力文字を変数sに代入
         xbee_uart( dev , s );                   // 変数sの文字を送信
     }
 }
