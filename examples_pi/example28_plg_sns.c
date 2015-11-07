@@ -17,7 +17,7 @@ int main(int argc,char **argv){
     float value;                                    // 受信データの代入用
     XBEE_RESULT xbee_result;                        // 受信データ(詳細)
 
-    if(argc==2) com += atoi(argv[1]);               // 引数があれば変数comに代入する
+    if(argc==2) com += atoi(argv[1]);               // 引数があれば変数comに値を加算する
     xbee_init( com );                               // XBee用COMポートの初期化
     xbee_atnj(0xFF);                                // 常にジョイン許可に設定
     printf("Waiting for XBee Commissoning\n");      // 待ち受け中の表示

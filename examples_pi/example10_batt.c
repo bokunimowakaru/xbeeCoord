@@ -17,7 +17,7 @@ int main(int argc,char **argv){
     byte trig=FORCE_INTERVAL;                   // 子機へデータ要求するタイミング調整用
     XBEE_RESULT xbee_result;                    // 受信データ(詳細)
 
-    if(argc==2) com += atoi(argv[1]);           // 引数があれば変数comに代入する
+    if(argc==2) com += atoi(argv[1]);           // 引数があれば変数comに値を加算する
     xbee_init( com );                           // XBee用COMポートの初期化
     xbee_atnj( 0xFF );                          // 親機XBeeを常にジョイン許可状態にする
     

@@ -13,7 +13,7 @@ int main(int argc,char **argv){
     byte com=0xB0;                      // シリアル(USB)、拡張IOコネクタの場合は0xA0
     byte value;                         // リモート子機からの入力値
     
-    if(argc==2) com += atoi(argv[1]);   // 引数があれば変数comに代入する
+    if(argc==2) com += atoi(argv[1]);   // 引数があれば変数comに値を加算する
     xbee_init( com );                   // XBee用COMポートの初期化
     xbee_atnj( 0xFF );                  // 親機XBeeを常にジョイン許可状態にする
 

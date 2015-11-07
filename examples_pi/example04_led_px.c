@@ -15,7 +15,7 @@ int main(int argc,char **argv){
     byte port;                          // リモート子機のポート番号
     byte value;                         // リモート子機への設定値
     
-    if(argc==2) com += atoi(argv[1]);   // 引数があれば変数comに代入する
+    if(argc==2) com += atoi(argv[1]);   // 引数があれば変数comに値を加算する
     xbee_init( com );                   // XBee用COMポートの初期化
     xbee_atnj( 0xFF );                  // 親機XBeeを常にジョイン許可状態にする
 
@@ -23,7 +23,7 @@ int main(int argc,char **argv){
     
         /* 子機のポート番号と制御値の入力 */
         printf("Port  =");              // ポート番号入力のための表示
-        gets( s );                      // キーボードからの入力
+        fgets(s, 3, stdin);             // 標準入力から取得
         port = atoi( s );               // 入力文字を数字に変換してportに代入
         printf("Value =");              // 値の入力のための表示
         gets( s );                      // キーボードからの入力

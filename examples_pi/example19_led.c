@@ -12,7 +12,7 @@ int main(int argc,char **argv){
     byte dev[8];                        // XBee子機デバイスのアドレス
     
     /* 初期化 */
-    if(argc==2) com += atoi(argv[1]);   // 引数があれば変数comに代入する
+    if(argc==2) com += atoi(argv[1]);   // 引数があれば変数comに値を加算する
     xbee_init( com );                   // XBee用COMポートの初期化
     /* 暗号化有効 */
     if( xbee_atee_on("password") <= 1){ // 暗号化ON設定。passwordは16文字まで

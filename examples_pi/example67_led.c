@@ -19,11 +19,11 @@ int main(void){
     while( xbee_ping(dev)==00 ){        // 繰り返し処理
         xbee_gpo(dev,port,value);       // リモート機ポート(port)に制御値(value)を設定
         printf("Port  =");              // ポート番号入力のための表示
-        gets( s );                      // キーボードからの入力
+        fgets(s, 3, stdin);             // 標準入力から取得
         if( s[0] == 'q' ) break;        // [q]が入力された時にwhileを抜ける
         port = atoi( s );               // 入力文字を数字に変換してportに代入
         printf("Value =");              // 値の入力のための表示
-        gets( s );                      // キーボードからの入力
+        fgets(s, 3, stdin);             // 標準入力から取得
         value = atoi( s );              // 入力文字を数字に変換してvalueに代入
     }
     printf("done\n");

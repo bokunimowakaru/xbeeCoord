@@ -13,7 +13,7 @@ int main(int argc,char **argv){
     byte dev[]={0x00,0x00,0x00,0x00,0x00,0x00,0xFF,0xFF};
                                                 // 宛先XBeeアドレス(ブロードキャスト)
 
-    if(argc==2) com += atoi(argv[1]);           // 引数があれば変数comに代入する
+    if(argc==2) com += atoi(argv[1]);           // 引数があれば変数comに値を加算する
     xbee_init( com );                           // XBee用COMポートの初期化
     printf("Waiting for XBee Commissoning\n");  // 待ち受け中の表示
     if(xbee_atnj(30) != 0){                     // デバイスの参加受け入れを開始

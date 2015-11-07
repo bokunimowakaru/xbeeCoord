@@ -20,7 +20,7 @@ int main(int argc,char **argv){
     struct tm *time_st;                         // タイマーによる時刻格納用の構造体定義
     char s[S_MAX];                              // 文字列用の変数
 
-    if(argc==2) com += atoi(argv[1]);           // 引数があれば変数comに代入する
+    if(argc==2) com += atoi(argv[1]);           // 引数があれば変数comに値を加算する
     xbee_init( com );                           // XBee用COMポートの初期化
     xbee_atnj( 0xFF );                          // 子機XBeeデバイスを常に参加受け入れ
     printf("Waiting for XBee Commissoning\n");  // 待ち受け中の表示
