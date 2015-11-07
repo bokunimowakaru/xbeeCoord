@@ -26,7 +26,7 @@ int main(int argc,char **argv){
         fgets(s, 3, stdin);             // 標準入力から取得
         port = atoi( s );               // 入力文字を数字に変換してportに代入
         printf("Value =");              // 値の入力のための表示
-        gets( s );                      // キーボードからの入力
+        fgets(s, 3, stdin);             // 標準入力から取得
         value = atoi( s );              // 入力文字を数字に変換してvalueに代入
 
         /* XBee通信 */
