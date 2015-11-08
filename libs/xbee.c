@@ -242,6 +242,7 @@ XBee AT commands.
 						- xbee_gpiの不具合修正・簡易テスト完(PC+ZB)
 	2015/11/08	1.94	- xbee_delayのwait方法を変更(while->usleep)
 						　　　0xAF～0xAA:AMA0～5(-1+0xB0->0xAF->AMA0)
+						- xbee_adcの不具合修正
 
 *********************************************************************/
 /*
