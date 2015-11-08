@@ -10,7 +10,7 @@ XBee Wi-FiのLEDをリモート制御する②ライブラリ関数xbee_gpoで簡単制御
 byte dev[] = {192,168,0,135};
 
 int main(void){
-    char s[3];                          // 入力用(2文字まで)
+    char s[4];                          // 入力用(3文字まで)
     byte port=4;                        // リモート機のポート番号(初期値＝4)
     byte value=1;                       // リモート機への設定値(初期値＝1)
 

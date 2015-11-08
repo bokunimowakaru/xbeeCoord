@@ -11,7 +11,7 @@ byte dev[] = {0x00,0x13,0xA2,0x00,0x40,0x30,0xC1,0x6F};
 
 int main(int argc,char **argv){
     byte com=0xB0;                      // シリアル(USB)、拡張IOコネクタの場合は0xA0
-    char s[3];                          // 入力用(2文字まで)
+    char s[4];                          // 入力用(3文字まで)
     byte port;                          // リモート子機のポート番号
     byte value;                         // リモート子機への設定値
     
