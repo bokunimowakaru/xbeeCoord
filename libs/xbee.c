@@ -240,7 +240,7 @@ XBee AT commands.
 						　　　0xA0～0xA9:AMA0～9, 0xB0～0xB9:USB0～9
 						- API受信バッファの超過時処理を破棄→保留に変更
 						- xbee_gpiの不具合修正・簡易テスト完(PC+ZB)
-	2015/11/XX	1.94	- xbee_delayのwait方法を変更(while->usleep)
+	2015/11/08	1.94	- xbee_delayのwait方法を変更(while->usleep)
 						　　　0xAF～0xAA:AMA0～5(-1+0xB0->0xAF->AMA0)
 
 *********************************************************************/
@@ -4463,27 +4463,32 @@ portは1～3が指定できる。指定したportがADC入力でない場合はA
 	byte data[API_SIZE];
 	byte ports=1;
 	unsigned int ret=0xFFFF;
+	char s[6]="RATIS";
 
 	xbee_address(address);								// 宛先のアドレスを設定
-	if( xbee_tx_rx("RATIS", data , 0) > 0 ){
-		if( data[3]==MODE_RESP ){						// d[3] flame ID = 97(MODE_RESP)
-			if( (port >= 1) && (port <= 3) ){
-				if( ((data[21]>>port ) & 0x01) == 0x00 ){	// MASKの該当ビットが否の時
-					data[0]=0x02; // リモート端末のポート1～3をADC入力(0x02)に設定
-					if( port == 1 ) xbee_tx_rx( "RATD1", data ,1 );
-					if( port == 2 ) xbee_tx_rx( "RATD2", data ,1 );
-					if( port == 3 ) xbee_tx_rx( "RATD3", data ,1 );
-					wait_millisec(1000);
-					xbee_tx_rx("RATIS", data , 0);	// 再度ISを実行
-				}
+	xbee_tx_rx(s, data , 0);
+	if( data[3]==MODE_RESP ){
+		if( (port >= 1) && (port <= 3) ){
+			if( ((data[21]>>port ) & 0x01) == 0x00 || data[17] ){	// MASK_L(20)の該当ビットが否の時 又は data[17]確認
+				data[0]=0x02; // リモート端末のポート1～3をADC入力(0x02)に設定
+				s[3]='D'; s[4]='0'+port;	// "RATD1～3"
+				xbee_tx_rx( s, data ,1 );
+				wait_millisec(200);
+				s[3]='I';s[4]='S';
+				xbee_tx_rx(s, data , 0);	// 再度ISを実行
+			}
+			if( data[3]==MODE_RESP ){
 				if( (port == 2) && ((data[21]>>1)&0x01) ) ports =2; 	// port2指定でport1がADCならデータは2個
 				else if ( port == 3 ){
 					if( (data[21]>>2)&(data[21]>>1)&0x01 ) ports =3; // port3指定でport1と2がADCならデータは3個
 					else if( ((data[21]>>2)|(data[21]>>1))&0x01 ) ports =2; // port3指定でport1か2の片方がADCならデータは2個
 				}
-				if( data[3]==MODE_RESP ) ret= (unsigned int)data[22+ports*2]*256 + (unsigned int)data[23+ports*2];
-																		// 取得データを戻り値に
+				if( data[19] == 0x00 && data[20] == 0x00 ) ports--;
+				ret = (unsigned int)data[22+ports*2];
+				ret <<=8;
+				ret +=(unsigned int)data[23+ports*2];
 			}
+																	// 取得データを戻り値に
 		}
 	}
 	#ifdef DEBUG
@@ -4737,7 +4742,7 @@ byte xbee_rx_call( XBEE_RESULT *xbee_result ){
 						for( i=0; i < 4 ; i++ ){							// この中でjを使用している
 							if( (data[21]>>i) & 0x01 ){ 					// data[21] ADCマスク
 								xbee_result->ADCIN[i] =  (unsigned int)(data[(2*i+24-2*j)]);
-								xbee_result->ADCIN[i] *= (unsigned int)256;
+								xbee_result->ADCIN[i] <<= 8;
 								xbee_result->ADCIN[i] += (unsigned int)(data[2*i+25-2*j]);
 								xbee_result->DATA[i*2+2] = data[24+2*i-2*j];
 								xbee_result->DATA[i*2+3] = data[25+2*i-2*j];

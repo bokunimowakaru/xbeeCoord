@@ -5,14 +5,14 @@
 ***************************************************************************************/
 
 #include "../libs/xbee.c"
-#define FORCE_INTERVAL  250                     // データ要求間隔(約10～20msの倍数)
+#define FORCE_INTERVAL  1000                    // データ要求間隔(およそms単位)
 
 int main(int argc,char **argv){
 
     byte com=0xB0;                              // 拡張IOコネクタの場合は0xA0
     unsigned int  value;                        // リモート子機からの入力値
     byte dev[8];                                // XBee子機デバイスのアドレス
-    byte trig=0xFF;                             // 子機へデータ要求するタイミング調整用
+    int trig =0xFF;                             // 子機へデータ要求するタイミング調整用
     XBEE_RESULT xbee_result;                    // 受信データ(詳細)
 
     if(argc==2) com += atoi(argv[1]);           // 引数があれば変数comに値を加算する

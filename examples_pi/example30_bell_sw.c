@@ -5,7 +5,7 @@ XBeeスイッチとXBeeブザーで玄関呼鈴を製作する
 ***************************************************************************************/
 
 #include "../libs/xbee.c"
-#define FORCE_INTERVAL  250                     // データ要求間隔(約10～20msの倍数)
+#define FORCE_INTERVAL  1000                    // データ要求間隔(およそms単位)
 
 void bell(byte *dev, byte c){
     byte i;
@@ -21,7 +21,7 @@ int main(int argc,char **argv){
     byte com=0xB0;                              // シリアル、拡張IOコネクタの場合は0xA0
     byte dev_bell[8];                           // XBee子機(ベル)デバイスのアドレス
     byte dev_sw[8];                             // XBee子機(スイッチ)デバイスのアドレス
-    byte trig=0;                                // 子機へデータ要求するタイミング調整用
+    int trig =0;                                // 子機へデータ要求するタイミング調整用
     XBEE_RESULT xbee_result;                    // 受信データ(詳細)
 
     if(argc==2) com += atoi(argv[1]);           // 引数があれば変数comに値を加算する

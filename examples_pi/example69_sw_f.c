@@ -13,7 +13,7 @@ byte dev_gpio[] = {192,168,0,135};                  // 子機XBee
 byte dev_my[]   = {192,168,0,255};                  // 親機Raspberry Pi
 
 int main(void){
-    byte trig=0;
+    int trig =0;
     byte value;                                     // 受信値
     XBEE_RESULT xbee_result;                        // 受信データ(詳細)
 

@@ -5,7 +5,7 @@
 ***************************************************************************************/
 
 #include "../libs/xbee.c"
-#define FORCE_INTERVAL  250                     // データ要求間隔(約10～20msの倍数)
+#define FORCE_INTERVAL  1000                    // データ要求間隔(およそms単位)
 
 int main(int argc,char **argv){
 

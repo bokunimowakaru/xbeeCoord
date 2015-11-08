@@ -5,7 +5,7 @@ Digi純正XBee Wall Routerで照度と温度を測定する
 ***************************************************************************************/
 
 #include "../libs/xbee.c"
-#define FORCE_INTERVAL  250                         // データ要求間隔(約10～20msの倍数)
+#define FORCE_INTERVAL  1000                        // データ要求間隔(およそms単位)
 #define TEMP_OFFSET     3.8                         // XBee Wall Router内部温度上昇
 
 void set_ports(byte *dev){
@@ -18,7 +18,7 @@ int main(int argc,char **argv){
     byte com=0xB0;                                  // 拡張IOコネクタの場合は0xA0
     byte dev[8];                                    // XBee子機デバイスのアドレス
     byte id=0;                                      // パケット送信番号
-    byte trig=0xFF;                                 // データ要求するタイミング調整用
+    int trig =0xFF;                                 // データ要求するタイミング調整用
     float value;                                    // 受信データの代入用
     XBEE_RESULT xbee_result;                        // 受信データ(詳細)
 
