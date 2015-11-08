@@ -23,10 +23,10 @@ int main(int argc,char **argv){
     
         /* 子機のポート番号と制御値の入力 */
         printf("Port  =");              // ポート番号入力のための表示
-        fgets(s, 3, stdin);             // 標準入力から取得
+        fgets(s, 4, stdin);             // 標準入力から取得
         port = atoi( s );               // 入力文字を数字に変換してportに代入
         printf("Value =");              // 値の入力のための表示
-        fgets(s, 3, stdin);             // 標準入力から取得
+        fgets(s, 4, stdin);             // 標準入力から取得
         value = atoi( s );              // 入力文字を数字に変換してvalueに代入
 
         /* XBee通信 */
