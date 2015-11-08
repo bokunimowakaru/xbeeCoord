@@ -202,13 +202,14 @@
 			// #define DEBUG					// デバッグモード
 			// #define DEBUG_TX 				// 送信パケットの表示
 			// #define DEBUG_RX 				// 受信パケットの表示
-		//	#define 	XBEE_ERROR_TIME 		// エラー時のログに日時を付与
 			#ifdef LITE
 				#define 	API_SIZE	48		// 受信用APIデータ長(32～255)
 				#define 	API_TXSIZE	34		// 送信用APIデータ長(32～255)
 				#define 	CALL_SIZE	16		// xbee_rx_call用戻りデータ(10～256)
 				#define 	XB_AT_SIZE	16		// ATコマンドの最大長
 			#else
+				#define 	ERRLOG		32			// エラーログ 24バイト+8
+				#define 	XBEE_ERROR_TIME 		// エラー時のログに日時を付与
 				#define 	CACHE_RES	5			// 応答時のキャッシュ数（無効にするには定義を消す）
 				#define 	API_SIZE	128 		// 受信用APIデータ長(32～255)
 				#define 	API_TXSIZE	64			// 送信用APIデータ長(32～255)
