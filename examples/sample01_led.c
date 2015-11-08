@@ -24,7 +24,7 @@ http://www.geocities.jp/bokunimowakaru/diy/xbee/xbee-tutorial_2.html
 #include "../libs/xbee.c"
 
 int main(int argc,char **argv){
-	char s[3];
+	char s[4];
 	byte port=0;		//　↓お手持ちのXBeeモジュールのIEEEアドレスに変更する
 	byte dev_gpio[]   = {0x00,0x13,0xA2,0x00,0x40,0x30,0xC1,0x6F};	// PIO デバイス
 	
@@ -36,7 +36,7 @@ int main(int argc,char **argv){
 	// メイン処理
 	while(1){							// 永久に受信する
 		printf("input[0-2]:");
-		gets( s );
+		fgets(s, 4, stdin);
 		switch( s[0] ){
 			case '0':
 				xbee_gpo(dev_gpio,12,1);		// GPOポート12をHレベル(3.3V)へ

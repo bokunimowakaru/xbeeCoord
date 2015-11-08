@@ -241,8 +241,13 @@ XBee AT commands.
 						- API受信バッファの超過時処理を破棄→保留に変更
 						- xbee_gpiの不具合修正・簡易テスト完(PC+ZB)
 	2015/11/08	1.94	- xbee_delayのwait方法を変更(while->usleep)
-						　　　0xAF～0xAA:AMA0～5(-1+0xB0->0xAF->AMA0)
+						- init追加 0xAF～0xAA:AMA0～5
 						- xbee_adcの不具合修正
+	2015/11/XX	1.95	- TODO Raspberry Pi版のサンプル作成
+						- TODO Raspberry Pi版pubフォルダ対応
+						- TODO Arduino版の更新
+						- TODO mbed版の更新
+	2015/12/XX	1.96	- ZigBee Raspberry Pi版の正式対応版の作成完了予定
 
 *********************************************************************/
 /*
@@ -250,7 +255,7 @@ XBee AT commands.
 */
 #ifndef VERSION
 
-	#define 	VERSION "1.94"		// 1.XX 4バイト形式 XXは半角文字
+	#define 	VERSION "1.95"		// 1.XX 4バイト形式 XXは半角文字
 
 #endif
 /*
@@ -2205,7 +2210,8 @@ byte xbee_at_rx(byte *data){
 			if(data[1] == 0x00) len = data[2];
 			else len = 0xFF - 4;		// API長が255バイトまでの制約(本来は64KB)
 			if( len > (API_SIZE-4) ) len = API_SIZE-4;
-			leni = (unsigned int)data[1] * 256 + (unsigned int)data[2] - (unsigned int)len;
+		//	leni = (unsigned int)data[1] * 256 + (unsigned int)data[2] - (unsigned int)len;
+			leni = (((unsigned int)data[1]) << 8) + (unsigned int)data[2] - (unsigned int)len;
 				// 通常は0。lenが本来の容量よりも少ない場合に不足分が代入されれる
 			for( i=0 ; i <= len ; i++){ // i = lenはチェックサムを入力する
 				#ifdef LITE	// BeeBee Lite 
@@ -4486,7 +4492,7 @@ portは1～3が指定できる。指定したportがADC入力でない場合はA
 				}
 				if( data[19] == 0x00 && data[20] == 0x00 ) ports--;
 				ret = (unsigned int)data[22+ports*2];
-				ret <<=8;
+				ret <<= 8;
 				ret +=(unsigned int)data[23+ports*2];
 			}
 																	// 取得データを戻り値に
@@ -4783,7 +4789,7 @@ byte xbee_rx_call( XBEE_RESULT *xbee_result ){
 				for( i=0; i < 4 ; i++ ){								// この中でjを使用している
 					if( (data[18]>>i) & 0x01 ){
 						xbee_result->ADCIN[i] =  (unsigned int)(data[2*i+21-2*j]);
-						xbee_result->ADCIN[i] *= (unsigned int)256;
+						xbee_result->ADCIN[i] <<= 8;
 						xbee_result->ADCIN[i] += (unsigned int)(data[2*i+22-2*j]);
 						xbee_result->DATA[i*2+2] = data[21+2*i-2*j];
 						xbee_result->DATA[i*2+3] = data[22+2*i-2*j];
@@ -4842,9 +4848,9 @@ byte xbee_rx_call( XBEE_RESULT *xbee_result ){
 				#endif
 				#endif
 				xbee_result->STATUS = data[14]; 						// statusはdata[14]
-				xbee_result->ADCIN[0] = 256*(unsigned int)data[24] + (unsigned int)data[25];
+				xbee_result->ADCIN[0] = (((unsigned int)data[24])<<8) + (unsigned int)data[25];
 				for( i=1; i < 4 ; i++ ) 				// ADC値を代入、ただしAIN[0]へは代入しない
-					xbee_result->ADCIN[i] = 256*(unsigned int)data[2*i+16] + (unsigned int)data[2*i+16];
+					xbee_result->ADCIN[i] = (((unsigned int)data[2*i+16])<<8) + (unsigned int)data[2*i+16];
 				for( i=0; i<10 ; i++ ) xbee_result->DATA[i] = data[16+i];
 				xbee_result->DATA[10] = data[16+i]; 	// sensor 01:ADC 02:Temp. 60:water present
 				break;
