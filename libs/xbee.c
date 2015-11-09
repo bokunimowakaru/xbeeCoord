@@ -239,11 +239,14 @@ XBee AT commands.
 						　　　0:自動, 1～63:COM, 64～127:tty0～63,
 						　　　0xA0～0xA9:AMA0～9, 0xB0～0xB9:USB0～9
 						- API受信バッファの超過時処理を破棄→保留に変更
-						- xbee_gpiの不具合修正・簡易テスト完(PC+ZB)
+						- [重要] xbee_gpiの不具合修正・簡易テスト完
 	2015/11/08	1.94	- xbee_delayのwait方法を変更(while->usleep)
 						- init追加 0xAF～0xAA:AMA0～5
-						- xbee_adcの不具合修正
-	2015/11/XX	1.95	- TODO Raspberry Pi版のサンプル作成
+						- [重要] xbee_adcの不具合修正・簡易テスト完
+	2015/11/XX	1.95	- エラー時のログ出力機能を追加（RasPi用）
+						- gcc Version 4.9.2対応
+						- TODO Raspberry Pi版のサンプル作成
+						- TODO Raspberry Pi版XBee Wi-Fi対応
 						- TODO Raspberry Pi版pubフォルダ対応
 						- TODO Arduino版の更新
 						- TODO mbed版の更新
