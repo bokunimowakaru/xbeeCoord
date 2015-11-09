@@ -505,8 +505,11 @@ int main(int argc,char **argv){
 				printf("adc 1 (0x%02X)\n",xbee_gpio_config( dev, 1 , AIN ));
 				printf("adc 2 (0x%02X)\n",xbee_gpio_config( dev, 2 , AIN ));
 				printf("adc 3 (0x%02X)\n",xbee_gpio_config( dev, 3 , AIN ));
-			}else if( at[2]>='1' && at[2]<='3'){
-				printf("adc port %c = (%d)\n",at[2],(int)xbee_adc(dev,(byte)(at[2]-'0')) );
+			}else{
+				if( at[2]=='=' ) at[2]=at[3];
+				if( at[2]>='1' && at[2]<='3'){
+					printf("adc port %c = (%d)\n",at[2],(int)xbee_adc(dev,(byte)(at[2]-'0')) );
+				}
 			}
 		}else if( at[0] == 'A' && at[1] == 'I' ){
 			xbee_log(3,"XBee Association Indication ",strlen(at)-2);
