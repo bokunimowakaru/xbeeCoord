@@ -35,7 +35,7 @@ PROGS = ./example01_rssi \
 		./example68_sw_r \
 		./example69_sw_f \
 		./example70_uart \
-
+		./practice06
 
 all: $(PROGS)
 		# ========================================
