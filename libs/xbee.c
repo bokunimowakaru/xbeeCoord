@@ -2979,7 +2979,7 @@ void xbee_log(const byte level, const char *err, const byte x ){
 			#ifndef H3694
 			#ifndef ARM_MBED
 				#ifdef XBEE_ERROR_TIME
-					fprintf(stderr,"%4d/%02d/%02d %02d:%02d:%02d[%02X:%02X]%s(%02X)\n",
+					fprintf(stderr,"%4d/%02d/%02d %02d:%02d:%02d [%02X:%02X] %s (%02X)\n",
 						error_time_st->tm_year+1900,
 						error_time_st->tm_mon+1,
 						error_time_st->tm_mday,
@@ -2991,7 +2991,7 @@ void xbee_log(const byte level, const char *err, const byte x ){
 						err,
 						x);
 				#else
-					fprintf(stderr,"[%02X:%02X]%s(%02X)\n",
+					fprintf(stderr,"[%02X:%02X] %s (%02X)\n",
 						TIMER_SEC,
 						timera(),
 						err,
@@ -3060,8 +3060,8 @@ byte xbee_reset( void ){
 							lcd_cls();
 							#ifdef H3694
 								led_red( 1 );
-							#endif
-							lcd_putstr( "EXIT:XBEE NOT IN API MODE" );
+							#endif		//01234567890123456789012	 24バイトまで
+							xbee_log( 5, "EXIT:UNKNOWN DEV. TYPE" , DEVICE_TYPE );
 						#endif
 						#ifdef H3694
 							return(0);
@@ -3080,8 +3080,8 @@ byte xbee_reset( void ){
 						lcd_cls();
 						#ifdef H3694
 							led_red( 1 );
-						#endif
-						lcd_putstr( "EXIT:NO RESPONCE FROM XBEE" );
+						#endif		//01234567890123456789012	 24バイトまで
+						xbee_log( 5, "EXIT:NO RESP. FROM XBEE" , ret );
 					#endif
 					#ifdef H3694
 						return(0);
@@ -3102,8 +3102,8 @@ byte xbee_reset( void ){
 					lcd_cls();
 					#ifdef H3694
 						led_red( 1 );
-					#endif
-					lcd_putstr( "EXIT:CANNOT RESET XBEE" );
+					#endif		//01234567890123456789012	 24バイトまで
+					xbee_log( 5, "EXIT:CANNOT RESET XBEE" , ret );
 				#endif
 				#ifdef H3694
 					return(0);
@@ -5022,7 +5022,9 @@ byte xbee_init( const byte port ){
 				}
 			}
 			if( j == 0 ){
-				fprintf(stderr,"EXIT:Serial Open Error\n");
+				#ifdef LCD_H	//01234567890123456789012	 24バイトまで
+					xbee_log( 5, "EXIT:Serial Open Error" , port );
+				#endif
 				exit(-1);
 			}
 			i=1;
@@ -5068,8 +5070,8 @@ byte xbee_init( const byte port ){
 		#ifndef ARDUINO
 		#ifndef ARM_MBED	// PC
 			if(k==0){
-				#ifdef LCD_H
-					xbee_log( 5, "EXIT:xbee_init:myaddress" , 0 );
+				#ifdef LCD_H	//012345678901234567890123
+					xbee_log( 5, "EXIT:xbee_init:myaddress" , port );
 				#endif
 				exit(-1);
 			}
@@ -5088,8 +5090,8 @@ byte xbee_init( const byte port ){
 			#ifndef H3694
 			#ifndef ARDUINO
 			#ifndef ARM_MBED	// PC
-				#ifdef LCD_H
-					xbee_log( 5, "EXIT:xbee_init:myaddress" , 0 );
+				#ifdef LCD_H	//01234567890123456789012	 24バイトまで
+					xbee_log( 5, "EXIT:xbee_init my ADRS" , port );
 				#endif
 				exit(-1);
 			#endif
@@ -5104,7 +5106,7 @@ byte xbee_init( const byte port ){
 					lcd_putstr("\n--------------------\n");
 				#endif
 			#endif
-			#ifdef LCD_H
+			#ifdef LCD_H	//01234567890123456789012	 24バイトまで
 				xbee_log( 1, "xbee_init:myaddress" , port );
 			#endif
 			xbee_myaddress( address );	// 自分自身のアドレスを取得
