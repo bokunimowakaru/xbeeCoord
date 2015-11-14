@@ -12,7 +12,7 @@ int main(int argc,char **argv){
     byte com=0xB0;                              // 拡張IOコネクタの場合は0xA0
     unsigned int  value;                        // リモート子機からの入力値
     byte dev[8];                                // XBee子機デバイスのアドレス
-    int trig =0xFF;                             // 子機へデータ要求するタイミング調整用
+    int trig = -1;                              // 子機へデータ要求するタイミング調整用
     XBEE_RESULT xbee_result;                    // 受信データ(詳細)
 
     if(argc==2) com += atoi(argv[1]);           // 引数があれば変数comに値を加算する
@@ -26,7 +26,7 @@ int main(int argc,char **argv){
             xbee_force( dev );                  // 子機へデータ要求を送信
             trig = FORCE_INTERVAL;
         }
-        if( trig != 0xFF ) trig--;              // 変数trigが0xFF以外の時に値を1減算
+        if( trig > 0) trig--;                   // 変数trigの値が正の時に1減算
 
         /* データ受信(待ち受けて受信する) */
         xbee_rx_call( &xbee_result );           // データを受信
