@@ -34,7 +34,7 @@ int main(int argc,char **argv){
         do{                                         // 繰り返しの開始
             wait_millisec( 1000 );                  // 1秒待ち
             printf("Commissioning\n");              // XBee親機の検索
-            xbee_atcb( 1 );                         // コミッションボタンの押下
+            xbee_atcb( 1 );                         // コミッショニングボタンの押下
         }while( xbee_atai() > 0 );                  // 参加完了するまで繰り返す
         printf("Joined\nTX-> ");                    // 参加完了
     }
