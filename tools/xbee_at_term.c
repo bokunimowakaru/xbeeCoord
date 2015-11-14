@@ -100,7 +100,8 @@ int main(int argc,char **argv){
 	log_date("CONNECTED");
 	log_date("Type '---' to exit.");
 
-//	c=0x10;write(xbeeComFd, &c, 1);	// clear
+	c=0x10;write(xbeeComFd, &c, 1);	// clear
+	write(1, "AT> ", 4);
 	while (loop) {
 		FD_ZERO(&readfds);
 		FD_SET(0, &readfds); // stdin
@@ -111,6 +112,7 @@ int main(int argc,char **argv){
 //					write(1, &c, 1);		// echo back
 					if (c == '\n') {
 						write(xbeeComFd, "\r", 1); // no need to do
+//						write(1, "AT> ", 4);
 					} else {
 						write(xbeeComFd, &c, 1);
 					}
@@ -118,7 +120,7 @@ int main(int argc,char **argv){
 						loop++;
 						if(loop>3){
 							loop=0;
-							printf("\n");
+							write(1, "\n", 1);
 						}
 					}else loop=1;
 				}
@@ -128,6 +130,7 @@ int main(int argc,char **argv){
 					// output to stdout
 					if (c == '\r') {		 // no need to do
 						write(1, "\n", 1);
+						write(1, "AT> ", 4);
 					} else {
 						write(1, &c, 1);
 					}
