@@ -1056,9 +1056,9 @@ void xbee_clear_cache(void){	// 公開コマンド
 		}
 		return 0;
 	}
-	void close_serial_port(void){
+	int close_serial_port(void){
 		tcsetattr(xbeeComFd,TCSANOW,&oldtio);
-		close(xbeeComFd);
+		return( close(xbeeComFd) );
 	}
 #else	// XBEE_WIFI（arduino除く）
 	int open_serial_port_tx(const byte *address){				// modem_dev＝IPアドレスのポインタ
