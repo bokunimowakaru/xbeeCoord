@@ -25,7 +25,7 @@ int main(int argc,char **argv){
         xbee_from( dev );               // 見つけたデバイスのアドレスを変数devに取込む
         xbee_ratnj(dev,0);              // 子機に対して孫機の受け入れ制限を設定
         for(i=0;i<8;i++){
-            printf("%02X ",dev[i]);    // アドレスの表示
+            printf("%02X ",dev[i]);     // アドレスの表示
         }
         printf("\n");
     }
@@ -33,9 +33,9 @@ int main(int argc,char **argv){
     while(1){
         for(i=1;i<=3;i++){
             value=xbee_gpi(dev,i);       // XBee子機のポートiのデジタル値を取得
-            printf("D%d:%d ",i,value);  // 表示
+            printf("D%d:%d ",i,value);   // 表示
         }
         printf("\n");
-        delay(1000);
+        xbee_delay(1000);
     }
 }

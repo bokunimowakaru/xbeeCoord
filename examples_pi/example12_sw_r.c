@@ -21,8 +21,9 @@ int main(int argc,char **argv){
         xbee_from( dev );                       // 見つけた子機のアドレスを変数devへ
         xbee_ratnj(dev,0);                      // 子機に対して孫機の受け入れ制限を設定
         xbee_gpio_init( dev );                  // 子機のDIOにIO設定を行う(送信)
-    }else printf("no Devices\n");               // 子機が見つからなかった
-    
+    }else{
+        printf("no Devices\n");                 // 子機が見つからなかった
+    }
     while(1){
         /* データ受信(待ち受けて受信する) */
         xbee_rx_call( &xbee_result );           // データを受信
