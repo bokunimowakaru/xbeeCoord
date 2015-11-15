@@ -16,13 +16,12 @@ int main(int argc,char **argv){
     if(argc==2) com += atoi(argv[1]);           // 引数があれば変数comに値を加算する
     xbee_init( com );                           // XBee用COMポートの初期化
     printf("Waiting for XBee Commissoning\n");  // 待ち受け中の表示
-    if(xbee_atnj(30) != 0){                     // デバイスの参加受け入れを開始
+    if(xbee_atnj(10) != 0){                     // デバイスの参加受け入れを開始
         printf("Found a Device\n");             // XBee子機デバイスの発見表示
         xbee_from( dev );                       // 見つけた子機のアドレスを変数devへ
         xbee_ratnj(dev,0);                      // 子機に対して孫機の受け入れ制限を設定
     }else{                                      // 子機が見つからなかった場合
         printf("no Devices\n");                 // 見つからなかったことを表示
-        exit(-1);                               // 異常終了
     }
     
     while(1){

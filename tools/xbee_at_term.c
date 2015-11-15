@@ -55,8 +55,9 @@ void log_date(char *s){
 
 int main(int argc,char **argv){
 	fd_set readfds;
-	int loop=1,i;
+	int loop=1,i,esc=0,len=0,atr=0,atn=0;
 	char c;
+	char s[64];
     byte j,port=0;
 	struct termios stdinattr,stdin_bk;
 
@@ -92,7 +93,7 @@ int main(int argc,char **argv){
 	tcgetattr(0, &stdinattr);
 	tcgetattr(0, &stdin_bk);
 	stdinattr.c_lflag &= ~ICANON;
-//	stdinattr.c_lflag &= ~ECHO;
+	stdinattr.c_lflag &= ~ECHO;
 //	stdinattr.c_lflag &= ~ISIG;
 	stdinattr.c_cc[VMIN] = 0;
 	stdinattr.c_cc[VTIME] = 0;
@@ -109,33 +110,80 @@ int main(int argc,char **argv){
 		if (select(xbeeComFd + 1, &readfds, 0, 0, 0) != 0) {
 			if (FD_ISSET(0, &readfds)) {
 				if (read(0, &c, 1) == 1) { // input from stdin
-//					write(1, &c, 1);		// echo back
-					if (c == '\n') {
-						write(xbeeComFd, "\r", 1); // no need to do
-//						write(1, "AT> ", 4);
-					} else {
+					if(c == 0x1B){			// ESC Code
+						esc = !esc;
+						len = 0;
+						if(esc) write(1, "\nTX> ", 5);
+						else write(1, "\nAT> ", 5);
+					}else if(esc){
+						if(c=='\n'){
+							write(1, "\n", 1);
+							write(xbeeComFd, &s, len);
+							delay(100);
+							atr = 1;
+							len = 0;
+						}else if(len<63){
+							s[len]=c;
+							s[++len]='\0';
+							write(1, &c, 1);		// echo back
+						}
+					}else if (c == '\n') {
+						write(1, "\n", 1);
+						write(xbeeComFd, "\r", 1);
+						delay(100);
+						atr = 1;
+						len = 0;
+					}else if( c == '-'){
+						if(len<63){
+							s[len]=c;
+							s[++len]='\0';
+						}
 						write(xbeeComFd, &c, 1);
-					}
-					if(c=='-'){
+						write(1, &c, 1);		// echo back
 						loop++;
 						if(loop>3){
 							loop=0;
 							write(1, "\n", 1);
 						}
-					}else loop=1;
-				}
-			}
-			if (FD_ISSET(xbeeComFd, &readfds)) {
-				if (read(xbeeComFd, &c, 1) == 1) {
-					// output to stdout
-					if (c == '\r') {		 // no need to do
-						write(1, "\n", 1);
-						write(1, "AT> ", 4);
-					} else {
-						write(1, &c, 1);
+					}else{
+						if(len<63){
+							s[len]=c;
+							s[++len]='\0';
+						}
+						write(xbeeComFd, &c, 1);
+						write(1, &c, 1);		// echo back
+						loop=1;
 					}
 				}
 			}
+			FD_ZERO(&readfds);
+			FD_SET(xbeeComFd, &readfds);
+			if (FD_ISSET(xbeeComFd, &readfds)) {
+				if (read(xbeeComFd, &c, 1) == 1) {
+					// output to stdout
+					if (c == '\r' || c== '\n') {
+						write(1, "\n", 1);
+						if(esc) write(1, "TX> ", 4);
+						else write(1, "AT> ", 4);
+						if(len && strstr(s,"+++")==0 ){
+							write(1, s, len);
+						}
+						atn=0;
+					} else {
+						if(atn==0){
+							atn=1;
+							if(atr==0)write(1, "\n", 1);
+						}
+						write(1, &c, 1);
+					}
+					atr=0;
+				}
+			}
+		}
+		if(atr){
+			if(esc) write(1, "(no Res)\nTX> ", 13);
+			else write(1, "(no Res)\nAT> ", 13);
+			atr=0;
 		}
 	}
 
