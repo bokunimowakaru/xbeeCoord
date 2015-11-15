@@ -17,6 +17,7 @@ PROGS = ./example01_rssi \
 		./example16_uart_tx \
 		./example17_uart_rx \
 		./example18_uart_trx \
+		./example18_uart_trxc \
 		./example19_led \
 		./example20_enc \
 		./example21_wall \
