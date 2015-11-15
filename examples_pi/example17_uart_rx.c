@@ -28,8 +28,8 @@ int main(int argc,char **argv){
                 break;
             case MODE_IDNT:                         // 新しいデバイスを発見
                 printf("Found a New Device\n");
-                xbee_atnj(0);                       // 子機XBeeの受け入れ制限を設定
                 bytecpy(dev, xbee_result.FROM, 8);  // 発見したアドレスをdevにコピー
+                xbee_atnj(0);                       // 子機XBeeの受け入れ制限を設定
                 xbee_ratnj(dev,0);                  // 子機に対して孫機の受け入れ制限
                 xbee_ratd_myaddress( dev );         // 子機に本機のアドレス設定を行う
                 break;
