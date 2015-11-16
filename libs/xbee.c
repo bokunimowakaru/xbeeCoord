@@ -1207,6 +1207,7 @@ byte sci_init( byte port ){
 			#ifndef XBEE_WIFI	// ZigBeeシリアル
 				/* tasasaki様よりポート11～64の拡張対応方法を教えていただいて追加した。*/
 				char modem_dev[13] = "/dev/ttyS00";
+				char alter_dev[13] = "/dev/ttyUSB0";
 				
 				if( port <= 10){
 					modem_dev[9] = (char)( port - 1 + (byte)'0' );
@@ -1226,16 +1227,21 @@ byte sci_init( byte port ){
 					fprintf(stderr,"ERR:sci_init port=%d\n",port);
 					return(0);
 				}
-				if( open_serial_port( modem_dev ) ){
+				if( open_serial_port( modem_dev ) ){	// 失敗
 					wait_millisec( 100 );
 					close_serial_port();	// open出来ていないが念のために閉じる
 					wait_millisec( 100 );
-					fprintf(stderr,"FAILED serial ");
-					xbee_com_port = 0;
-				}else{
-					fprintf(stderr,"Serial port = ");
-					xbee_com_port = port;
-				}				
+					if( port <= 9 ){
+						snprintf(&alter_dev[8], 5, "USB%1X", port&0x0F);	// ttyUSB0～9
+						if( open_serial_port( alter_dev )==0 ){
+							strcpy(modem_dev,alter_dev);
+							port += 0xB0;
+							xbee_com_port = port;
+						}else xbee_com_port = 0;
+					}else xbee_com_port = 0;
+				}else xbee_com_port = port;
+				if( xbee_com_port ) fprintf(stderr,"Serial port = ");
+				else fprintf(stderr,"FAILED serial ");
 				if( port < 64){
 					fprintf(stderr,"COM%d",port);
 				}else if( port < 73 ){

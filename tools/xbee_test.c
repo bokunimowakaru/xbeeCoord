@@ -483,6 +483,11 @@ int main(int argc,char **argv){
 					printf("\nAT>%s",at);
 					break;
 			}
+			if( strcmp(at,"---")==0 ){
+				strcpy(at,"Q!");
+				c='\n';
+				kb=2;
+			}
 		}while( c != '\n' && kb < AT_LEN );
 		
 		// test
@@ -559,28 +564,36 @@ int main(int argc,char **argv){
 			xbee_log(3,"Help about ZCL ",strlen(at)-2);
 			if( (fp = fopen("xbee_test_help_zc.txt","r")) == NULL ){
 				if( (fp = fopen("tools/xbee_test_help_zc.txt","r")) == NULL ){
-					printf("no help files\n");
+					if( (fp = fopen("../tools/xbee_test_help_zc.txt","r")) == NULL ){
+						printf("no help files\n");
+					}
 				}
 			}
-			while( feof(fp) == 0 ){
-				c=getc(fp);
-				if( !feof(fp) ) printf("%c",c);
+			if(fp){
+				while( feof(fp) == 0 ){
+					c=getc(fp);
+					if( !feof(fp) ) printf("%c",c);
+				}
+				printf("\n");
+				fclose( fp );                                // Output
 			}
-			printf("\n");
-			fclose( fp );                                // Output
 		}else if(at[0] == 'H' ){
 			xbee_log(3,"Help ('hz' for more) ",strlen(at)-1);
 			if( (fp = fopen("xbee_test_help.txt","r")) == NULL ){
 				if( (fp = fopen("tools/xbee_test_help.txt","r")) == NULL ){
-					printf("no help files\n");
+					if( (fp = fopen("../tools/xbee_test_help.txt","r")) == NULL ){
+						printf("no help files\n");
+					}
 				}
 			}
-			while( feof(fp) == 0 ){
-				c=getc(fp);
-				if( !feof(fp) ) printf("%c",c);
+			if(fp){
+				while( feof(fp) == 0 ){
+					c=getc(fp);
+					if( !feof(fp) ) printf("%c",c);
+				}
+				printf("\n");
+				fclose( fp );                                // Output
 			}
-			printf("\n");
-			fclose( fp );                                // Output
 		}else if( at[0] == 'G' && at[1] == 'P' && at[2] == 'O' ){
 			xbee_log(3,"Digital IO Output 'xbee_gpo' ",strlen(at)-3);
 			if( at[3] == '=' ) j=4; else j=3;
@@ -1151,6 +1164,7 @@ ZCL
 				}
 			}
 		}
+		close_serial_port();
 		printf("done\n");
 	}
 	return(ret);

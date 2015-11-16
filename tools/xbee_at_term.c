@@ -53,11 +53,26 @@ void log_date(char *s){
     );
 }
 
+void esc_prompt(int esc){
+	switch(esc){
+		case 1:
+			write(1, "\nTX> ", 5);	// esc == 1
+			break;
+		case 2:
+			write(1, "\nEE> ", 5);	// esc == 2
+			break;
+		default:
+			write(1, "\nAT> ", 5);
+			break;
+	}
+}
+
 int main(int argc,char **argv){
 	fd_set readfds;
 	int loop=1,i,esc=0,len=0,atr=0,atn=0;
 	char c;
 	char s[64];
+	char hex[8];
     byte j,port=0;
 	struct termios stdinattr,stdin_bk;
 
@@ -111,11 +126,11 @@ int main(int argc,char **argv){
 			if (FD_ISSET(0, &readfds)) {
 				if (read(0, &c, 1) == 1) { // input from stdin
 					if(c == 0x1B){			// ESC Code
-						esc = !esc;
+						esc++;
+						if( esc > 2 ) esc=0;
 						len = 0;
-						if(esc) write(1, "\nTX> ", 5);
-						else write(1, "\nAT> ", 5);
-					}else if(esc){
+						esc_prompt(esc);	// Display Prompt
+					}else if(esc==1){
 						if(c=='\n'){
 							write(1, "\n", 1);
 							write(xbeeComFd, &s, len);
@@ -127,12 +142,53 @@ int main(int argc,char **argv){
 							s[++len]='\0';
 							write(1, &c, 1);		// echo back
 						}
+					}else if(esc==2){
+						if(c=='\n'){
+							write(1, "\n+++\n", 5);
+							write(xbeeComFd, "+++", 3);
+							delay(1500);
+							if(len){
+								write(1, "ATKY", 4);
+								write(xbeeComFd, "ATKY", 4);
+								for(i=0;i<63;i++){
+									if(s[i]=='\0') break;
+									sprintf(hex,"%02X",s[i]);
+									write(1, hex, 2);
+									write(xbeeComFd, hex, 2);
+								}
+								write(1, "\n", 1);
+								write(xbeeComFd, "\r", 1);
+								delay(100);
+								write(1, "ATEE01\n", 7);
+								write(xbeeComFd, "ATEE01\r", 7);
+							}else{
+								write(1, "ATEE00\n", 7);
+								write(xbeeComFd, "ATEE00\r", 7);
+							}
+							delay(100);
+							do{
+								FD_ZERO(&readfds);
+								FD_SET(xbeeComFd, &readfds);
+								if( FD_ISSET(xbeeComFd, &readfds)) i=read(xbeeComFd, &c, 1);
+							}while(i);
+							write(1, "ATCN\n", 5);
+							write(xbeeComFd, "ATCN\r", 5);
+							delay(100);
+							atr = 1;
+							len = 0;
+							esc = 0;
+						}else if(len<63){
+							s[len]=c;
+							s[++len]='\0';
+							write(1, &c, 1);		// echo back
+						}
 					}else if (c == '\n') {
 						write(1, "\n", 1);
 						write(xbeeComFd, "\r", 1);
 						delay(100);
 						atr = 1;
 						len = 0;
+					/*
 					}else if( c == '-'){
 						if(len<63){
 							s[len]=c;
@@ -145,6 +201,7 @@ int main(int argc,char **argv){
 							loop=0;
 							write(1, "\n", 1);
 						}
+					*/
 					}else{
 						if(len<63){
 							s[len]=c;
@@ -155,6 +212,10 @@ int main(int argc,char **argv){
 						loop=1;
 					}
 				}
+				if( strcmp(s,"---")==0 ){
+					loop=0;
+					write(1, "\n", 1);
+				}
 			}
 			FD_ZERO(&readfds);
 			FD_SET(xbeeComFd, &readfds);
@@ -162,9 +223,7 @@ int main(int argc,char **argv){
 				if (read(xbeeComFd, &c, 1) == 1) {
 					// output to stdout
 					if (c == '\r' || c== '\n') {
-						write(1, "\n", 1);
-						if(esc) write(1, "TX> ", 4);
-						else write(1, "AT> ", 4);
+						esc_prompt(esc);	// Display Prompt
 						if(len && strstr(s,"+++")==0 ){
 							write(1, s, len);
 						}
@@ -181,8 +240,8 @@ int main(int argc,char **argv){
 			}
 		}
 		if(atr){
-			if(esc) write(1, "(no Res)\nTX> ", 13);
-			else write(1, "(no Res)\nAT> ", 13);
+			write(1, "(no Res)", 8);
+			esc_prompt(esc);	// Display Prompt
 			atr=0;
 		}
 	}
