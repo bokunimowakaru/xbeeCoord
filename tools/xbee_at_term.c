@@ -166,6 +166,9 @@ int main(int argc,char **argv){
 								write(xbeeComFd, "ATEE00\r", 7);
 							}
 							delay(100);
+							write(1, "ATWR\n", 5);
+							write(xbeeComFd, "ATWR\r", 5);
+							delay(1500);
 							do{
 								FD_ZERO(&readfds);
 								FD_SET(xbeeComFd, &readfds);
