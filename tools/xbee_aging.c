@@ -11,7 +11,7 @@ XBee ライブラリ・自動システム試験ツール
 本ソースリストおよびソフトウェアは、ライセンスフリーです。
 利用、編集、再配布等が自由に行えますが、著作権表示の改変は禁止します。
 
-                               Copyright (c) 2010-2014 Wataru KUNINO
+                               Copyright (c) 2010-2015 Wataru KUNINO
                                http://www.geocities.jp/bokunimowakaru/
 *********************************************************************/
 
@@ -606,7 +606,15 @@ void loop(){
         byte i;
         
         #ifndef ARM_MBED
-            if( argc==2 ) port = (byte)(atoi(argv[1]));
+			if( argc==2 ){
+				if( atoi(argv[1]) < 0 ){
+					port = 0x9F + (byte)(-atoi(argv[1])) ;
+				}else  if( ( argv[1][0]=='b' || argv[1][0]=='B' )&& argv[1][1]!='\0' ){
+					port = 0xB0 + ( argv[1][1] - '0');
+				}else  if( ( argv[1][0]=='a' || argv[1][0]=='A' )&& argv[1][1]!='\0' ){
+					port = 0xA0 + ( argv[1][1] - '0');
+				}else port = (byte)(atoi(argv[1]));
+			}
         #endif
         xbee_init( port );                  // XBee用COMポートの初期化(引数はポート番号)
         aging_init();
