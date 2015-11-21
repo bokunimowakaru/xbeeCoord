@@ -483,12 +483,11 @@ int main(int argc,char **argv){
 					printf("\nAT>%s",at);
 					break;
 			}
-			/*
 			if( strcmp(at,"---")==0 ){
 				strcpy(at,"Q!");
 				c='\n';
 				kb=2;
-			}*/
+			}
 		}while( c != '\n' && kb < AT_LEN );
 		
 		// test

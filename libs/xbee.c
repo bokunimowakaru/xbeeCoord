@@ -3909,13 +3909,11 @@ byte xbee_atee_off( void ){
 						wait_millisec(5000);
 						xbee_at_rx( data );
 						if( data[3] == MODE_MODM && data[4] == MODM_STARTED ){
-							data[0] = 0x00; 	// ATNK = 0x00 random network key
-							ret = xbee_tx_rx( "ATNK", data ,1 );
+							data[0] = 0x04;
+							xbee_tx_rx( "ATCB", data ,1 );
+							ret = 0x00;
 						}
-					}else ret = 0x01;				
-					if( xbee_tx_rx( "ATWR", data ,0 ) > 0 ){
-						if( ret != 0xFF ) ret = 0x00;
-					}
+					}else ret = 0x00;
 				}
 			}else ret= 0x01;
 		}
