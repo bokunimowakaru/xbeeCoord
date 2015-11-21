@@ -308,21 +308,21 @@ int main(int argc,char **argv){
 				}else if( (byte)c == 0x7E){	// DELキー
 					if( kb >= 3 ){
 						kb -= 3;			// 5B 33 7E
-						at[kb] = '\0';
 					//	printf("\b \b");
 					}else {
-						kb=0; at[0] = '\0';
+						kb=0;
 					}
+					for(i=kb;i<AT_LEN;i++) at[i]=0x00;	// 終端を見ずにAT解析しているので必要
 					printf("\nAT>%s",at);
 				}else if( (byte)c == 0x7F){	// TeraTerm
 					if( kb > 0 ){
-						kb -= 1; at[kb] = '\0';
+						kb -= 1;
 					}else {
-						kb=0; at[0] = '\0';
+						kb=0;
 					}
+					for(i=kb;i<AT_LEN;i++) at[i]=0x00;	// 終端を見ずにAT解析しているので必要
 					printf("\nAT>%s",at);
 				}
-				for(i=kb;i<AT_LEN;i++) at[i]=0x00;	// 終端を見ずにAT解析しているので必要
 			}
 			
 			/* データ受信(待ち受けて受信する) */
@@ -483,15 +483,16 @@ int main(int argc,char **argv){
 					printf("\nAT>%s",at);
 					break;
 			}
+			/*
 			if( strcmp(at,"---")==0 ){
 				strcpy(at,"Q!");
 				c='\n';
 				kb=2;
-			}
+			}*/
 		}while( c != '\n' && kb < AT_LEN );
 		
 		// test
-	//	printf("at=%s\n",at);
+	//	printf("at(%d,%d)=[%s]\n",strlen(at),kb,at);
 		printf("\n");
 		
 		if( at[0] == '!' ) for(i=0;i<AT_LEN;i++) at[i] = at_bk[i];
@@ -1164,8 +1165,8 @@ ZCL
 				}
 			}
 		}
-		close_serial_port();
 		printf("done\n");
 	}
+	close_serial_port();
 	return(ret);
 }
