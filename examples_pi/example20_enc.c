@@ -35,7 +35,6 @@ int main(int argc,char **argv){
         switch( xbee_result.MODE ){                 // 受信したデータの内容に応じて
             case MODE_UART:                         // 子機XBeeからのテキスト受信
                 printf("\nRX<- %s\nTX-> ", xbee_result.DATA );  // 受信データ等の表示
-                xbee_uart( dev , "Thanks!\n" );     // 「Thanks!」を返信
                 break;
             case MODE_IDNT:                         // 新しいデバイスを発見
                 printf("\nFound a New Device\nTX-> ");          // 子機発見表示
