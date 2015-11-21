@@ -3908,12 +3908,19 @@ byte xbee_atee_off( void ){
 						sci_clear();
 						wait_millisec(5000);
 						xbee_at_rx( data );
+					//	printf("data3=%02X data4=%02X\n",data[3],data[4]);
 						if( data[3] == MODE_MODM && data[4] == MODM_STARTED ){
 							data[0] = 0x04;
 							xbee_tx_rx( "ATCB", data ,1 );
-							ret = 0x00;
+							wait_millisec(8000);
+							xbee_at_rx( data );
+						//	printf("data3=%02X data4=%02X\n",data[3],data[4]);
+							if( data[3] == MODE_MODM && data[4] == MODM_STARTED ) ret = 0x00;
 						}
 					}else ret = 0x00;
+					if(ret==0)xbee_tx_rx( "ATWR", data ,0 );
+					wait_millisec(1000);
+					sci_clear();
 				}
 			}else ret= 0x01;
 		}
