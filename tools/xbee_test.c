@@ -669,6 +669,9 @@ int main(int argc,char **argv){
 				case DEV_TYPE_SENS:		// 0x07		// Sensor (1wireêÍóp)
 					printf("OK (DEV_TYPE_SENS)\n");
 					break;
+				case DEV_TYPE_WALL:		// 0x08		// Wall Router
+					printf("OK (DEV_TYPE_WALL)\n");
+					break;
 				case DEV_TYPE_PLUG:		// 0x0F		// SmartPlug
 					printf("OK (DEV_TYPE_PLUG)\n");
 					break;
