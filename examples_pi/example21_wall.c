@@ -33,7 +33,7 @@ int main(int argc,char **argv){
             id = xbee_force( dev );                 // 子機へデータ要求を送信
             trig = FORCE_INTERVAL;
         }
-        if( trig > 0 ) trig--;                      // 変数trigが0xFF以外の時に値を1減算
+        if( trig > 0 ) trig--;                      // 変数trigが正の整数の時に値を1減算
 
         /* データ受信(待ち受けて受信する) */
         xbee_rx_call( &xbee_result );               // データを受信

@@ -18,7 +18,7 @@ int main(int argc,char **argv){
 
     byte com=0xB0;                                  // 拡張IOコネクタの場合は0xA0
     byte dev[8];                                    // XBee子機デバイスのアドレス
-    int trig =0xFF;                                 // データ要求するタイミング調整用
+    int trig = -1;                                  // データ要求するタイミング調整用
     byte id=0;                                      // パケット送信番号
     float value;                                    // 受信データの代入用
     XBEE_RESULT xbee_result;                        // 受信データ(詳細)
@@ -33,7 +33,7 @@ int main(int argc,char **argv){
             id = xbee_force( dev );                 // 子機へデータ要求を送信
             trig = FORCE_INTERVAL;
         }
-        if( trig != 0xFF ) trig--;                  // 変数trigが0xFF以外の時に値を1減算
+        if( trig > 0 ) trig--;                      // 変数trigが正の整数の時に値を1減算
 
         xbee_rx_call( &xbee_result );               // データを受信
         switch( xbee_result.MODE ){                 // 受信したデータの内容に応じて
