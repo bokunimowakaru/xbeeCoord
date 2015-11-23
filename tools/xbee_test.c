@@ -675,6 +675,12 @@ int main(int argc,char **argv){
 				case DEV_TYPE_PLUG:		// 0x0F		// SmartPlug
 					printf("OK (DEV_TYPE_PLUG)\n");
 					break;
+				case 0x0E:		// XBee Sensor /L/T
+					printf("OK (XBee Sensor /L/T)\n");
+					break;
+				case 0x0D:		// XBee Sensor /L/T/H
+					printf("OK (XBee Sensor /L/T/H)\n");
+					break;
 				case 0xFF:
 					printf("ERROR\n");
 					break;
