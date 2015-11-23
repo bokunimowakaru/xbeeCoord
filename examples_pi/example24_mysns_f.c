@@ -5,7 +5,7 @@
 ***************************************************************************************/
 
 #include "../libs/xbee.c"
-#define FORCE_INTERVAL  1000                        // データ要求間隔(およそms単位)
+#define FORCE_INTERVAL  5000                        // データ要求間隔(およそms単位)
 
 void set_ports(byte *dev){
     xbee_gpio_config( dev, 1 , AIN );               // XBee子機のポート1をアナログ入力へ
