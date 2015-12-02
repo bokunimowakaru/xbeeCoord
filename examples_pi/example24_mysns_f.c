@@ -9,7 +9,7 @@
 
 void set_ports(byte *dev){
     xbee_gpio_config( dev, 1 , AIN );               // XBee子機のポート1をアナログ入力へ
-    xbee_end_device( dev, 1, 0, 0);                 // 起動間隔1秒,自動測定無効
+    xbee_end_device( dev, 3, 0, 0);                 // 起動間隔3秒,自動測定無効
 }
 
 int main(int argc,char **argv){
