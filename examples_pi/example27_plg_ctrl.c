@@ -11,7 +11,7 @@ void set_ports(byte *dev){
     xbee_gpio_config( dev, 1 , AIN );           // XBee子機のポート1をアナログ入力AINへ
     xbee_gpio_config( dev, 2 , AIN );           // XBee子機のポート2をアナログ入力AINへ
     xbee_gpio_config( dev, 3 , AIN );           // XBee子機のポート3をアナログ入力AINへ
-    xbee_gpio_config( dev, 4 , DOUT_H );        // XBee子機のポート3をデジタル出力へ
+    xbee_gpio_config( dev, 4 , DOUT_H );        // XBee子機のポート4をデジタル出力へ
 }
 
 int main(int argc,char **argv){
