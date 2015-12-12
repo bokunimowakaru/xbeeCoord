@@ -1409,6 +1409,7 @@ byte sci_read_frame(byte *data){
 	#ifndef ARDUINO // XBEE_WIFI PC受信
 		byte i,ret;
 		int len=0;
+		socklen_t size;
 		struct sockaddr_in xbeeF_addr;					// FROMアドレス入力用
 		struct timeval tv;								// タイムアウト用
 		fd_set readfds;
@@ -1420,8 +1421,8 @@ byte sci_read_frame(byte *data){
 		tv.tv_usec = (long)9000;						// 9ms
 		/* データ受信 */
 		if( select( (xbeeRSFd+1), &readfds, NULL, NULL, &tv) > 0 ){
-			len = sizeof(xbeeF_addr);
-			len = recvfrom(xbeeRSFd, &(data[4]), (API_SIZE-14), 0, (struct sockaddr *)&xbeeF_addr, &len );
+			size = sizeof(xbeeF_addr);
+			len = recvfrom(xbeeRSFd, &(data[4]), (API_SIZE-14), 0, (struct sockaddr *)&xbeeF_addr, &size );
 			if( len > 0 ){
 				len += 4;
 				#ifdef DEBUG
@@ -1437,8 +1438,8 @@ byte sci_read_frame(byte *data){
 			FD_SET(xbeeUSFd, &readfds); 					// 待ちソケットの登録
 			tv.tv_usec = (long)1000;						// 1ms
 			if( select( (xbeeUSFd+1), &readfds, NULL, NULL, &tv) > 0 ){
-				len = sizeof(xbeeU_addr);
-				len = recvfrom(xbeeUSFd, &(data[6]), (API_SIZE-16), 0, (struct sockaddr *)&xbeeU_addr, &len );
+				size = sizeof(xbeeU_addr);
+				len = recvfrom(xbeeUSFd, &(data[6]), (API_SIZE-16), 0, (struct sockaddr *)&xbeeU_addr, &size );
 				if( len > 0 ){								// データはdata[6]以降に入る
 					data[4] = 0x00; // UART受信を示す。
 					data[5] = len;	// UART長を示す（data[]長では無い）。
