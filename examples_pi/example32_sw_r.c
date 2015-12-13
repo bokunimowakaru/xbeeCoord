@@ -1,33 +1,33 @@
 /***************************************************************************************
-XBee Wi-Fi‚ÌƒXƒCƒbƒ`•Ï‰»’Ê’m‚ğóM‚·‚é
+XBee Wi-Fiã®ã‚¹ã‚¤ãƒƒãƒå¤‰åŒ–é€šçŸ¥ã‚’å—ä¿¡ã™ã‚‹
 
                                                   Copyright (c) 2013-2015 Wataru KUNINO
 ***************************************************************************************/
 
-#include "../libs/xbee_wifi.c"                      // XBeeƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒCƒ“ƒ|[ƒg
+#include "../libs/xbee_wifi.c"                      // XBeeãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
 #include "../libs/kbhit.c"
 
-// ‚¨è‚¿‚ÌXBeeƒ‚ƒWƒ…[ƒ‹‚ÌIPƒAƒhƒŒƒX‚É•ÏX‚µ‚Ä‚­‚¾‚³‚¢(‹æØ‚è‚ÍƒJƒ“ƒ})
-byte dev_gpio[] = {192,168,0,135};                  // q‹@XBee
-byte dev_my[]   = {192,168,0,255};                  // e‹@Raspberry Pi
+// ãŠæ‰‹æŒã¡ã®XBeeãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®IPã‚¢ãƒ‰ãƒ¬ã‚¹ã«å¤‰æ›´ã—ã¦ãã ã•ã„(åŒºåˆ‡ã‚Šã¯ã‚«ãƒ³ãƒ)
+byte dev_gpio[] = {192,168,0,135};                  // å­æ©ŸXBee
+byte dev_my[]   = {192,168,0,255};                  // è¦ªæ©ŸRaspberry Pi
 
 int main(void){
-    byte value;                                     // óM’l
-    XBEE_RESULT xbee_result;                        // óMƒf[ƒ^(Ú×)
+    byte value;                                     // å—ä¿¡å€¤
+    XBEE_RESULT xbee_result;                        // å—ä¿¡ãƒ‡ãƒ¼ã‚¿(è©³ç´°)
 
-    xbee_init( 0 );                                 // XBee‚Ì‰Šú‰»
+    xbee_init( 0 );                                 // XBeeã®åˆæœŸåŒ–
     printf("Example 32 SW_R (Any key to Exit)\n");
     if( xbee_ping(dev_gpio)==00 ){
-        xbee_myaddress(dev_my);                     // ©•ª‚ÌƒAƒhƒŒƒX‚ğİ’è‚·‚é
-        xbee_gpio_init(dev_gpio);                   // ƒfƒoƒCƒXdev_gpio‚ÉIOİ’è‚ğs‚¤
+        xbee_myaddress(dev_my);                     // è‡ªåˆ†ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¨­å®šã™ã‚‹
+        xbee_gpio_init(dev_gpio);                   // ãƒ‡ãƒã‚¤ã‚¹dev_gpioã«IOè¨­å®šã‚’è¡Œã†
         while(1){
-            xbee_rx_call( &xbee_result );           // ƒf[ƒ^‚ğóM
-            if( xbee_result.MODE == MODE_GPIN){     // q‹@XBee‚ÌDIO“ü—Í
-                value = xbee_result.GPI.PORT.D1;    // D1ƒ|[ƒg‚Ì’l‚ğ•Ï”value‚É‘ã“ü
-                printf("Value =%d\n",value);        // •Ï”value‚Ì’l‚ğ•\¦
-                xbee_gpo(dev_gpio,4,value);         // q‹@XBee‚ÌDIOƒ|[ƒg4‚Öo—Í
+            xbee_rx_call( &xbee_result );           // ãƒ‡ãƒ¼ã‚¿ã‚’å—ä¿¡
+            if( xbee_result.MODE == MODE_GPIN){     // å­æ©ŸXBeeã®DIOå…¥åŠ›
+                value = xbee_result.GPI.PORT.D1;    // D1ãƒãƒ¼ãƒˆã®å€¤ã‚’å¤‰æ•°valueã«ä»£å…¥
+                printf("Value =%d\n",value);        // å¤‰æ•°valueã®å€¤ã‚’è¡¨ç¤º
+                xbee_gpo(dev_gpio,4,value);         // å­æ©ŸXBeeã®DIOãƒãƒ¼ãƒˆ4ã¸å‡ºåŠ›
             }
-            if( kbhit() ) break;                    // PC‚ÌƒL[‰Ÿ‰º‚Éwhile‚ğ”²‚¯‚é
+            if( kbhit() ) break;                    // PCã®ã‚­ãƒ¼æŠ¼ä¸‹æ™‚ã«whileã‚’æŠœã‘ã‚‹
         }
     }
     printf("\ndone\n");

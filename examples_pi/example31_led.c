@@ -1,30 +1,30 @@
 /***************************************************************************************
-XBee Wi-Fi‚ÌLED‚ðƒŠƒ‚[ƒg§Œä‚·‚é‡Aƒ‰ƒCƒuƒ‰ƒŠŠÖ”xbee_gpo‚ÅŠÈ’P§Œä
+XBee Wi-Fiã®LEDã‚’ãƒªãƒ¢ãƒ¼ãƒˆåˆ¶å¾¡ã™ã‚‹
 
                                                   Copyright (c) 2013-2015 Wataru KUNINO
 ***************************************************************************************/
 
-#include "../libs/xbee_wifi.c"          // XBeeƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒCƒ“ƒ|[ƒg
+#include "../libs/xbee_wifi.c"          // XBeeãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
 
-// ‚¨ŽèŽ‚¿‚ÌXBeeƒ‚ƒWƒ…[ƒ‹‚ÌIPƒAƒhƒŒƒX‚É•ÏX‚·‚é(‹æØ‚è‚ÍƒJƒ“ƒ})
+// ãŠæ‰‹æŒã¡ã®XBeeãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®IPã‚¢ãƒ‰ãƒ¬ã‚¹ã«å¤‰æ›´ã™ã‚‹(åŒºåˆ‡ã‚Šã¯ã‚«ãƒ³ãƒž)
 byte dev[] = {192,168,0,135};
 
 int main(void){
-    char s[4];                          // “ü—Í—p(3•¶Žš‚Ü‚Å)
-    byte port=4;                        // ƒŠƒ‚[ƒg‹@‚Ìƒ|[ƒg”Ô†(‰Šú’l4)
-    byte value=1;                       // ƒŠƒ‚[ƒg‹@‚Ö‚ÌÝ’è’l(‰Šú’l1)
+    char s[4];                          // å…¥åŠ›ç”¨(3æ–‡å­—ã¾ã§)
+    byte port=4;                        // ãƒªãƒ¢ãƒ¼ãƒˆæ©Ÿã®ãƒãƒ¼ãƒˆç•ªå·(åˆæœŸå€¤ï¼4)
+    byte value=1;                       // ãƒªãƒ¢ãƒ¼ãƒˆæ©Ÿã¸ã®è¨­å®šå€¤(åˆæœŸå€¤ï¼1)
 
-    xbee_init( 0 );                     // XBee‚Ì‰Šú‰»
+    xbee_init( 0 );                     // XBeeã®åˆæœŸåŒ–
     printf("Example 31 LED ('q' to Exit)\n");
-    while( xbee_ping(dev)==00 ){        // ŒJ‚è•Ô‚µˆ—
-        xbee_gpo(dev,port,value);       // ƒŠƒ‚[ƒg‹@ƒ|[ƒg(port)‚É§Œä’l(value)‚ðÝ’è
-        printf("Port  =");              // ƒ|[ƒg”Ô†“ü—Í‚Ì‚½‚ß‚Ì•\Ž¦
-        fgets(s, 4, stdin);             // •W€“ü—Í‚©‚çŽæ“¾
-        if( s[0] == 'q' ) break;        // [q]‚ª“ü—Í‚³‚ê‚½Žž‚Éwhile‚ð”²‚¯‚é
-        port = atoi( s );               // “ü—Í•¶Žš‚ð”Žš‚É•ÏŠ·‚µ‚Äport‚É‘ã“ü
-        printf("Value =");              // ’l‚Ì“ü—Í‚Ì‚½‚ß‚Ì•\Ž¦
-        fgets(s, 4, stdin);             // •W€“ü—Í‚©‚çŽæ“¾
-        value = atoi( s );              // “ü—Í•¶Žš‚ð”Žš‚É•ÏŠ·‚µ‚Ävalue‚É‘ã“ü
+    while( xbee_ping(dev)==00 ){        // ç¹°ã‚Šè¿”ã—å‡¦ç†
+        xbee_gpo(dev,port,value);       // ãƒªãƒ¢ãƒ¼ãƒˆæ©Ÿãƒãƒ¼ãƒˆ(port)ã«åˆ¶å¾¡å€¤(value)ã‚’è¨­å®š
+        printf("Port  =");              // ãƒãƒ¼ãƒˆç•ªå·å…¥åŠ›ã®ãŸã‚ã®è¡¨ç¤º
+        fgets(s, 4, stdin);             // æ¨™æº–å…¥åŠ›ã‹ã‚‰å–å¾—
+        if( s[0] == 'q' ) break;        // [q]ãŒå…¥åŠ›ã•ã‚ŒãŸæ™‚ã«whileã‚’æŠœã‘ã‚‹
+        port = atoi( s );               // å…¥åŠ›æ–‡å­—ã‚’æ•°å­—ã«å¤‰æ›ã—ã¦portã«ä»£å…¥
+        printf("Value =");              // å€¤ã®å…¥åŠ›ã®ãŸã‚ã®è¡¨ç¤º
+        fgets(s, 4, stdin);             // æ¨™æº–å…¥åŠ›ã‹ã‚‰å–å¾—
+        value = atoi( s );              // å…¥åŠ›æ–‡å­—ã‚’æ•°å­—ã«å¤‰æ›ã—ã¦valueã«ä»£å…¥
     }
     printf("done\n");
     return(0);

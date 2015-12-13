@@ -1,61 +1,61 @@
 /***************************************************************************************
-XBee Wi-Fi‚ðŽg‚Á‚½UARTƒVƒŠƒAƒ‹‘—ŽóM
+XBee Wi-Fiã‚’ä½¿ã£ãŸUARTã‚·ãƒªã‚¢ãƒ«é€å—ä¿¡
 
                                                   Copyright (c) 2013-2015 Wataru KUNINO
 ***************************************************************************************/
 
-#include "../libs/xbee_wifi.c"                      // XBeeƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒCƒ“ƒ|[ƒg
+#include "../libs/xbee_wifi.c"                      // XBeeãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ã‚¤ãƒ³ãƒãƒ¼ãƒˆ
 #include "../libs/kbhit.c"
 #include <ctype.h>
 
-// ‚¨ŽèŽ‚¿‚ÌXBeeƒ‚ƒWƒ…[ƒ‹‚ÌIPƒAƒhƒŒƒX‚É•ÏX‚µ‚Ä‚­‚¾‚³‚¢(‹æØ‚è‚ÍƒJƒ“ƒ})
-byte dev[]      = {192,168,0,135};                  // Žq‹@XBee
-byte dev_my[]   = {192,168,0,255};                  // e‹@Raspberry Pi
+// ãŠæ‰‹æŒã¡ã®XBeeãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®IPã‚¢ãƒ‰ãƒ¬ã‚¹ã«å¤‰æ›´ã—ã¦ãã ã•ã„(åŒºåˆ‡ã‚Šã¯ã‚«ãƒ³ãƒž)
+byte dev[]      = {192,168,0,135};                  // å­æ©ŸXBee
+byte dev_my[]   = {192,168,0,255};                  // è¦ªæ©ŸRaspberry Pi
 
 int main(void){
-    char c;                                         // •¶Žš“ü—Í—p
-    char s[32];                                     // ‘—Mƒf[ƒ^—p
-    byte len=0;                                     // •¶Žš’·
-    XBEE_RESULT xbee_result;                        // ŽóMƒf[ƒ^(Ú×)
+    char c;                                         // æ–‡å­—å…¥åŠ›ç”¨
+    char s[32];                                     // é€ä¿¡ãƒ‡ãƒ¼ã‚¿ç”¨
+    byte len=0;                                     // æ–‡å­—é•·
+    XBEE_RESULT xbee_result;                        // å—ä¿¡ãƒ‡ãƒ¼ã‚¿(è©³ç´°)
 
-    xbee_init( 0 );                                 // XBee—pCOMƒ|[ƒg‚Ì‰Šú‰»
+    xbee_init( 0 );                                 // XBeeç”¨COMãƒãƒ¼ãƒˆã®åˆæœŸåŒ–
     printf("Example 35 UART (ESC key to Exit)\n");
-    s[0]='\0';                                      // •¶Žš—ñ‚Ì‰Šú‰»
-    printf("TX-> ");                                // ‘Ò‚¿Žó‚¯’†‚Ì•\Ž¦
+    s[0]='\0';                                      // æ–‡å­—åˆ—ã®åˆæœŸåŒ–
+    printf("TX-> ");                                // å¾…ã¡å—ã‘ä¸­ã®è¡¨ç¤º
     if( xbee_ping(dev)==00 ){
-        xbee_myaddress(dev_my);                     // PC‚ÌƒAƒhƒŒƒX‚ðÝ’è‚·‚é
-        xbee_ratd_myaddress(dev);                   // Žq‹@‚ÉPC‚ÌƒAƒhƒŒƒX‚ðÝ’è‚·‚é
-        xbee_rat(dev,"ATAP00");                     // XBee API‚ð‰ðœ(UARTƒ‚[ƒh‚ÉÝ’è)
+        xbee_myaddress(dev_my);                     // PCã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¨­å®šã™ã‚‹
+        xbee_ratd_myaddress(dev);                   // å­æ©Ÿã«PCã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¨­å®šã™ã‚‹
+        xbee_rat(dev,"ATAP00");                     // XBee APIã‚’è§£é™¤(UARTãƒ¢ãƒ¼ãƒ‰ã«è¨­å®š)
         while(1){
 
-            /* ƒf[ƒ^‘—M */
+            /* ãƒ‡ãƒ¼ã‚¿é€ä¿¡ */
             if( kbhit() ){
-                c=getchar();                        // ƒL[ƒ{[ƒh‚©‚ç‚Ì•¶Žš“ü—Í
-                if( c == 0x1B ){                    // ESCƒL[‰Ÿ‰ºŽž‚É
-                    printf("E");                    // ESC E(‰üs)‚ðŽÀs
-                    break;                          // while‚ð”²‚¯‚é
+                c=getchar();                        // ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã‹ã‚‰ã®æ–‡å­—å…¥åŠ›
+                if( c == 0x1B ){                    // ESCã‚­ãƒ¼æŠ¼ä¸‹æ™‚ã«
+                    printf("E");                    // ESC E(æ”¹è¡Œ)ã‚’å®Ÿè¡Œ
+                    break;                          // whileã‚’æŠœã‘ã‚‹
                 }
-                if( isprint( (int)c ) ){            // •\Ž¦‰Â”\‚È•¶Žš‚ª“ü—Í‚³‚ê‚½Žž
-                    s[len]=c;                       // •¶Žš—ñ•Ï”s‚É“ü—Í•¶Žš‚ð‘ã“ü‚·‚é
-                    len++;                          // •¶Žš’·‚ðˆê‚Â‘‚â‚·
-                    s[len]='\0';                    // •¶Žš—ñ‚ÌI—¹‚ð•\‚·\0‚ð‘ã“ü‚·‚é
+                if( isprint( (int)c ) ){            // è¡¨ç¤ºå¯èƒ½ãªæ–‡å­—ãŒå…¥åŠ›ã•ã‚ŒãŸæ™‚
+                    s[len]=c;                       // æ–‡å­—åˆ—å¤‰æ•°sã«å…¥åŠ›æ–‡å­—ã‚’ä»£å…¥ã™ã‚‹
+                    len++;                          // æ–‡å­—é•·ã‚’ä¸€ã¤å¢—ã‚„ã™
+                    s[len]='\0';                    // æ–‡å­—åˆ—ã®çµ‚äº†ã‚’è¡¨ã™\0ã‚’ä»£å…¥ã™ã‚‹
                 }
-                if( c == '\n' || len >= 31 ){       // ‰üs‚à‚µ‚­‚Í•¶Žš’·‚ª31•¶Žš‚ÌŽž
-                    xbee_uart( dev , s );           // •Ï”s‚Ì•¶Žš‚ð‘—M
-                    xbee_uart( dev,"\r");           // Žq‹@‚É‰üs‚ð‘—M
-                    len=0;                          // •¶Žš’·‚ð0‚ÉƒŠƒZƒbƒg‚·‚é
-                    s[0]='\0';                      // •¶Žš—ñ‚Ì‰Šú‰»
-                    printf("TX-> ");                // ‘Ò‚¿Žó‚¯’†‚Ì•\Ž¦
+                if( c == '\n' || len >= 31 ){       // æ”¹è¡Œã‚‚ã—ãã¯æ–‡å­—é•·ãŒ31æ–‡å­—ã®æ™‚
+                    xbee_uart( dev , s );           // å¤‰æ•°sã®æ–‡å­—ã‚’é€ä¿¡
+                    xbee_uart( dev,"\r");           // å­æ©Ÿã«æ”¹è¡Œã‚’é€ä¿¡
+                    len=0;                          // æ–‡å­—é•·ã‚’0ã«ãƒªã‚»ãƒƒãƒˆã™ã‚‹
+                    s[0]='\0';                      // æ–‡å­—åˆ—ã®åˆæœŸåŒ–
+                    printf("TX-> ");                // å¾…ã¡å—ã‘ä¸­ã®è¡¨ç¤º
                 }
             }
 
-            /* ƒf[ƒ^ŽóM(‘Ò‚¿Žó‚¯‚ÄŽóM‚·‚é) */
-            xbee_rx_call( &xbee_result );           // XBee Wi-Fi‚©‚ç‚Ìƒf[ƒ^‚ðŽóM
-            if( xbee_result.MODE == MODE_UART){     // UARTƒVƒŠƒAƒ‹ƒf[ƒ^‚ðŽóM‚µ‚½Žž
-                printf("\n");                       // ‘Ò‚¿Žó‚¯’†•¶ŽšuTXv‚Ìs‚ð‰üs
-                printf("RX<- ");                    // ŽóM‚ðŽ¯•Ê‚·‚é‚½‚ß‚Ì•\Ž¦
-                printf("%s\n", xbee_result.DATA );  // ŽóMŒ‹‰Ê(ƒeƒLƒXƒg)‚ð•\Ž¦
-                printf("TX-> %s",s );               // •¶Žš“ü—Í—“‚Æ“ü—Í’†‚Ì•¶Žš‚Ì•\Ž¦
+            /* ãƒ‡ãƒ¼ã‚¿å—ä¿¡(å¾…ã¡å—ã‘ã¦å—ä¿¡ã™ã‚‹) */
+            xbee_rx_call( &xbee_result );           // XBee Wi-Fiã‹ã‚‰ã®ãƒ‡ãƒ¼ã‚¿ã‚’å—ä¿¡
+            if( xbee_result.MODE == MODE_UART){     // UARTã‚·ãƒªã‚¢ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’å—ä¿¡ã—ãŸæ™‚
+                printf("\n");                       // å¾…ã¡å—ã‘ä¸­æ–‡å­—ã€ŒTXã€ã®è¡Œã‚’æ”¹è¡Œ
+                printf("RX<- ");                    // å—ä¿¡ã‚’è­˜åˆ¥ã™ã‚‹ãŸã‚ã®è¡¨ç¤º
+                printf("%s\n", xbee_result.DATA );  // å—ä¿¡çµæžœ(ãƒ†ã‚­ã‚¹ãƒˆ)ã‚’è¡¨ç¤º
+                printf("TX-> %s",s );               // æ–‡å­—å…¥åŠ›æ¬„ã¨å…¥åŠ›ä¸­ã®æ–‡å­—ã®è¡¨ç¤º
             }
         }
     }
