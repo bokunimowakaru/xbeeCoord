@@ -18,7 +18,7 @@ int main(void){
     XBEE_RESULT xbee_result;                        // 受信データ(詳細)
 
     xbee_init( 0 );                                 // XBeeの初期化
-    printf("Example 69 SW_F (Any key to Exit)\n");
+    printf("Example 33 SW_F (Any key to Exit)\n");
     if( xbee_ping(dev_gpio)==00 ){
         xbee_myaddress(dev_my);                     // 自分のアドレスを設定する
         xbee_gpio_init(dev_gpio);                   // デバイスdev_gpioにIO設定を行う

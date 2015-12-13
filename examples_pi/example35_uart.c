@@ -19,7 +19,7 @@ int main(void){
     XBEE_RESULT xbee_result;                        // 受信データ(詳細)
 
     xbee_init( 0 );                                 // XBee用COMポートの初期化
-    printf("Example 70 UART (ESC key to Exit)\n");
+    printf("Example 35 UART (ESC key to Exit)\n");
     s[0]='\0';                                      // 文字列の初期化
     printf("TX-> ");                                // 待ち受け中の表示
     if( xbee_ping(dev)==00 ){
