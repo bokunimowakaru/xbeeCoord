@@ -18,7 +18,7 @@ int main(void){
     xbee_init( 0 );                                 // XBeeの初期化
     printf("Example 32 SW_R (Any key to Exit)\n");
     if( xbee_ping(dev_gpio)==00 ){
-        xbee_myaddress(dev_my);                     // 自分のアドレスを設定する
+        xbee_myaddress(dev_my);                     // Raspberry Piのアドレスを登録する
         xbee_gpio_init(dev_gpio);                   // デバイスdev_gpioにIO設定を行う
         while(1){
             xbee_rx_call( &xbee_result );           // データを受信

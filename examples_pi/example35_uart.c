@@ -23,7 +23,7 @@ int main(void){
     s[0]='\0';                                      // 文字列の初期化
     printf("TX-> ");                                // 待ち受け中の表示
     if( xbee_ping(dev)==00 ){
-        xbee_myaddress(dev_my);                     // PCのアドレスを設定する
+        xbee_myaddress(dev_my);                     // Raspberry Piのアドレスを登録する
         xbee_ratd_myaddress(dev);                   // 子機にPCのアドレスを設定する
         xbee_rat(dev,"ATAP00");                     // XBee APIを解除(UARTモードに設定)
         while(1){

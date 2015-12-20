@@ -26,7 +26,7 @@ int main(void){
     xbee_init( 0 );                             // XBee用Ethenet UDPポートの初期化
     printf("ping...\n");
     while( xbee_ping(dev) ) delay(3000);        // XBee Wi-Fiから応答があるまで待機
-    xbee_myaddress(dev_my);                     // 自分のアドレスを取得する
+    xbee_myaddress(dev_my);                     // Raspberry Piのアドレスを登録する
     xbee_ratd_myaddress(dev);                   // 子機にPCのアドレスを設定する
     xbee_gpio_config( dev, 1 , AIN );           // XBee子機のポート1をアナログ入力へ
     xbee_end_device(dev,28,0,0);                // XBee Wi-Fiモジュールを省電力へ
