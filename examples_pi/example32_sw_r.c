@@ -25,7 +25,6 @@ int main(void){
             if( xbee_result.MODE == MODE_GPIN){     // 子機XBeeのDIO入力
                 value = xbee_result.GPI.PORT.D1;    // D1ポートの値を変数valueに代入
                 printf("Value =%d\n",value);        // 変数valueの値を表示
-                xbee_gpo(dev_gpio,4,value);         // 子機XBeeのDIOポート4へ出力
             }
             if( kbhit() ) break;                    // PCのキー押下時にwhileを抜ける
         }
