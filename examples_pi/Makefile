@@ -30,12 +30,11 @@ PROGS = ./example01_rssi \
 		./example28_plg_sns \
 		./example29_bell \
 		./example30_bell_sw \
-		./example30_bell_sw_r \
-		./example66_rssi \
-		./example67_led \
-		./example68_sw_r \
-		./example69_sw_f \
-		./example70_uart \
+		./example31_led \
+		./example32_sw_r \
+		./example33_sw_f \
+		./example34_mysns \
+		./example35_uart \
 		./practice06
 
 all: $(PROGS)
