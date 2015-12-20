@@ -5205,6 +5205,7 @@ XBee子機(エンドデバイス)をスリープモードに設定する
 	}else{
 		#ifdef XBEE_WIFI
 			if(DEVICE_TYPE == XB_TYPE_WIFI20){
+				xbee_log( 5, "ERR:no support for XB_TYPE_WIFI20" , 1 );
 				return(1);
 			}		
 			data[0] = 0x01;
