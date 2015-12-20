@@ -34,21 +34,22 @@ int main(void){
         time(&timer);                           // 現在の時刻を変数timerに取得する
         time_st = localtime(&timer);            // timer値を時刻に変換してtime_stへ
 
-        if( timer >= trig ){     				// 変数trigまで時刻が進んだとき
+        if( timer >= trig ){                    // 変数trigまで時刻が進んだとき
             xbee_force(dev);                    // 状態取得指示を送信
             trig = timer + FORCE_INTERVAL;      // 次回の変数trigを設定
         }
         xbee_rx_call( &xbee_result );           // データを受信
         if( xbee_result.MODE == MODE_RESP){     // 子機XBeeからのIOデータの受信時
-            value = (float)xbee_result.ADCIN[1] * 7.4;  		// 照度をvalueに代入
+            value = (float)xbee_result.ADCIN[1] * 7.4;          // 照度をvalueに代入
             strftime(s,S_MAX,"%Y/%m/%d, %H:%M:%S", time_st);    // 時刻→文字列変換
             sprintf(s,"%s, %.1f", s , value );                  // 測定結果をsに追加
             printf("%s Lux\n" , s );                            // 文字列sを表示
         }
         if( kbhit() ){                          // キーが押された時
-            if( getchar()=='q' ) break;			// 押されたキーがqだった場合に終了
+            if( getchar()=='q' ) break;         // 押されたキーがqだった場合に終了
         }
     }
+    xbee_end_device(dev,0,0,0);                 // デバイスdev_gpioの省電力を解除
     printf("done\n");
     return(0);
 }
