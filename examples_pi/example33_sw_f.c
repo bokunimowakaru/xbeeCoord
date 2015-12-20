@@ -6,7 +6,7 @@ XBee Wi-Fiのスイッチ状態をリモートで取得しつつスイッチ変�
 
 #include "../libs/xbee_wifi.c"                      // XBeeライブラリのインポート
 #include "../libs/kbhit.c"
-#define FORCE_INTERVAL  200                         // データ要求間隔(およそ30msの倍数)
+#define FORCE_INTERVAL  1000                        // データ要求間隔(およそ10msの倍数)
 
 // お手持ちのXBeeモジュールのIPアドレスに変更してください(区切りはカンマ)
 byte dev_gpio[] = {192,168,0,135};                  // 子機XBee
