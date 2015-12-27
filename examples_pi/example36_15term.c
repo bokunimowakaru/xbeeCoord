@@ -6,10 +6,10 @@ Ichigo Term for Raspberry Pi
 #include <stdio.h>                                  // 標準入出力用
 #include <fcntl.h>                                  // シリアル通信用(Fd制御)
 #include <termios.h>                                // シリアル通信用(端末IF)
+#include <unistd.h>                                 // read,usleep用
 #include <string.h>                                 // strncmp,bzero用
 #include <sys/time.h>                               // fd_set,select用
 #include <ctype.h>                                  // isprint,isdigit用
-#include <unistd.h>                                 // usleep用
 #include "../libs/kbhit.c"
 static int ComFd;                                   // シリアル用ファイルディスクリプタ
 static struct termios ComTio_Bk;                    // 現シリアル端末設定保持用の構造体
@@ -36,6 +36,7 @@ int open_serial_port(){
             cfsetospeed(&ComTio, speed);            // シリアル出力の通信速度の設定
             ComTio.c_cc[VMIN] = 0;                  // リード待ち容量0バイト(待たない)
             ComTio.c_cc[VTIME] = 0;                 // リード待ち時間0.0秒(待たない)
+            tcflush(ComFd,TCIFLUSH);                // バッファのクリア
             tcsetattr(ComFd, TCSANOW, &ComTio);     // シリアル端末に設定
             break;                                  // forループを抜ける
         }
@@ -72,7 +73,7 @@ int main(){
         return -1;
     }
     printf("CONNECTED\nHit '---' to exit.\nTX-> ");
-    write(ComFd, "\x1b\x10", 2 );                   // IchigoJamの画面制御
+    write(ComFd, "\x1b\x10 CLS\n", 7);              // IchigoJamの画面制御
     while(1){
         if( kbhit() ){
             c=getchar();                            // キーボードからの文字入力
