@@ -34,11 +34,7 @@ PROGS = ./example01_rssi \
 		./example32_sw_r \
 		./example33_sw_f \
 		./example34_mysns \
-		./example35_uart \
-		./example36_15term \
-		./example38_15bt_led \
-		./example39_15bt_sens \
-		./example40_15zb_sens
+		./example35_uart
 
 all: $(PROGS)
 		# ========================================
