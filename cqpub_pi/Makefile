@@ -38,7 +38,8 @@ PROGS = ./example01_rssi \
 		./example36_15term \
 		./example38_15bt_led \
 		./example39_15bt_sens \
-		./example40_15zb_sens
+		./example40_15bt_car \
+		./example41_15zb_sens
 
 all: $(PROGS)
 		# ========================================
