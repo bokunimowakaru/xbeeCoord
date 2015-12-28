@@ -4,6 +4,7 @@ Ichigo Term for Raspberry Pi
                                                        Copyright (c) 2015 Wataru KUNINO
 ***************************************************************************************/
 #include <stdio.h>                                  // 標準入出力用
+#include <stdlib.h>                                 // system関数用
 #include <fcntl.h>                                  // シリアル通信用(Fd制御)
 #include <termios.h>                                // シリアル通信用(端末IF)
 #include <string.h>                                 // strncmp,bzero用
@@ -18,7 +19,7 @@ int open_serial_port(){
     speed_t speed = B115200;                        // 通信速度の設定
     char modem_dev[15]="/dev/ttyUSBx";              // シリアルポートの初期値
     int i;
-    for(i=12;i>=-1;i--){
+    for(i=12;i>=10;i--){	// i>=10に修正(rfcommのみに使用)
         if(i>=10) snprintf(&modem_dev[5],8,"rfcomm%1d",i-10);   // ポート探索(rfcomm0-2)
         else if(i>=0) snprintf(&modem_dev[5],8,"ttyUSB%1d",i);  // ポート探索(USB0～9)
         else snprintf(&modem_dev[5],8,"ttyAMA0");   // 拡張IOのUART端子に設定
@@ -43,6 +44,45 @@ int open_serial_port(){
     return ComFd;
 }
 
+int _open_rfcomm_hex_check(char c){
+	if(   c<'0' ||
+		 (c>'9' && c<'A') ||
+		 (c>'F' && c<'a') ||
+		  c>'f' ) return 1;
+	return 0;
+}
+
+int open_rfcomm(char *mac){
+/*
+	Bluetooth RFCOMMプロファイル接続を行います。
+	macは文字列が入ります。以下のような18バイト17文字の構成としてください。
+
+	char mac[] = "xx:xx:xx:xx:xx:xx";	// xxは2桁の16進数
+
+	※セキュリティ対策のため、書式が異なると実行されません。
+*/
+	char s[64];
+	int i=0;
+	
+	if( strlen(mac) == 17){							// セキュリティチェック
+		sprintf(s,"sudo /usr/bin/rfcomm connect /dev/rfcomm %s &",mac);
+		for(i=2;i<17;i+=3) mac[i]=':';				// セキュリティ対策
+		for(i=0;i<17;i+=3){
+			if(_open_rfcomm_hex_check(mac[i])||_open_rfcomm_hex_check(mac[i+1])) break;
+		}											// セキュリティチェック(16進数)
+	}
+	if(i==18){
+		printf("[%s]\n",s);
+		system(s);
+		sleep(11);
+		i=open_serial_port();
+	}else{
+		fprintf(stderr,"Invalid Mac Address ERROR\n");
+		i=0;
+	}
+	return i;
+}
+
 char read_serial_port(void){
     char c='\0';                                    // シリアル受信した文字の代入用
     fd_set ComReadFds;                              // select命令用構造体ComReadFdを定義
@@ -58,4 +98,31 @@ char read_serial_port(void){
 int close_serial_port(void){
     tcsetattr(ComFd, TCSANOW, &ComTio_Bk);
     return close(ComFd);
+}
+
+int close_rfcomm(){
+/*
+	open_rfcommで開いたプロセスをkillするモジュールです。
+	戻り値はkillを実行した時のプロセスIDです。
+	killが実行できなかった場合は0を応答します。
+*/
+	FILE *fp;
+	char s[]="ps aux|grep 'sudo /usr/bin/rfcomm'|grep -v grep|awk '{print $2;}'";
+	int id;
+	
+	close_serial_port();
+	fp=popen(s,"r");
+	s[0]='\0';
+	if(fp){
+		if( feof(fp)==0 ) fgets(s,sizeof(s),fp);	// 終端では無い時にfpから値を読む
+		fclose(fp);
+	}
+	
+	id=atoi(s);										// atoiはセキュリティ対策と改行対策
+	if(id>0){
+		sprintf(s,"sudo kill %d",id);
+		printf("[%s]\n",s);
+		system(s);
+	}
+	return id;
 }

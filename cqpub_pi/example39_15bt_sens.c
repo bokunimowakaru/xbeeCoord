@@ -1,5 +1,5 @@
 /**************************************************************************************
-Ichigo Term for Raspberry Pi
+Bluetooth Sensor powered by IchigoJam 用 コントローラ (Raspbery Pi)
 
                                                        Copyright (c) 2015 Wataru KUNINO
 ***************************************************************************************/
@@ -10,6 +10,7 @@ Ichigo Term for Raspberry Pi
 #define S_MAX           256                         // 文字列変数sの最大容量(255文字)
 
 int main(){
+    char mac[]="00:06:66:61:E6:81";                 // 子機のMACアドレス
     time_t timer;                                   // タイマー変数の定義
     time_t trig=0;                                  // 取得タイミング保持用
     struct tm *time_st;                             // タイマーによる時刻格納用の構造体
@@ -18,8 +19,8 @@ int main(){
     int len=0;                                      // 受信文字長
 
     printf("example 39 Bluetooth Sensor for IchigoJam\n");
-    if(open_serial_port() <= 0){
-        printf("UART OPEN ERROR\n");
+    if(open_rfcomm(mac) <= 0){                      // Bluetooth接続の開始
+        printf("Bluetooth Open ERROR\n");
         return -1;
     }
     printf("CONNECTED\nHit any key to exit.\n");
@@ -57,6 +58,6 @@ int main(){
         if( kbhit() ) break;                        // キーボードからの入力があれば終了
     }
     printf("\nDONE\n");
-    close_serial_port();
+    close_rfcomm();
     return 0;
 }

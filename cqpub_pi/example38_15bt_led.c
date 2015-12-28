@@ -1,5 +1,5 @@
 /**************************************************************************************
-Ichigo Term for Raspberry Pi
+Bluetooth LED powered by IchigoJam 用 コントローラ (Raspbery Pi)
 
                                                        Copyright (c) 2015 Wataru KUNINO
 ***************************************************************************************/
@@ -7,37 +7,46 @@ Ichigo Term for Raspberry Pi
 #include "../libs/kbhit.c"
 
 int main(){
+    char mac[]="00:06:66:xx:xx:xx";                 // 子機のMACアドレス
     char c;                                         // キー入力用の文字変数c
     int loop=1;                                     // 変数loop(0:ループ終了)
     
     printf("example 38 Bluetooth LED for IchigoJam\n");
-    if(open_serial_port() <= 0){
-        printf("UART OPEN ERROR\n");
+    if(open_rfcomm(mac) <= 0){                      // Bluetooth接続の開始
+        printf("Bluetooth Open ERROR\n");
         return -1;
     }
-    printf("CONNECTED\n'0':LED OFF, '1':LED ON, 'q':EXIT\n");
+    printf("CONNECTED\n[0]:LED OFF, [1]-[4]:LED ON, [q]:EXIT\n");
     write(ComFd, "\x1b\x10 CLS\n", 7);              // IchigoJamの画面制御
     while(loop){
         while( !kbhit() );                          // キーボードから入力があるまで待つ
         c=getchar();                                // 入力された文字を変数cへ代入
+        printf("-> LED [%c]\n",c);                  // 「LED 0」を表示
         switch(c){
             case '0':                               // 「0」が入力された時
-                printf("LED 0\n");                  // 「LED 0」を表示
-                write(ComFd, "LED 0\n", 6);         // IchigoJamへLED消灯命令を送信する
+                write(ComFd, "OUT 0\n", 6);         // IchigoJamへ全LED消灯命令を送信
                 break;
             case '1':                               // 「1」が入力された時
-                printf("LED 1\n");                  // 「LED 1」を表示
-                write(ComFd, "LED 1\n", 6);         // IchigoJamへLED点灯命令を送信する
+                write(ComFd, "OUT 1+64\n", 9);      // IchigoJamへLED点灯命令を送信する
                 break;
-            case 'q':                               // 「q」が入力された時
-                printf("EXIT\n");                   // 「EXIT」を表示
+            case '2':                               // 「2」が入力された時
+                write(ComFd, "OUT 3+64\n", 9);      // IchigoJamへLED点灯命令を送信する
+                break;
+            case '3':                               // 「3」が入力された時
+                write(ComFd, "OUT 7+64\n", 9);      // IchigoJamへLED点灯命令を送信する
+                break;
+            case '4':                               // 「4」が入力された時
+                write(ComFd, "OUT 15+64\n",10);     // IchigoJamへLED点灯命令を送信する
+                break;
+            case 'q': case 'Q':                     // 「q」が入力された時
+                printf("-> EXIT\n");                // 「EXIT」を表示
                 loop=0;                             // whileを抜けるためにloopを0に設定
                 break;
         }
-        usleep(100000);                             // 100msの(IchigoJam処理)待ち時間
+        usleep(200000);                             // 200msの(IchigoJam処理)待ち時間
         write(ComFd, "BEEP\n", 5);                  // BEEP音の送信
     }
     printf("\nDONE\n");
-    close_serial_port();
+    close_rfcomm();
     return 0;
 }
