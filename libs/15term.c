@@ -62,7 +62,7 @@ int open_rfcomm(char *mac){
 	※セキュリティ対策のため、書式が異なると実行されません。
 */
 	char s[64];
-	int i=0;
+	int i,ret=0;
 	
 	if( strlen(mac) == 17){							// セキュリティチェック
 		sprintf(s,"sudo /usr/bin/rfcomm connect /dev/rfcomm %s &",mac);
@@ -74,13 +74,14 @@ int open_rfcomm(char *mac){
 	if(i==18){
 		printf("[%s]\n",s);
 		system(s);
-		sleep(11);
-		i=open_serial_port();
-	}else{
-		fprintf(stderr,"Invalid Mac Address ERROR\n");
-		i=0;
-	}
-	return i;
+		for(i=0;i<20;i++){
+			sleep(1);
+		//	printf("( %d sec.)\n",i);
+			ret=open_serial_port();
+			if(ret>0) break;
+		}
+	}else fprintf(stderr,"Invalid Mac Address ERROR\n");
+	return ret;
 }
 
 char read_serial_port(void){
@@ -107,7 +108,7 @@ int close_rfcomm(){
 	killが実行できなかった場合は0を応答します。
 */
 	FILE *fp;
-	char s[]="ps aux|grep 'sudo /usr/bin/rfcomm'|grep -v grep|awk '{print $2;}'";
+	char s[]="pidof /usr/bin/rfcomm |awk '{print $1;}'";
 	int id;
 	
 	close_serial_port();
