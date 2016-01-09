@@ -8,6 +8,7 @@ xx:xx:xx:xx:xx:xx
                                                        Copyright (c) 2016 Wataru KUNINO
                                                  http://www.geocities.jp/bokunimowakaru/
 ***************************************************************************************/
+#include <string.h>                                             // strnlen命令に使用
 #include <ctype.h>                                              // isxdigit用
 
 int checkMac(char *mac){
@@ -21,6 +22,7 @@ int checkMac(char *mac){
             if( mac[i] != ':' ) break;                          // 「:」であることを確認
         }else{                                                  // その他の文字が
             if(isxdigit(mac[i])==0) break;                      // 16進数である事を確認
+            if(mac[i]>='a') mac[i] -= 'a'-'A';					// 小文字の時は大文字に
         }
     }
     if(i!=17){                                                  // for中にBreakした時

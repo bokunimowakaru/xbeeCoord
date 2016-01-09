@@ -5,7 +5,6 @@ BLEタグ内へ属性データを書き込む
 ***************************************************************************************/
 #include <stdio.h>                                              // 標準入出力ライブラリ
 #include <stdlib.h>                                             // system命令に使用
-#include <string.h>                                             // strncmp命令に使用
 #include <time.h>                                               // time命令time_tに使用
 #include "../libs/a2hex.c"                                      // 16進数2桁を数値に変換
 #include "../libs/checkMac.c"                                   // MACアドレスの書式確認
@@ -41,15 +40,15 @@ int main(int argc,char **argv){
             }
         }
         time(&timer);                                                   // 現在時刻取得
-        if( timer >= trig ){                                            // 
+        if( timer >= trig ){                                            // 定期時刻時
             sprintf(s,"sudo gatttool -b %s --char-read -a 0x0003",argv[1]); // 命令作成
             fp = popen(s,"r");                                          // コマンド実行
             if( fp ){                                                   // 実行成功時
-                fgets(s,256,fp);                                        // データ取得
+                i=(int)fgets(s,256,fp);                                 // データ取得
                 pclose(fp);                                             // popenを閉じる
-                if(strncmp(s,"sudo",4)==0){                             // 無応答時
-                    return -1;                                          // 終了
-                }else{
+                if(i==0) return -1;                                     // 無応答時終了
+                else{
+                    printf("> ");                                       // 受信マーク
                     for(i=33;i<65;i+=3){                                // 34文字目から
                         c=a2hex(&s[i]);                                 // 受信値をcへ
                         if( isprint(c) ) putchar(c);                    // 文字表示

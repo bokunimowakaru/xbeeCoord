@@ -22,7 +22,7 @@ int main(){
         fgets(s,256,fp);                                        // hcidumpからデータ入力
         if( strncmp(&s[4],"LE Advertising Report",21)==0 ){     // ビーコン判定
             printf("Found BLE Beacon\n");                       // ビーコン受信表示
-            for(i=0;i<7;i++){
+            for(i=0;i<6;i++){
                 fgets(s,256,fp);                                // 受信データの取得
                 printf("%s",s);                                 // 受信データの表示
             }
