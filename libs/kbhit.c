@@ -8,12 +8,12 @@ Linux環境でのC言語開発で、Windowsでいうところのkbhit()を再現したコードです。
 ・・・いずれ使うかもしれないので、メモがてら置いておきます＾＾；）
 
 http://tricky-code.net/mine/c/mc06linuxkbhit.php
+*/
 
 #include <stdio.h>
 #include <termios.h>
 #include <unistd.h>
 #include <fcntl.h>
-*/
 
 int kbhit(void){
     struct termios oldt, newt;

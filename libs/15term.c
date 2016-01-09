@@ -10,6 +10,7 @@ Ichigo Term for Raspberry Pi
 #include <string.h>                                 // strncmp,bzero用
 #include <sys/time.h>                               // fd_set,select用
 #include <unistd.h>                                 // read,usleep用
+#include <ctype.h>                                  // isxdigit用
 
 static int ComFd;                                   // シリアル用ファイルディスクリプタ
 static struct termios ComTio_Bk;                    // 現シリアル端末設定保持用の構造体
@@ -44,14 +45,6 @@ int open_serial_port(){
     return ComFd;
 }
 
-int _open_rfcomm_hex_check(char c){
-	if(   c<'0' ||
-		 (c>'9' && c<'A') ||
-		 (c>'F' && c<'a') ||
-		  c>'f' ) return 1;
-	return 0;
-}
-
 int open_rfcomm(char *mac){
 /*
 	Bluetooth RFCOMMプロファイル接続を行います。
@@ -62,13 +55,13 @@ int open_rfcomm(char *mac){
 	※セキュリティ対策のため、書式が異なると実行されません。
 */
 	char s[64];
-	int i,ret=0;
+	int i=0,ret=0;
 	
 	if( strlen(mac) == 17){							// セキュリティチェック
 		sprintf(s,"sudo /usr/bin/rfcomm connect /dev/rfcomm %s &",mac);
 		for(i=2;i<17;i+=3) mac[i]=':';				// セキュリティ対策
 		for(i=0;i<17;i+=3){
-			if(_open_rfcomm_hex_check(mac[i])||_open_rfcomm_hex_check(mac[i+1])) break;
+			if(isxdigit(mac[i])==0 || isxdigit(mac[i+1])==0 ) break;
 		}											// セキュリティチェック(16進数)
 	}
 	if(i==18){
@@ -80,7 +73,7 @@ int open_rfcomm(char *mac){
 			ret=open_serial_port();
 			if(ret>0) break;
 		}
-	}else fprintf(stderr,"Invalid Mac Address ERROR\n");
+	}else fprintf(stderr,"Invalid Mac Address ERROR (i=%d,%c%c)\n",i,mac[i],mac[i+1]);
 	return ret;
 }
 
