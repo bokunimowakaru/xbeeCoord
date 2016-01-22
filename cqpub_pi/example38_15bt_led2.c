@@ -24,7 +24,7 @@ int main(int argc,char **argv){
     while(loop){
         while( !kbhit() );                          // キーボードから入力があるまで待つ
         c=getchar();                                // 入力された文字を変数cへ代入
-        printf("-> LED [%c]\n",c);                  // 「LED 0」を表示
+        printf("-> LED [%c]\n",c);                  // 「LED [数字]」を表示
         switch(c){
             case '0':                               // 「0」が入力された時
                 write(ComFd, "OUT 0\n", 6);         // IchigoJamへ全LED消灯命令を送信

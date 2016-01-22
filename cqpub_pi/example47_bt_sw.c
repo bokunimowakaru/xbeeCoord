@@ -4,54 +4,39 @@ Bluetoothモジュール RN-42XVPのGPIOポート3と7に接続したスイッ�
                                                 Copyright (c) 2013-2016 Wataru KUNINO
                                                 http://www.geocities.jp/bokunimowakaru/
 ***************************************************************************************/
-#include <Wire.h>
-#include <Adafruit_MCP23017.h>
-#include <Adafruit_RGBLCDShield.h>
-Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
+#include "../libs/bt_rn42.c"
+#include "../libs/kbhit.c"
+char rx_data[RX_MAX];                               // 受信データの格納用の文字列変数
 
-/* DF ROBOT 製液晶を使用する場合は上記を下記に入れ替えてください。
-    #include <LiquidCrystalDFR.h>
-    LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
-*/
-
-#define RX_MAX  17                              // 受信データ最大値
-char rx_data[RX_MAX];                           // 受信データの格納用の文字列変数
-
-void setup(){
-    bt_init();                                  // bt_rn42.ino内に記述した初期化処理
-}
-
-void loop(){
-    unsigned char in;                           // GPIO入力値の計算用
+int main(int argc,char **argv){
+    int in,i;
     
-    /* 接続処理 */
-    lcd_cls(1);
-    lcd.print("Calling ");
-    if( !bt_cmd_mode('#') ){                    // ローカルコマンドモードへの移行を実行
-        bt_error("FAILED to open");
+    if(argc != 2 || strlen(argv[1]) != 17){
+        fprintf(stderr,"usage: %s xx:xx:xx:xx:xx:xx\n",argv[0]);
+        return -1;
     }
-    bt_repeat_cmd("C","%CONNECT",8);            // 接続するまで接続コマンドを繰り返す
-    lcd.print("DONE");
-    if( bt_cmd_mode('$') ){                     // リモートコマンドモードへの移行
-        /* GPIOの読み取り */
+    printf("example 47 Bluetooth SW from RN-42\n");
+    bt_init(argv[1]);                           // Bluetooth RN-42接続の開始
+    printf("CONNECTED\nHit any key to EXIT\n");
+    while( bt_cmd_mode('$') ){                  // リモートコマンドモードへの移行
     //  bt_cmd("S@,8800");                      // GPIOポート3と7を入力に設定(初期値)
         bt_cmd("G&");                           // GPIOポートの読み取り
-        lcd_cls(0);
-        lcd.print("IN3=");
-        for(int i=0;i<2;i++){
-            in = (unsigned char)rx_data[1-i];   // 文字コードを変数inに代入
-            if( in >= '0' && in <= '9' ) in -= (unsigned char)'0';        // 数値へ変換
-            else if( in >= 'A' && in <= 'F' ) in -= (unsigned char)'A'-10;// 数値へ変換
+        for(i=0;i<2;i++){
+            in = rx_data[1-i];                  // 文字コードを変数inに代入
+            if( in >= '0' && in <= '9' ) in -= '0';        // 0～9なら数値へ変換
+            else if( in >= 'A' && in <= 'F' ) in -= 'A'-10;// A～Fなら16進数値へ変換
             else in = 0;
             in = (in>>3) & 0x01;                // 変数inに入力値を代入。bitRead(in,3)
-            lcd.print(in,BIN);
-            if(i==0) lcd.print(", IN7=");
+            if(i==0){
+                printf("IN3=%d, ",in);
+            }else{
+                printf("IN7=%d\n",in);
+            }
         }
+        bt_cmd("---");                          // コマンドモードの解除
+        sleep(5);
+        if( kbhit() ) break;
     }
-    
-    /* 切断処理 */
-    bt_cmd("K,1");                              // 通信の切断処理
-    lcd_cls(1);
-    lcd.print("Disconnected");
-    delay(5000);                                // 待ち時間
+    bt_close();                                 // 切断処理
+    return 0;
 }

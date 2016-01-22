@@ -17,14 +17,14 @@ int main(int argc,char **argv){
         return -1;
     }
     printf("example 46 Bluetooth LED for RN-42\n");
-    bt_init(argv[1]);                               // Bluetooth RN-42接続の開始
-    printf("CONNECTED\n[0]:LED OFF, [1]-[2]:LED ON, [q]:EXIT\n");
+    printf("[0]:LED OFF, [1]-[2]:LED ON, [q]:EXIT\n");
 
     while(1){
         while( !kbhit() );                          // キーボードから入力があるまで待つ
         c=getchar();                                // 入力された文字を変数cへ代入
         printf("-> LED [%c]\n",c);                  // 「LED [数字]」を表示
         if( c=='q' ) break;                         // 「Q」キーが押された場合に終了
+        bt_init(argv[1]);                               // Bluetooth RN-42接続の開始
         if( bt_cmd_mode('$') ){                     // リモートコマンドモードへの移行
             switch(c){
                 case '0':                           // 「0」が入力された時
@@ -40,7 +40,7 @@ int main(int argc,char **argv){
             bt_cmd("---");                          // コマンドモードの解除
             printf("Done\n");
         }
+        bt_close();                                 // 切断処理
     }
-    bt_close();                                     // 切断処理
     return 0;
 }

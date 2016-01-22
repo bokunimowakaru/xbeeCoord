@@ -46,7 +46,7 @@ int bt_rx(void){
 int bt_cmd(char *cmd){
 	bt_rx_clear();								// シリアルの受信バッファを消去する
 	write(ComFd, cmd, strlen(cmd) );
-	if(strcmp(cmd,"---")) write(ComFd, "\n", 1 );
+	if(strcmp(cmd,"$$$")) write(ComFd, "\n", 1 );
 	return(bt_rx());							// 送信結果の受信
 }
 
@@ -161,14 +161,8 @@ void bt_init(char *mac){
         /* bt_errorは戻ってこない */
         exit(1);
     }
+}
 
-	/* リモート機の設定 */
-	printf("RemoteCnf \n");
-    if( !bt_cmd_mode('$') ){					// ローカルコマンドモードへの移行
-    	bt_error("RemoteCnf Failed");
-	}
-	bt_cmd("ST,255");							// コマンドモードの時間制限を解除する
-	bt_cmd("R,1");								// 再起動
-    printf("DONE\n");
-	sleep(1);									// 再起動待ち
+void bt_close(void){
+	close_rfcomm();
 }
