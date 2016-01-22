@@ -43,7 +43,10 @@ PROGS = ./example01_rssi \
 		./example42_ble_scan \
 		./example43_ble_read \
 		./example44_ble_write \
-		./example45_ble_prev
+		./example45_ble_prev \
+		./example46_bt_led \
+		./example47_bt_sw \
+		./example48_bt_sns
 
 all: $(PROGS)
 		# ========================================
