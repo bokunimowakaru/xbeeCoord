@@ -5,48 +5,46 @@ Ver 1.1 for Raspberry Pi 2016/01/22
                                                 Copyright (c) 2013-2016 Wataru KUNINO
                                                 http://www.geocities.jp/bokunimowakaru/
 ***************************************************************************************/
-#include "../libs/15term.c"
-#define RX_MAX  64
+
+#include "../libs/15term.c"                     // RFCOMM接続を行うライブラリの組み込み
+#define RX_MAX  64                              // 受信データの最大サイズ
 extern char rx_data[RX_MAX];                    // 受信データの格納用の文字列変数
 
 /* シリアルの受信バッファを消去する関数 */
 void bt_rx_clear(){
     while( read_serial_port() ){                // 受信データが残っている場合
-        usleep(2000);
-    }   
+        usleep(2000);                           // 受信中を考慮し、2ms待ち時間を付与
+    }
 }
 
 /* コマンドの受信を行う関数 */
 int bt_rx(void){
-    int i,loop=50;
+    int i,loop=50;                              // 変数iは受信したデータのサイズ
     
-    for(i=0;i<(RX_MAX-1);i++) rx_data[i]='\0';  // 受信データの初期化
-    i=0;                                        // 受信データの数
-    while(loop>0){
+    for(i=0;i<(RX_MAX-1);i++) rx_data[i]='\0';  // 変数の初期化 memset(rx_data,0,RX_MAX)
+    i=0;                                        // 受信済データの数の初期化
+    while(loop>0){                              // 50回、くりかえす。
         loop--;
-        rx_data[0] = read_serial_port();
-        if( rx_data[0] ){                       // 何らかの応答があった場合
-            for(i=1;i<(RX_MAX-1);i++){
+        rx_data[0] = read_serial_port();        // 受信データを読取り、変数rx_data[0]へ
+        if( rx_data[0] ){                       // 何らかの受信データ(応答)があった場合
+            for(i=1;i<(RX_MAX-2);i++){          // 受信データの変数の数だけ繰り返す
                 rx_data[i]=read_serial_port();  // 受信データを保存する
-                if( rx_data[i] ){
-                    usleep(2000);
-                }else{
-                    break;
-                }
+                if( rx_data[i]==0 ) break;      // 受信データ無しの時にforループを抜ける
+                usleep(2000);                   // 待ち時間を付与
             }
             bt_rx_clear();                      // シリアルの受信バッファを消去する
-            loop=0;
+            loop=0;                             // whileループを抜けるためにloop値を0に
         }else usleep(10000);                    // 応答待ち
     }
-    return(i);
+    return(i);                                  // 受信したデータの大きさを戻り値にする
 }
 
 /* コマンド(cmd)の送受信を行う関数 */
 int bt_cmd(char *cmd){
     bt_rx_clear();                              // シリアルの受信バッファを消去する
-    write(ComFd, cmd, strlen(cmd) );
-    if(strcmp(cmd,"$$$")) write(ComFd, "\n", 1 );
-    return(bt_rx());                            // 送信結果の受信
+    write(ComFd, cmd, strlen(cmd) );            // 文字列変数cmdのデータを送信する
+    if(strcmp(cmd,"$$$")) write(ComFd,"\n",1);  // $$$以外の時は改行コードを付与する
+    return(bt_rx());                            // 送信後のRN-42の応答値(結果)を受信する
 }
 
 /* コマンドモード(mode)に入るための送受信を行う関数 */
@@ -56,19 +54,19 @@ int bt_cmd_mode(char mode){
     if( bt_cmd("GK") > 0 ){                     // コマンドに応答があった場合で、かつ、
         if( rx_data[0]=='1') bt_cmd("K,");      // ネットワーク接続されている場合は切断
         else bt_cmd("---");                     // 接続していない時はコマンドモード解除
-        sleep(1);
+        sleep(1);                               // (RN-42が応答するまでの)1秒の待ち時間
     }
     bt_rx_clear();                              // シリアルの受信バッファを消去する
-    for(i=0;i<3;i++) cmd[i]=mode;
-    cmd[3]='\0';
+    for(i=0;i<3;i++) cmd[i]=mode;               // コマンドモードに入る命令「$$$」を作成
+    cmd[3]='\0';                                // 文字列の終端(念のための代入)
     write(ComFd, cmd, 3 );                      // コマンドモードに入る命令を実行
-    i = bt_rx();
+    i = bt_rx();                                // 結果を受信(正常なら「CMD」が返る)
     if( i>=5 ){                                 // 何らかの応答があった場合
         if( rx_data[i-5]=='C' && rx_data[i-4]=='M' && rx_data[i-3]=='D'){
-            return(1);                          // 成功
+            return(1);                          // 成功（CMDの応答があった時）
         }
     }
-    return(0);                                  // 失敗
+    return(0);                                  // 失敗（CMDの応答が無かった時）
 }
 
 /* コマンド(cmd)を期待の応答(res)が得られるまで永続的に発行し続ける関数 */
@@ -111,8 +109,8 @@ void bt_error(char *err){
     exit(-1);
 }
 
+/* ローカルMaster機の設定用 */
 void bt_init_local(void){
-    /* ローカルMaster機の設定 */
     printf("Config BT \n"); 
     if( !bt_cmd_mode('$') ){                    // ローカルコマンドモードへの移行を実行
         bt_error("Config FAILED");
@@ -153,15 +151,16 @@ void bt_init_local(void){
     sleep(1);                                   // 再起動待ち
 }
 
+/* リモートSlave機との接続 */
 void bt_init(char *mac){
     printf("Bluetooth Remote\n");               // タイトル文字を表示
-    if(open_rfcomm(mac) <= 0){                  // Bluetooth接続の開始
-        bt_error("Bluetooth Open ERROR");
-        /* bt_errorは戻ってこない */
-        exit(1);
+    if(open_rfcomm(mac) <= 0){                  // Bluetooth SPP RFCOMM 接続の開始
+        bt_error("Bluetooth Open ERROR");       // エラー表示後に異常終了
+        exit(1);                                // 終了の明示(既にbt_errorで終了処理済)
     }
 }
 
+/* RFCOMM通信の切断処理 */
 void bt_close(void){
-    close_rfcomm();
+    close_rfcomm();                             // Bluetooth SPP RFCOMM 通信の切断処理
 }

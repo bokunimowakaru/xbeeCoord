@@ -1,6 +1,5 @@
 /***************************************************************************************
 Bluetoothモジュール RN-42XVPのGPIOを制御してGPIOポート9と10に接続したLEDを点滅します。
-リモートで使用するための各種設定とペアリングも行います。
 
                                                 Copyright (c) 2013-2016 Wataru KUNINO
                                                 http://www.geocities.jp/bokunimowakaru/
