@@ -37,6 +37,7 @@ PROGS = ./example01_rssi \
 		./example35_uart \
 		./example36_15term \
 		./example38_15bt_led \
+		./example38_15bt_led2 \
 		./example39_15bt_sens \
 		./example40_15bt_car \
 		./example41_15zb_sens \
@@ -45,6 +46,7 @@ PROGS = ./example01_rssi \
 		./example44_ble_write \
 		./example45_ble_prev \
 		./example46_bt_led \
+		./example46_bt_led2 \
 		./example47_bt_sw \
 		./example48_bt_sns
 
