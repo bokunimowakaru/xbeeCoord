@@ -23,7 +23,7 @@ int main(int argc,char **argv){
         c=getchar();                                // 入力された文字を変数cへ代入
         printf("-> LED [%c]\n",c);                  // 「LED [数字]」を表示
         if( c=='q' ) break;                         // 「Q」キーが押された場合に終了
-        bt_init(argv[1]);                               // Bluetooth RN-42接続の開始
+        bt_init(argv[1]);                           // Bluetooth RN-42接続の開始
         if( bt_cmd_mode('$') ){                     // リモートコマンドモードへの移行
             switch(c){
                 case '0':                           // 「0」が入力された時

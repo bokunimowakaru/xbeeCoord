@@ -16,7 +16,7 @@ int main(int argc,char **argv){
         return -1;
     }
     printf("example 46 Bluetooth LED for RN-42\n");
-    bt_init(argv[1]);                               // Bluetooth RN-42接続の開始
+    if( bt_init(argv[1]) ) return -1;               // Bluetooth RN-42接続の開始
     printf("CONNECTED\n[0]:LED OFF, [1]-[2]:LED ON, [q]:EXIT\n");
 
     while(1){

@@ -17,7 +17,7 @@ int main(int argc,char **argv){
         return -1;
     }
     printf("example 48 Bluetooth RN-42 Sensor\n");
-    bt_init(argv[1]);                           // Bluetooth RN-42接続の開始
+    if( bt_init(argv[1]) ) return -1;           // Bluetooth RN-42接続の開始
     printf("CONNECTED\nHit any key to EXIT\n");
     while( bt_cmd_mode('$') ){                  // リモートコマンドモードへの移行
         for(j=0;j<3;j++){                       // 3回の読み取りを実行

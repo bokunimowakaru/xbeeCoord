@@ -7,7 +7,7 @@ Bluetoothモジュール RN-42XVPを搭載したArduino子機に室温と外気�
 #include "../libs/bt_rn42.c"
 #include "../libs/kbhit.c"
 #include <time.h>                                   // time,localtime用
-#define FORCE_INTERVAL  60                          // データ要求間隔(秒)
+#define FORCE_INTERVAL  3600                        // データ要求間隔(秒)
 char rx_data[RX_MAX];                               // 受信データの格納用の文字列変数
 
 int main(int argc,char **argv){
@@ -31,9 +31,14 @@ int main(int argc,char **argv){
     while(1){
         time(&timer);                               // 現在の時刻を変数timerに取得する
         time_st = localtime(&timer);                // timer値を時刻に変換してtime_stへ
-        if( timer >= trig ){                        // 変数trigまで時刻が進んだとき
+        if( timer%10 == 9 || trig ==0 ){            // 10秒毎、または Trigが0の時
             len = bt_cmd("\x1b");                   // Arduinoへ室温を問い合わせる
-            if(len) temp[0]=atoi(rx_data);
+            if(len) temp[0]=atoi(rx_data);          // 受信した室温をtemp[0]に保持する
+            strftime(s,17,"%H:%M",time_st);         // 文字列変数sに時刻を代入
+            sprintf(s,"%s %d / %d",s,temp[1],temp[2]);  // 文字列変数sに温度を追加
+            bt_cmd(s);                              // Arduinoへ送信
+        }
+        if( timer >= trig ){                        // 変数trigまで時刻が進んだとき
             fp=popen("curl -s rss.weather.yahoo.co.jp/rss/days/6200.xml|cut -d'<' -f17|cut -d'>' -f2","r");
             if(fp){
                 while( !feof(fp) ) fgets(s,256,fp);
@@ -43,9 +48,6 @@ int main(int argc,char **argv){
                 p=strchr(s,'/');
                 if(strlen(p)>0) temp[2]=atoi(&p[1]);
             }
-            strftime(s,17,"%H:%M",time_st);         // 文字列変数sに時刻を代入
-            sprintf(s,"%s %d / %d",s,temp[1],temp[2]);  // 文字列変数sに温度を追加
-            bt_cmd(s);                              // Arduinoへ送信
             strftime(s,255,"%Y/%m/%d %H:%M:%S",time_st); // 時刻を代入
             printf("%s Temp.Hi=%d / Lo=%d Room=%d\n",s,temp[1],temp[2],temp[0]);
             fp=fopen("/var/www/html/index.html","w");

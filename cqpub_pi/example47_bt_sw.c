@@ -16,7 +16,7 @@ int main(int argc,char **argv){
         return -1;
     }
     printf("example 47 Bluetooth SW from RN-42\n");
-    bt_init(argv[1]);                           // Bluetooth RN-42接続の開始
+    if( bt_init(argv[1]) ) return -1;           // Bluetooth RN-42接続の開始
     printf("CONNECTED\nHit any key to EXIT\n");
     while( bt_cmd_mode('$') ){                  // リモートコマンドモードへの移行
     //  bt_cmd("S@,8800");                      // GPIOポート3と7を入力に設定(初期値)
