@@ -31,7 +31,7 @@ int main(int argc,char **argv){
     while(1){
         time(&timer);                               // 現在の時刻を変数timerに取得する
         time_st = localtime(&timer);                // timer値を時刻に変換してtime_stへ
-        if( timer%10 == 0 || trig ==0 ){            // 10秒毎、または Trigが0の時
+        if( timer%60 == 0 || trig ==0 ){            // 60秒毎、または Trigが0の時
             len = bt_cmd("\n\x1b");                 // Arduinoへ室温を問い合わせる
             if(len) temp[0]=atoi(rx_data);          // 受信した室温をtemp[0]に保持する
             strftime(s,17,"%H:%M",time_st);         // 文字列変数sに時刻を代入
