@@ -40,21 +40,21 @@ int main(int argc,char **argv){
         }
         if( timer >= trig ){                        // 変数trigまで時刻が進んだとき
             fp=popen("curl -s rss.weather.yahoo.co.jp/rss/days/6200.xml|cut -d'<' -f17|cut -d'>' -f2","r");
-            if(fp){
-                while( !feof(fp) ) fgets(s,256,fp);
-                pclose(fp);
-                p=strchr(s,'-');
-                if(strlen(p)>0) temp[1]=atoi(&p[1]);
-                p=strchr(s,'/');
-                if(strlen(p)>0) temp[2]=atoi(&p[1]);
+            if(fp){                                     // 気象予報情報が得られたとき
+                while( !feof(fp) ) fgets(s,256,fp);     // 気象予報情報をsに代入する
+                pclose(fp);                             // パイプ入力を終了する
+                p=strchr(s,'-');                        // 文字「-」を前方から検索する
+                if(strlen(p)>0) temp[1]=atoi(&p[1]);    // 検索結果があれば数値を取得
+                p=strchr(s,'/');                        // 文字「/」を前方から検索する
+                if(strlen(p)>0) temp[2]=atoi(&p[1]);    // 検索結果があれば数値を取得
             }
             strftime(s,255,"%Y/%m/%d %H:%M:%S",time_st); // 時刻を代入
             printf("%s Temp.Hi=%d / Lo=%d Room=%d\n",s,temp[1],temp[2],temp[0]);
-            fp=fopen("/var/www/html/index.html","w");
+            fp=fopen("/var/www/html/index.html","w");   書込み用ファイルを開く
             if(fp){
                 fprintf(fp,"<HTML>\n<meta http-equiv=\"refresh\" content=10>\n<h1>%s</h1>Temp.<br>\n",s);
                 fprintf(fp,"Hi= %d<br>Lo= %d<br>Room= %d<br>\n</HTML>\n",temp[1],temp[2],temp[0]);
-                fclose(fp);
+                fclose(fp);                         // 書き込みファイルを閉じる
             }
             trig = timer + FORCE_INTERVAL;          // 次回の時刻を変数trigを設定
         }
