@@ -50,7 +50,7 @@ int main(int argc,char **argv){
             }
             strftime(s,255,"%Y/%m/%d %H:%M:%S",time_st); // 時刻を代入
             printf("%s Temp.Hi=%d / Lo=%d Room=%d\n",s,temp[1],temp[2],temp[0]);
-            fp=fopen("/var/www/html/index.html","w");   書込み用ファイルを開く
+            fp=fopen("/var/www/html/index.html","w");   // 書込み用ファイルを開く
             if(fp){
                 fprintf(fp,"<HTML>\n<meta http-equiv=\"refresh\" content=10>\n<h1>%s</h1>Temp.<br>\n",s);
                 fprintf(fp,"Hi= %d<br>Lo= %d<br>Room= %d<br>\n</HTML>\n",temp[1],temp[2],temp[0]);

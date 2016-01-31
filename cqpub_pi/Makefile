@@ -49,7 +49,8 @@ PROGS = ./example01_rssi \
 		./example46_bt_led2 \
 		./example47_bt_sw \
 		./example48_bt_sns \
-		./example50_temp
+		./example50_temp \
+		./practice09
 
 all: $(PROGS)
 		# ========================================

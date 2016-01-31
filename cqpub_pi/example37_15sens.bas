@@ -1,5 +1,5 @@
 ' Sensor for IchigoJam
-' CC BY Copyright(C)2015 Wataru KUNINO
+' CC BY Copyright(C)2015-2016 Wataru KUNINO
 ' http://www.geocities.jp/bokunimowakaru/q/15/
 cls:new
 1 'SENSOR and LED
