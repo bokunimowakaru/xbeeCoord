@@ -41,7 +41,7 @@ int main(int argc,char **argv){
             if( adc[0] >= adc[1] ) i = 1;
             if( adc[0] <= adc[2] ) i = 2;
         }
-        printf("AD1[%d] = %.1f Lux (0x%04X,%dmV)\n",i+1,(float)adc[i]*.13,adc[i],adc[i]);
+        printf("AD1[%d] = %.1f Lux (0x%04X,%dmV)\n",i+1,(float)adc[i]*.23,adc[i],adc[i]);
         bt_cmd("---");                          // コマンドモードの解除
         sleep(5);
         if( kbhit() ) break;
