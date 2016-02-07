@@ -1,5 +1,5 @@
 /***************************************************************************************
-ˆÃ†‰»‚ğƒIƒt‚É‚·‚é
+æš—å·åŒ–ã‚’ã‚ªãƒ•ã«ã™ã‚‹
 
                                                   Copyright (c) 2013-2015 Wataru KUNINO
 ***************************************************************************************/
@@ -8,7 +8,7 @@
 
 int main(int argc,char **argv){
 
-    byte port=0;                                // ƒVƒŠƒAƒ‹COMƒ|[ƒg”Ô†
+    byte port=0;                                // ã‚·ãƒªã‚¢ãƒ«COMãƒãƒ¼ãƒˆç•ªå·
     byte ret=0;
 
     if( argc==2 ){
@@ -20,11 +20,11 @@ int main(int argc,char **argv){
             port = 0xA0 + ( argv[1][1] - '0');
         }else port = (byte)(atoi(argv[1]));
     }
-    xbee_init( port );                          // XBee—pCOMƒ|[ƒg‚Ì‰Šú‰»
-    printf("Disable Encription\n");                    // ƒGƒ‰[•\¦
+    xbee_init( port );                          // XBeeç”¨COMãƒãƒ¼ãƒˆã®åˆæœŸåŒ–
+    printf("Disable Encription\n");                    // ã‚¨ãƒ©ãƒ¼è¡¨ç¤º
     ret = xbee_atee_off();
-    if( ret <= 1 ){                             // ˆÃ†‰»‚ğƒIƒt‚É‚·‚é
-        printf("SUCCESS\n");                    // •\¦
-    }else printf("Error(%02X)\n",ret);          // ƒGƒ‰[•\¦
+    if( ret <= 1 ){                             // æš—å·åŒ–ã‚’ã‚ªãƒ•ã«ã™ã‚‹
+        printf("SUCCESS\n");                    // è¡¨ç¤º
+    }else printf("Error(%02X)\n",ret);          // ã‚¨ãƒ©ãƒ¼è¡¨ç¤º
     return( ret );
 }

@@ -1,5 +1,5 @@
 /***************************************************************************************
-ƒlƒbƒgƒ[ƒNİ’è‚ğƒŠƒZƒbƒg‚·‚é
+ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯è¨­å®šã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹
 
                                                   Copyright (c) 2013-2015 Wataru KUNINO
 ***************************************************************************************/
@@ -8,7 +8,7 @@
 
 int main(int argc,char **argv){
 
-    byte port=0;                                // ƒVƒŠƒAƒ‹COMƒ|[ƒg”Ô†
+    byte port=0;                                // ã‚·ãƒªã‚¢ãƒ«COMãƒãƒ¼ãƒˆç•ªå·
     byte ret=0;
 
     if( argc==2 ){
@@ -20,11 +20,11 @@ int main(int argc,char **argv){
             port = 0xA0 + ( argv[1][1] - '0');
         }else port = (byte)(atoi(argv[1]));
     }
-    xbee_init( port );                          // XBee—pCOMƒ|[ƒg‚Ì‰Šú‰»
-    printf("Restore Network Settings\n");                    // ƒGƒ‰[•\¦
-    ret = xbee_atcb(4);                         // ƒlƒbƒgƒ[ƒNİ’è‚ğƒŠƒZƒbƒg‚·‚é
-    if( ret==00 ){                              // ˆÃ†‰»‚ğƒIƒt‚É‚·‚é
-        printf("SUCCESS\n");                    // •\¦
-    }else printf("Error\n");                    // ƒGƒ‰[•\¦
+    xbee_init( port );                          // XBeeç”¨COMãƒãƒ¼ãƒˆã®åˆæœŸåŒ–
+    printf("Restore Network Settings\n");                    // ã‚¨ãƒ©ãƒ¼è¡¨ç¤º
+    ret = xbee_atcb(4);                         // ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯è¨­å®šã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹
+    if( ret==00 ){                              // æš—å·åŒ–ã‚’ã‚ªãƒ•ã«ã™ã‚‹
+        printf("SUCCESS\n");                    // è¡¨ç¤º
+    }else printf("Error\n");                    // ã‚¨ãƒ©ãƒ¼è¡¨ç¤º
     return( ret );
 }
