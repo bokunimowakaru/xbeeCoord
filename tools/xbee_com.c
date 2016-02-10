@@ -14,7 +14,7 @@ int main(int argc,char **argv){
     byte port;
     int i;
     
-    if(argc != 2 ){
+    if(argc != 3 ){
         fprintf(stderr,"usage: %s com tx_data\t(com: B0=USB0, A0=AMA0)\n",argv[0]);
         return -1;
     }

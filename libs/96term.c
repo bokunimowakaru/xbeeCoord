@@ -105,7 +105,7 @@ byte sci_init( byte port ){
         fprintf(stderr,"ERR:sci_init port=%d\n",port);
         return(0);
     }
-    if( open_serial_port( modem_dev ) ){    // 失敗
+    if( open_serial_port( modem_dev )==0 ){    // 失敗
         usleep( 100 );
         close_serial_port();    // open出来ていないが念のために閉じる
         usleep( 100 );
