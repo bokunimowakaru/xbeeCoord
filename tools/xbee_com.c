@@ -2,7 +2,7 @@
 シリアルポートにコマンドを送信し応答結果を受信します。
 9600 8-N-1 NO_FLOW
 コマンドは[CR]を自動的に挿入
-
+コマンド「+++」の場合は[CR]なし
                                                 Copyright (c) 2013-2016 Wataru KUNINO
                                                 http://www.geocities.jp/bokunimowakaru/
 ***************************************************************************************/
@@ -30,7 +30,7 @@ int main(int argc,char **argv){
         return -1;
     }
     puts_serial_port(argv[2]);
-    puts_serial_port("\r");
+    if(strncmp(argv[2],"+++",3))puts_serial_port("\r");
     i=gets_serial_port(rx_data,RX_MAX);
     if(i)printf("%s\n",rx_data);
     close_serial_port();

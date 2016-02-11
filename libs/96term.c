@@ -45,7 +45,7 @@ char read_serial_port(void){
     struct timeval tv;                              // タイムアウト値の保持用
     FD_ZERO(&ComReadFds);                           // ComReadFdの初期化
     FD_SET(ComFd, &ComReadFds);                     // ファイルディスクリプタを設定
-    tv.tv_sec=0; tv.tv_usec=10000;                  // 受信のタイムアウト設定(10ms)
+    tv.tv_sec=0; tv.tv_usec=50000;                  // 受信のタイムアウト設定(50ms)
     if(select(ComFd+1, &ComReadFds, 0, 0, &tv)) read(ComFd, &c, 1); // データを受信
     return c;                                       // 戻り値＝受信データ(文字変数c)
 }
@@ -55,10 +55,10 @@ int gets_serial_port( char *data, int len ){
     for(i=0;i<len-1;i++){
         data[i]=read_serial_port();
         if(data[i] == 0 || data[i] == '\r' || data[i] == '\n' ){
-            i++;
             break;
         }
     }
+    data[i]=0;
     return i;
 }
 
