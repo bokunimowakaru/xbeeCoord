@@ -29,8 +29,14 @@ int main(int argc,char **argv){
         fprintf(stderr,"Serial Open ERROR\n");
         return -1;
     }
-    puts_serial_port(argv[2]);
-    if(strncmp(argv[2],"+++",3))puts_serial_port("\r");
+    if(strncmp(argv[2],"+++",3)==0){
+        puts_serial_port("+++");
+        sleep(1);
+        usleep(100000);
+    }else{
+        puts_serial_port(argv[2]);
+        puts_serial_port("\r");
+    }
     do{
         i=gets_serial_port(rx_data,RX_MAX);
         if(i) printf("%s\n",rx_data);

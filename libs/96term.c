@@ -22,7 +22,7 @@ int open_serial_port(char *modem_dev){
     speed_t speed = B9600;                          // 通信速度の設定 9600 bps
     ComFd=open(modem_dev, O_RDWR|O_NONBLOCK);       // シリアルポートのオープン
     if(ComFd >= 0){                                 // オープン成功時
-        printf("com=%s\n",modem_dev);               // 成功したシリアルポートを表示
+    //  printf("com=%s\n",modem_dev);               // 成功したシリアルポートを表示
         tcgetattr(ComFd, &ComTio_Bk);               // 現在のシリアル端末設定状態を保存
         ComTio.c_iflag = 0;                         // シリアル入力設定の初期化
         ComTio.c_oflag = 0;                         // シリアル出力設定の初期化
