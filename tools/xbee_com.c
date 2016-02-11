@@ -31,8 +31,10 @@ int main(int argc,char **argv){
     }
     puts_serial_port(argv[2]);
     if(strncmp(argv[2],"+++",3))puts_serial_port("\r");
-    i=gets_serial_port(rx_data,RX_MAX);
-    if(i)printf("%s\n",rx_data);
+    do{
+        i=gets_serial_port(rx_data,RX_MAX);
+        if(i) printf("%s\n",rx_data);
+    }while(i);
     close_serial_port();
     return 0;
 }
