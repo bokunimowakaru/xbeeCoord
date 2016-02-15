@@ -68,9 +68,9 @@ int open_rfcomm(char *mac){
     if(i==18){
         printf("[%s]\n",s);
         system(s);
-        for(i=0;i<20;i++){
+        for(i=0;i<15;i++){
             sleep(1);
-        //  printf("( %d sec.)\n",i);
+        //  printf("( %d sec.) \n\x1b\x5b\x41",14-i);
             ret=open_serial_port();
             if(ret >= 0) break;
         }
