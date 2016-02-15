@@ -243,14 +243,14 @@ XBee AT commands.
 	2015/11/08	1.94	- xbee_delayのwait方法を変更(while->usleep)
 						- init追加 0xAF～0xAA:AMA0～5
 						- [重要] xbee_adcの不具合修正・簡易テスト完
-	2015/11/XX	1.95	- エラー時のログ出力機能を追加（RasPi用）
+	2016/02/XX	1.95	- エラー時のログ出力機能を追加（RasPi用）
 						- gcc Version 4.9.2対応
 						- TODO Raspberry Pi版のサンプル作成
 						- TODO Raspberry Pi版XBee Wi-Fi対応
 						- TODO Raspberry Pi版pubフォルダ対応
 						- TODO Arduino版の更新
 						- TODO mbed版の更新
-	2015/12/XX	1.96	- ZigBee Raspberry Pi版の正式対応版の作成完了予定
+	2016/03/XX	1.96	- ZigBee Raspberry Pi版の正式対応版の作成完了
 
 *********************************************************************/
 /*

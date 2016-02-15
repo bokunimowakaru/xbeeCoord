@@ -11,7 +11,7 @@
 #include "../libs/xbee.c"
 #include "../libs/kbhit.c"
 #include <sys/socket.h>
-#include <windows.h>						// Sleep
+// #include <windows.h>						// Sleep
 #define HTTP_PORT	80						// HTTPサーバのポート番号
 #define HTDOCS "examples/htdocs/index.html" // 公開HTMLファイル
 #define HTSTAT "examples/htdocs/stat.html"  // 公開HTMLファイル
@@ -117,7 +117,7 @@ int main(int argc,char **argv){
 			printf("HTTP from %s:%d ", inet_ntoa(client.sin_addr), ntohs(client.sin_port));
 			if(sock >= 0){
 				memset(inbuf, 0, sizeof(inbuf));
-				Sleep(20);
+				usleep(20000);
 				recv(sock, inbuf, sizeof(inbuf),0);
 				if(strncmp(inbuf,"GET",3)==0){		// HTTP-GETの時
 					strP=strchr(&inbuf[4],' ');		// スペースを検索
@@ -192,7 +192,7 @@ int readHtml(char *buf,int size,char *filename){
 			return(0);
 		}else HTDOCS_CURDIR_FLAG=1;
 	}
-	flock(fileno(fp),LOCK_EX);	// ファイルをロック
+//	flock(fileno(fp),LOCK_EX);	// ファイルをロック
 	fseek(fp, 0L, SEEK_END);	// ファイルの最後から0バイトつまり最後へ移動
 	len = ftell(fp);			// その位置を取得。つまりファイルサイズ
 	fseek(fp, 0L, SEEK_SET);	// ファイルの先頭に戻る
