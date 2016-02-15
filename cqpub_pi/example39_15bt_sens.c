@@ -19,7 +19,7 @@ int main(){
     int len=0;                                      // 受信文字長
 
     printf("example 39 Bluetooth Sensor for IchigoJam\n");
-    if(open_rfcomm(mac) <= 0){                      // Bluetooth接続の開始
+    if(open_rfcomm(mac) < 0){                       // Bluetooth接続の開始
         printf("Bluetooth Open ERROR\n");
         return -1;
     }

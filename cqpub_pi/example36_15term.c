@@ -68,7 +68,7 @@ int main(){
     int ctrl=0;                                     // 制御用 0:先頭, -1～-3:「-」入力数
                                                     //        1:コマンド, 2:プログラム
     printf("Ichigo Term for Raspberry Pi\n");
-    if(open_serial_port() <= 0){
+    if(open_serial_port() < 0){
         printf("UART OPEN ERROR\n");
         return -1;
     }

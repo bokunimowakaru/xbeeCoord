@@ -15,7 +15,7 @@ int main(int argc,char **argv){
         return -1;
     }
     printf("example 38 Bluetooth LED for IchigoJam\n");
-    if(open_rfcomm(argv[1]) <= 0){                  // Bluetooth接続の開始
+    if(open_rfcomm(argv[1]) < 0){                   // Bluetooth接続の開始
         printf("Bluetooth Open ERROR\n");
         return -1;
     }

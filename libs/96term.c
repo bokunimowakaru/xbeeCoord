@@ -105,13 +105,13 @@ byte sci_init( byte port ){
         fprintf(stderr,"ERR:sci_init port=%d\n",port);
         return(0);
     }
-    if( open_serial_port( modem_dev )==0 ){    // 失敗
+    if( open_serial_port( modem_dev )<0 ){    // 失敗時(alterに変更する)
         usleep( 100 );
         close_serial_port();    // open出来ていないが念のために閉じる
         usleep( 100 );
         if( port <= 9 ){
             snprintf(&alter_dev[8], 5, "USB%1X", port&0x0F);    // ttyUSB0～9
-            if( open_serial_port( alter_dev )==0 ){
+            if( open_serial_port( alter_dev )>=0 ){
                 strcpy(modem_dev,alter_dev);
                 port += 0xB0;
                 xbee_com_port = port;

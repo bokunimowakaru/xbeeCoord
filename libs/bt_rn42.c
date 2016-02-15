@@ -154,7 +154,7 @@ void bt_init_local(void){
 /* リモートSlave機との接続 */
 int bt_init(char *mac){
     printf("Bluetooth Remote\n");               // タイトル文字を表示
-    if(open_rfcomm(mac) <= 0){                  // Bluetooth SPP RFCOMM 接続の開始
+    if(open_rfcomm(mac) < 0){                   // Bluetooth SPP RFCOMM 接続の開始
         bt_error("Bluetooth Open ERROR");       // エラー表示後に異常終了
         return -1;                              // 異常終了
     }

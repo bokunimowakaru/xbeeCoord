@@ -12,7 +12,7 @@ int main(){
     int loop=1;                                     // 変数loop(0:ループ終了)
     
     printf("example 38 Bluetooth LED for IchigoJam\n");
-    if(open_rfcomm(mac) <= 0){                      // Bluetooth接続の開始
+    if(open_rfcomm(mac) < 0){                       // Bluetooth接続の開始
         printf("Bluetooth Open ERROR\n");
         return -1;
     }

@@ -13,7 +13,7 @@ int main(){
     struct termios termKey,termKey_bk;              // キー入力のエコーを止める処理用
     
     printf("example 40 Bluetooth Motor Car for IchigoJam\n");
-    if(open_rfcomm(mac) <= 0){                      // Bluetooth接続の開始
+    if(open_rfcomm(mac) < 0){                       // Bluetooth接続の開始
         printf("Bluetooth Open ERROR\n");
         return -1;
     }
