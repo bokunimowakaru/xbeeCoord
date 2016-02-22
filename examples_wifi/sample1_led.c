@@ -29,7 +29,7 @@ http://www.geocities.jp/bokunimowakaru/download/xbee/README_wifi.txt
 #include "../libs/xbee_wifi.c"
 
 int main(int argc,char **argv){
-	char s[3];
+	char s[5];
 	byte port=0;		//　↓お手持ちのXBeeモジュールのIPアドレスに変更する
 	byte dev_gpio[] = {192,168,0,135};                  // 子機XBee
 	byte dev_my[]   = {192,168,0,255};                  // 親機パソコン
@@ -40,7 +40,7 @@ int main(int argc,char **argv){
 	// メイン処理
 	while(1){									// 永久に受信する
 		printf("input[0-2]:");
-		gets( s );
+		fgets( s ,5 , stdin);
 		switch( s[0] ){
 			case '0':
 				xbee_gpo(dev_gpio,12,1);		// GPOポート12をHレベル(消灯)へ

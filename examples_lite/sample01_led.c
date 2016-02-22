@@ -15,7 +15,7 @@ BeeBee Lite sample01_led by 蘭
 
 int main(int argc,char **argv){
 	byte i;
-	char s[3];
+	char s[5];
 	byte port=0;
 	byte dev_gpio[8];
 	XBEE_RESULT xbee_result;
@@ -36,7 +36,7 @@ int main(int argc,char **argv){
 	printf("キーボード数字で子機LEDコントロール\n");
 	while(1){
 		printf("input[0-2]:");
-		gets( s );
+		fgets( s , 5 , stdin );
 		switch( s[0] ){
 			case '0':
 				xbee_gpo(dev_gpio,12,1);		// GPOポート12をHレベル(3.3V)へ

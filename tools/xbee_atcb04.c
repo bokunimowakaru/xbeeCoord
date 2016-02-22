@@ -1,21 +1,30 @@
 /***************************************************************************************
-ƒlƒbƒgƒ[ƒNİ’è‚ğƒŠƒZƒbƒg‚·‚é
+ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯è¨­å®šã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹
 
-                                                       Copyright (c) 2013 Wataru KUNINO
+                                                  Copyright (c) 2013-2015 Wataru KUNINO
 ***************************************************************************************/
 
 #include "../libs/xbee.c"
 
 int main(int argc,char **argv){
 
-    byte com=0;                                 // ƒVƒŠƒAƒ‹COMƒ|[ƒg”Ô†
+    byte port=0;                                // ã‚·ãƒªã‚¢ãƒ«COMãƒãƒ¼ãƒˆç•ªå·
     byte ret=0;
 
-    if(argc==2) com=(byte)atoi(argv[1]);        // ˆø”‚ª‚ ‚ê‚Î•Ï”com‚É‘ã“ü‚·‚é
-    xbee_init( com );                           // XBee—pCOMƒ|[ƒg‚Ì‰Šú‰»
-    ret = xbee_atcb(4);                         // ƒlƒbƒgƒ[ƒNİ’è‚ğƒŠƒZƒbƒg‚·‚é
-    if( ret==00 ){                              // ˆÃ†‰»‚ğƒIƒt‚É‚·‚é
-        printf("OK\n");                         // OK•\¦
-    }else printf("Error\n");                    // ƒGƒ‰[•\¦
+    if( argc==2 ){
+        if( atoi(argv[1]) < 0 ){
+            port = 0x9F + (byte)(-atoi(argv[1])) ;
+        }else  if( ( argv[1][0]=='b' || argv[1][0]=='B' )&& argv[1][1]!='\0' ){
+            port = 0xB0 + ( argv[1][1] - '0');
+        }else  if( ( argv[1][0]=='a' || argv[1][0]=='A' )&& argv[1][1]!='\0' ){
+            port = 0xA0 + ( argv[1][1] - '0');
+        }else port = (byte)(atoi(argv[1]));
+    }
+    xbee_init( port );                          // XBeeç”¨COMãƒãƒ¼ãƒˆã®åˆæœŸåŒ–
+    printf("Restore Network Settings\n");                    // ã‚¨ãƒ©ãƒ¼è¡¨ç¤º
+    ret = xbee_atcb(4);                         // ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯è¨­å®šã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹
+    if( ret==00 ){                              // æš—å·åŒ–ã‚’ã‚ªãƒ•ã«ã™ã‚‹
+        printf("SUCCESS\n");                    // è¡¨ç¤º
+    }else printf("Error\n");                    // ã‚¨ãƒ©ãƒ¼è¡¨ç¤º
     return( ret );
 }

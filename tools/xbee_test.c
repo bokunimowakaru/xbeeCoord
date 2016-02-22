@@ -1,54 +1,54 @@
 /*********************************************************************
-AT^ƒŠƒ‚[ƒgATƒRƒ}ƒ“ƒh‰ğÍƒc[ƒ‹ for PC
-(ƒŠƒ‚[ƒgATƒRƒ}ƒ“ƒh‚Ì‰“š’lŠm”F—p) 
+ATï¼ãƒªãƒ¢ãƒ¼ãƒˆATã‚³ãƒãƒ³ãƒ‰è§£æãƒ„ãƒ¼ãƒ« for PC
+(ãƒªãƒ¢ãƒ¼ãƒˆATã‚³ãƒãƒ³ãƒ‰ã®å¿œç­”å€¤ç¢ºèªç”¨) 
 
-¡¡¡¡ PC • Raspberry Piê—p ¡¡¡¡¡
+â– â– â– â–  PC ï¼† Raspberry Piå°‚ç”¨ â– â– â– â– â– 
 
-–{ƒ\[ƒXƒŠƒXƒg‚¨‚æ‚Ñƒ\ƒtƒgƒEƒFƒA‚ÍAƒ‰ƒCƒZƒ“ƒXƒtƒŠ[‚Å‚·B
-—˜—pA•ÒWAÄ”z•z“™‚ª©—R‚És‚¦‚Ü‚·‚ªA’˜ìŒ •\¦‚Ì‰ü•Ï‚Í‹Ö~‚µ‚Ü‚·B
+æœ¬ã‚½ãƒ¼ã‚¹ãƒªã‚¹ãƒˆãŠã‚ˆã³ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ã€ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ãƒ•ãƒªãƒ¼ã§ã™ã€‚
+åˆ©ç”¨ã€ç·¨é›†ã€å†é…å¸ƒç­‰ãŒè‡ªç”±ã«è¡Œãˆã¾ã™ãŒã€è‘—ä½œæ¨©è¡¨ç¤ºã®æ”¹å¤‰ã¯ç¦æ­¢ã—ã¾ã™ã€‚
 
                                Copyright (c) 2010-2015 Wataru KUNINO
                                http://www.geocities.jp/bokunimowakaru/
 *********************************************************************/
 
 /*********************************************************************
-AT^ƒŠƒ‚[ƒgATƒRƒ}ƒ“ƒh‰ğÍƒc[ƒ‹à–¾‘
+ATï¼ãƒªãƒ¢ãƒ¼ãƒˆATã‚³ãƒãƒ³ãƒ‰è§£æãƒ„ãƒ¼ãƒ«èª¬æ˜æ›¸
 
-œŠT—vœ
+â—æ¦‚è¦â—
 
-	APIƒ‚[ƒh‚Ìe‹@‚ÌXBee‚ÉATƒRƒ}ƒ“ƒh‚ğ‘—‚Á‚½‚èAq‹@‚È‚Ç‚©‚ç‚ÌóMƒf[
-	ƒ^‚ğ•\¦‚·‚é‚½‚ß‚ÌƒeƒXƒg—pƒvƒƒOƒ‰ƒ€‚Å‚·B
+	APIãƒ¢ãƒ¼ãƒ‰ã®è¦ªæ©Ÿã®XBeeã«ATã‚³ãƒãƒ³ãƒ‰ã‚’é€ã£ãŸã‚Šã€å­æ©Ÿãªã©ã‹ã‚‰ã®å—ä¿¡ãƒ‡ãƒ¼
+	ã‚¿ã‚’è¡¨ç¤ºã™ã‚‹ãŸã‚ã®ãƒ†ã‚¹ãƒˆç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã§ã™ã€‚
 
-	XBeeƒRƒ}ƒ“ƒh‚ÌÚ×‚ğ‰ğÍ‚·‚é‚½‚ß‚Éì¬‚µ‚Ü‚µ‚½B(xbee.c‚ÌŠJ”­—p)
+	XBeeã‚³ãƒãƒ³ãƒ‰ã®è©³ç´°ã‚’è§£æã™ã‚‹ãŸã‚ã«ä½œæˆã—ã¾ã—ãŸã€‚(xbee.cã®é–‹ç™ºç”¨)
 
-œ‹N“®•û–@œ
+â—èµ·å‹•æ–¹æ³•â—
 
-	Cygwin‚Åexeƒtƒ@ƒCƒ‹‚Ì‚ ‚éƒfƒBƒŒƒNƒgƒŠ“à‚ÅCOM”Ô†(”š‚Ì‚İ)‚ğw’è‚µ‚Ä
-	‹N“®‚µ‚Ü‚·B
+	Cygwinã§exeãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚ã‚‹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå†…ã§COMç•ªå·(æ•°å­—ã®ã¿)ã‚’æŒ‡å®šã—ã¦
+	èµ·å‹•ã—ã¾ã™ã€‚
 		
-		./xbee_test [COM”Ô†]
+		./xbee_test [COMç•ªå·]
 		
-	”•b‚·‚é‚ÆATƒvƒƒ“ƒvƒg‘Ò‚¿‚Æ‚È‚è‚Ü‚·B
+	æ•°ç§’ã™ã‚‹ã¨ATãƒ—ãƒ­ãƒ³ãƒ—ãƒˆå¾…ã¡ã¨ãªã‚Šã¾ã™ã€‚
 		
 		AT>
 
-œ‚`‚sƒRƒ}ƒ“ƒh“ü—Íœ
+â—ï¼¡ï¼´ã‚³ãƒãƒ³ãƒ‰å…¥åŠ›â—
 
-	‚±‚±‚ÅatƒRƒ}ƒ“ƒh‚ª“ü—Í‚Å‚«‚Ü‚·B—á‚¦‚Îƒlƒbƒgƒ[ƒNƒAƒhƒŒƒX‚ğŠm”F‚·‚é
-	‚É‚Íuatopv‚Æ“ü—Í‚µ‚Ä[return]‚ğ‰Ÿ‚·‚ÆATƒRƒ}ƒ“ƒh‚Ì‰“š‚ª•\¦‚³‚ê‚Ü‚·B
+	ã“ã“ã§atã‚³ãƒãƒ³ãƒ‰ãŒå…¥åŠ›ã§ãã¾ã™ã€‚ä¾‹ãˆã°ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’ç¢ºèªã™ã‚‹
+	ã«ã¯ã€Œatopã€ã¨å…¥åŠ›ã—ã¦[return]ã‚’æŠ¼ã™ã¨ATã‚³ãƒãƒ³ãƒ‰ã®å¿œç­”ãŒè¡¨ç¤ºã•ã‚Œã¾ã™ã€‚
 		
 		AT>atop
 		
-	ƒL[ƒ{[ƒh‚Ì“ü—Í’†‚Éƒf[ƒ^‚ÌóM‚ª‚ ‚é‚Æ(ƒ^ƒCƒ~ƒ“ƒO‚É‚æ‚Á‚Ä)“ü—Í‚µ‚½
-	•¶š‚ª•\¦‚³‚ê‚È‚¢ê‡‚ª‚ ‚è‚Ü‚·‚ªA³‚µ‚­“ü—Í‚³‚ê‚Ä‚¢‚Ü‚·B
+	ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®å…¥åŠ›ä¸­ã«ãƒ‡ãƒ¼ã‚¿ã®å—ä¿¡ãŒã‚ã‚‹ã¨(ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã«ã‚ˆã£ã¦)å…¥åŠ›ã—ãŸ
+	æ–‡å­—ãŒè¡¨ç¤ºã•ã‚Œãªã„å ´åˆãŒã‚ã‚Šã¾ã™ãŒã€æ­£ã—ãå…¥åŠ›ã•ã‚Œã¦ã„ã¾ã™ã€‚
 	
-œƒŠƒ‚[ƒg‚`‚sƒRƒ}ƒ“ƒh“ü—Íœ
+â—ãƒªãƒ¢ãƒ¼ãƒˆï¼¡ï¼´ã‚³ãƒãƒ³ãƒ‰å…¥åŠ›â—
 
-	‘¼‚ÌZigBee(q‹@)‚ÉƒŠƒ‚[ƒgATƒRƒ}ƒ“ƒh‚ğ‘—‚èA‚»‚Ì‰“š‚ğóM‚·‚é‚±‚Æ‚ª
-	‚Å‚«‚Ü‚·B
-	‚Ü‚¸‚ÍAq‹@‚ÌƒAƒhƒŒƒX‚ğ“o˜^‚·‚é‚½‚ß‚ÉƒŠƒ‚[ƒg‘¤‚Ìq‹@‚ÌƒRƒ~ƒbƒVƒ‡ƒ“
-	ƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚Ü‚·B(‰Ÿ‚³‚È‚¢‚Æ‘Šèæ‚ªƒuƒ[ƒhƒLƒƒƒXƒg‚É‚È‚è‚Ü‚·B)
-	‚·‚é‚ÆPC‚É‰º‹L‚Ì‚æ‚¤‚ÈƒƒbƒZ[ƒW‚ª•\¦‚³‚ê‚Ü‚·B
+	ä»–ã®ZigBee(å­æ©Ÿ)ã«ãƒªãƒ¢ãƒ¼ãƒˆATã‚³ãƒãƒ³ãƒ‰ã‚’é€ã‚Šã€ãã®å¿œç­”ã‚’å—ä¿¡ã™ã‚‹ã“ã¨ãŒ
+	ã§ãã¾ã™ã€‚
+	ã¾ãšã¯ã€å­æ©Ÿã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’ç™»éŒ²ã™ã‚‹ãŸã‚ã«ãƒªãƒ¢ãƒ¼ãƒˆå´ã®å­æ©Ÿã®ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³
+	ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ã¾ã™ã€‚(æŠ¼ã•ãªã„ã¨ç›¸æ‰‹å…ˆãŒãƒ–ãƒ­ãƒ¼ãƒ‰ã‚­ãƒ£ã‚¹ãƒˆã«ãªã‚Šã¾ã™ã€‚)
+	ã™ã‚‹ã¨PCã«ä¸‹è¨˜ã®ã‚ˆã†ãªãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒè¡¨ç¤ºã•ã‚Œã¾ã™ã€‚
 	
 		--------------------
 		recieved IDNT
@@ -57,23 +57,23 @@ AT^ƒŠƒ‚[ƒgATƒRƒ}ƒ“ƒh‰ğÍƒc[ƒ‹à–¾‘
 		dev    :0013A200 11223344
 		status :02
 	
-	ƒŠƒ‚[ƒgæ‚ÌDIO(GPIO)‚Ì’l‚ğ“Ç‚İæ‚é‚É‚ÍuISƒRƒ}ƒ“ƒhv‚ğg—p‚µ‚Ü‚·B
-	’Êí‚ÌATƒRƒ}ƒ“ƒhuatv‚Ì‘ã‚í‚è‚ÉƒŠƒ‚[ƒgATuratv‚ğ—pˆÓ‚µ‚Ü‚µ‚½‚Ì‚ÅA
-	uratv+uisv‚Åuratisv‚Æ“ü—Í‚µ‚Ü‚·B
+	ãƒªãƒ¢ãƒ¼ãƒˆå…ˆã®DIO(GPIO)ã®å€¤ã‚’èª­ã¿å–ã‚‹ã«ã¯ã€ŒISã‚³ãƒãƒ³ãƒ‰ã€ã‚’ä½¿ç”¨ã—ã¾ã™ã€‚
+	é€šå¸¸ã®ATã‚³ãƒãƒ³ãƒ‰ã€Œatã€ã®ä»£ã‚ã‚Šã«ãƒªãƒ¢ãƒ¼ãƒˆATã€Œratã€ã‚’ç”¨æ„ã—ã¾ã—ãŸã®ã§ã€
+	ã€Œratã€+ã€Œisã€ã§ã€Œratisã€ã¨å…¥åŠ›ã—ã¾ã™ã€‚
 		
 		AT>ratis
 		
-	‘Šè(q‹@)‚ª‘¦À‚É‰“š‚µ‚½ê‡‚ÍAóM‚µ‚½ƒpƒPƒbƒgƒf[ƒ^‚ªˆÈ‰º‚Ì‚æ‚¤
-	‚É•\¦‚³‚ê‚Ü‚·B
+	ç›¸æ‰‹(å­æ©Ÿ)ãŒå³åº§ã«å¿œç­”ã—ãŸå ´åˆã¯ã€å—ä¿¡ã—ãŸãƒ‘ã‚±ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãŒä»¥ä¸‹ã®ã‚ˆã†
+	ã«è¡¨ç¤ºã•ã‚Œã¾ã™ã€‚
 	
 		xbee_tx:RATIS[0]
 		xbee_rx:RATIS[29]
 		data[0] = 0x7e '~' (126)
 		data[1] = 0x 0 ' ' (0)
-		`È—ª`
+		ï½çœç•¥ï½
 		data[15] = 0x49 'I' (73)
 		data[16] = 0x53 'S' (83)
-		`È—ª`
+		ï½çœç•¥ï½
 		data[26] = 0x 1 ' ' (1)
 		data[27] = 0xe3 ' ' (227)
 		data[28] = 0x4d 'M' (77)
@@ -89,8 +89,8 @@ AT^ƒŠƒ‚[ƒgATƒRƒ}ƒ“ƒh‰ğÍƒc[ƒ‹à–¾‘
 		adc1-3 :551 534 469
 		done
 	
-	‘Šè‚ªEnd Device“™‚Å‚·‚®‚Ì‰“š‚ª–³‚¢ê‡‚ÍA‰“š‚È‚µ‚ÌƒGƒ‰[‚ª•\¦‚³
-	‚ê‚Ü‚·‚ªA‰“š‚ª‚ ‚é‚ÆAPIóM‹@”\‚ÅˆÈ‰º‚Ì‚æ‚¤‚É•\¦‚³‚ê‚Ü‚·B
+	ç›¸æ‰‹ãŒEnd Deviceç­‰ã§ã™ãã®å¿œç­”ãŒç„¡ã„å ´åˆã¯ã€å¿œç­”ãªã—ã®ã‚¨ãƒ©ãƒ¼ãŒè¡¨ç¤ºã•
+	ã‚Œã¾ã™ãŒã€å¿œç­”ãŒã‚ã‚‹ã¨APIå—ä¿¡æ©Ÿèƒ½ã§ä»¥ä¸‹ã®ã‚ˆã†ã«è¡¨ç¤ºã•ã‚Œã¾ã™ã€‚
 	
 		--------------------
 		recieved RAT_RESP
@@ -101,9 +101,9 @@ AT^ƒŠƒ‚[ƒgATƒRƒ}ƒ“ƒh‰ğÍƒc[ƒ‹à–¾‘
 		gpi1-0 :00000001 00000001
 		adc1-3 :44803 0 65535
 	
-	‚±‚¿‚ç‚©‚çƒRƒ}ƒ“ƒh‚ğ‘—‚ç‚È‚­‚Ä‚àA‰½‚ç‚©‚Ìƒf[ƒ^‚ğóM‚·‚é‚ÆóM‚µ‚½
-	“à—e‚É‚Â‚¢‚ÄŠT—v‚ğ•\¦‚µ‚Ü‚·B
-	ƒVƒŠƒAƒ‹ƒf[ƒ^‚ğóM‚µ‚½ê‡AˆÈ‰º‚Ì‚æ‚¤‚È•\¦‚Æ‚È‚è‚Ü‚·B
+	ã“ã¡ã‚‰ã‹ã‚‰ã‚³ãƒãƒ³ãƒ‰ã‚’é€ã‚‰ãªãã¦ã‚‚ã€ä½•ã‚‰ã‹ã®ãƒ‡ãƒ¼ã‚¿ã‚’å—ä¿¡ã™ã‚‹ã¨å—ä¿¡ã—ãŸ
+	å†…å®¹ã«ã¤ã„ã¦æ¦‚è¦ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚
+	ã‚·ãƒªã‚¢ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’å—ä¿¡ã—ãŸå ´åˆã€ä»¥ä¸‹ã®ã‚ˆã†ãªè¡¨ç¤ºã¨ãªã‚Šã¾ã™ã€‚
 	
 		--------------------
 		recieved UART
@@ -114,23 +114,23 @@ AT^ƒŠƒ‚[ƒgATƒRƒ}ƒ“ƒh‰ğÍƒc[ƒ‹à–¾‘
 		length :[08]
 		data   :ABCDEFGH
 
-œƒŠƒ‚[ƒg‚`‚sƒRƒ}ƒ“ƒh‚ÅDIOo—Íœ
+â—ãƒªãƒ¢ãƒ¼ãƒˆï¼¡ï¼´ã‚³ãƒãƒ³ãƒ‰ã§DIOå‡ºåŠ›â—
 
-	ƒŠƒ‚[ƒgATƒRƒ}ƒ“ƒh‚ÅGPIO‚Öo—ÍDIO4(XBee_pin=16)‚ğ‚gƒŒƒxƒ‹‚Éİ’è‚·‚é
-	‚É‚ÍAuratv+ud4v+u=05v‚Åuratd4=05v‚Æ“ü—Í‚µ‚Ü‚·B
+	ãƒªãƒ¢ãƒ¼ãƒˆATã‚³ãƒãƒ³ãƒ‰ã§GPIOã¸å‡ºåŠ›DIO4(XBee_pin=16)ã‚’ï¼¨ãƒ¬ãƒ™ãƒ«ã«è¨­å®šã™ã‚‹
+	ã«ã¯ã€ã€Œratã€+ã€Œd4ã€+ã€Œ=05ã€ã§ã€Œratd4=05ã€ã¨å…¥åŠ›ã—ã¾ã™ã€‚
 	
 		AT>ratd4=05
 	
-	‚Ü‚½A‚kƒŒƒxƒ‹‚Éİ’è‚·‚é‚É‚Íuratd4=04v‚Æ“ü—Í‚µ‚Ü‚·B
+	ã¾ãŸã€ï¼¬ãƒ¬ãƒ™ãƒ«ã«è¨­å®šã™ã‚‹ã«ã¯ã€Œratd4=04ã€ã¨å…¥åŠ›ã—ã¾ã™ã€‚
 	
 		AT>ratd4=04
 	
-	İ’è’lu05v‚ª‚gƒŒƒxƒ‹Au04v‚ª‚kƒŒƒxƒ‹‚Æ‚È‚è‚Ü‚·B
+	è¨­å®šå€¤ã€Œ05ã€ãŒï¼¨ãƒ¬ãƒ™ãƒ«ã€ã€Œ04ã€ãŒï¼¬ãƒ¬ãƒ™ãƒ«ã¨ãªã‚Šã¾ã™ã€‚
 	
 */
 
-//#define DEBUG			//DEBUG‚ğdefine‚·‚é‚Æƒ‰ƒCƒuƒ‰ƒŠ‚Ì“®ìƒƒO‚ªo—Í‚³‚ê‚Ü‚·B
-//#define DEBUG_TX		//‘—Mƒf[ƒ^•\¦
+//#define DEBUG			//DEBUGã‚’defineã™ã‚‹ã¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®å‹•ä½œãƒ­ã‚°ãŒå‡ºåŠ›ã•ã‚Œã¾ã™ã€‚
+//#define DEBUG_TX		//é€ä¿¡ãƒ‡ãƒ¼ã‚¿è¡¨ç¤º
 //#define		ERRLOG
 #define		XBEE_ERROR_TIME
 
@@ -138,15 +138,15 @@ AT^ƒŠƒ‚[ƒgATƒRƒ}ƒ“ƒh‰ğÍƒc[ƒ‹à–¾‘
 #include "../libs/kbhit.c"
 
 #define AT_LEN	32
-#define FO_LEN	32		// ƒtƒ@ƒCƒ‹‘—M‚Ì•¶š—ñ’·
+#define FO_LEN	32		// ãƒ•ã‚¡ã‚¤ãƒ«é€ä¿¡ã®æ–‡å­—åˆ—é•·
 
 void print_status(const byte in ){
 	/*
-	#define		STATUS_OK		0x00		// ATƒRƒ}ƒ“ƒh‚ÌŒ‹‰Ê‚ªOK
-	#define		STATUS_ERR		0x01		// ATƒRƒ}ƒ“ƒh‚ÌŒ‹‰Ê‚ªERROR
-	#define		STATUS_ERR_AT	0x02		// w’è‚³‚ê‚½ATƒRƒ}ƒ“ƒh‚ÉŒë‚è‚ª‚ ‚é
-	#define		STATUS_ERR_PARM	0x03		// w’è‚³‚ê‚½ƒpƒ‰ƒ[ƒ^‚ÉŒë‚è‚ª‚ ‚é
-	#define		STATUS_ERR_AIR	0x04		// ƒŠƒ‚[ƒgATƒRƒ}ƒ“ƒh‚Ì‘—M‚Ì¸”s(‘Šè‚ª‰“š‚µ‚È‚¢)
+	#define		STATUS_OK		0x00		// ATã‚³ãƒãƒ³ãƒ‰ã®çµæœãŒOK
+	#define		STATUS_ERR		0x01		// ATã‚³ãƒãƒ³ãƒ‰ã®çµæœãŒERROR
+	#define		STATUS_ERR_AT	0x02		// æŒ‡å®šã•ã‚ŒãŸATã‚³ãƒãƒ³ãƒ‰ã«èª¤ã‚ŠãŒã‚ã‚‹
+	#define		STATUS_ERR_PARM	0x03		// æŒ‡å®šã•ã‚ŒãŸãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã«èª¤ã‚ŠãŒã‚ã‚‹
+	#define		STATUS_ERR_AIR	0x04		// ãƒªãƒ¢ãƒ¼ãƒˆATã‚³ãƒãƒ³ãƒ‰ã®é€ä¿¡ã®å¤±æ•—(ç›¸æ‰‹ãŒå¿œç­”ã—ãªã„)
 	*/
 	
 	switch( in ){
@@ -245,15 +245,15 @@ int main(int argc,char **argv){
 	char at_bk[AT_LEN];
 	byte data[API_SIZE];
 	byte at_len;
-	byte val_len;		// ATƒRƒ}ƒ“ƒh“à‚Ì’l‚Ì’·‚³
-	byte res_len=0;		// ‰“š’l‚Ì’·‚³
+	byte val_len;		// ATã‚³ãƒãƒ³ãƒ‰å†…ã®å€¤ã®é•·ã•
+	byte res_len=0;		// å¿œç­”å€¤ã®é•·ã•
 	
 	XBEE_RESULT xbee_result;
 	byte return_MODE = 0x00;
 	
 	byte err,retry;
-	byte r_dat = 10;	// AT=0ARAT=10ATX=–¢’è
-	byte r_at = 1;		// AT=0ARAT=1
+	byte r_dat = 10;	// AT=0ã€RAT=10ã€TX=æœªå®š
+	byte r_at = 1;		// AT=0ã€RAT=1
 	unsigned int wait_add = 0;
 	byte port=0;
 //	byte coord[]  	=	 {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
@@ -270,14 +270,14 @@ int main(int argc,char **argv){
 	byte zcl_fc		=0x08;
 	byte zcl_seq	=0x01;
 	byte zcl_command=0x00;	// read
-	byte zcl_att[3] ={0x00,0x00,0x00};	// XB_AT_SIZE‚ª32‚Ì‚Í31•¶š‚È‚Ì‚ÅÅ’·3ƒoƒCƒg
-	byte zcl_att_len=0;					// zcl_att‚Ì’·‚³ ¦00’l‚ğ‚Æ‚é‚Ì‚Å•K‚¸g‚¤‚±‚Æ
+	byte zcl_att[3] ={0x00,0x00,0x00};	// XB_AT_SIZEãŒ32ã®æ™‚ã¯31æ–‡å­—ãªã®ã§æœ€é•·3ãƒã‚¤ãƒˆ
+	byte zcl_att_len=0;					// zcl_attã®é•·ã• â€»00å€¤ã‚’ã¨ã‚‹ã®ã§å¿…ãšä½¿ã†ã“ã¨
 	
 	FILE *fp;
 	char filename[AT_LEN];
 	char s[FO_LEN];
 		
-	// ‰Šú‰»ˆ—
+	// åˆæœŸåŒ–å‡¦ç†
 	lcd_disp("Initializing");
 	if( argc==2 ){
 		if( atoi(argv[1]) < 0 ){
@@ -288,50 +288,50 @@ int main(int argc,char **argv){
 			port = 0xA0 + ( argv[1][1] - '0');
 		}else port = (byte)(atoi(argv[1]));
 	}
-	xbee_init( port );					// XBee—pCOMƒ|[ƒg‚Ì‰Šú‰»(ˆø”‚Íƒ|[ƒg”Ô†)
-	xbee_atnj( 0xFF );					// ƒfƒoƒCƒX‚ğí‚ÉQ‰Áó‚¯“ü‚ê(ƒeƒXƒg—p)
+	xbee_init( port );					// XBeeç”¨COMãƒãƒ¼ãƒˆã®åˆæœŸåŒ–(å¼•æ•°ã¯ãƒãƒ¼ãƒˆç•ªå·)
+	xbee_atnj( 0xFF );					// ãƒ‡ãƒã‚¤ã‚¹ã‚’å¸¸ã«å‚åŠ å—ã‘å…¥ã‚Œ(ãƒ†ã‚¹ãƒˆç”¨)
 	printf("Press 'h'+Enter to help, 'q!'+Enter to quit.\n");
 	
-	// ƒƒCƒ“ˆ—
-	while(ret){									// ‰i‹v‚ÉóM‚·‚é
+	// ãƒ¡ã‚¤ãƒ³å‡¦ç†
+	while(ret){									// æ°¸ä¹…ã«å—ä¿¡ã™ã‚‹
 		printf("AT>");
-		/* ƒL[ƒ{[ƒh‚©‚ç‚Ì“ü—Í */
+		/* ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã‹ã‚‰ã®å…¥åŠ› */
 		kb=0; c=0x00;
 		for(i=0;i<AT_LEN;i++) at[i]=0x00;
 		do{
 			if ( kbhit() ){
 				c = (char)getchar();
-				//	printf("\n[%c]=%02X\n",c,(byte)c);	// ƒL[Šm”F—p(OSˆË‘¶)
+				//	printf("\n[%c]=%02X\n",c,(byte)c);	// ã‚­ãƒ¼ç¢ºèªç”¨(OSä¾å­˜)
 				if( (byte)c >= 0x20 && (byte)c < 0x7E ){
 					at[kb] = c;
 					kb++;
-				}else if( (byte)c == 0x7E){	// DELƒL[
+				}else if( (byte)c == 0x7E){	// DELã‚­ãƒ¼
 					if( kb >= 3 ){
 						kb -= 3;			// 5B 33 7E
-						at[kb] = '\0';
 					//	printf("\b \b");
 					}else {
-						kb=0; at[0] = '\0';
+						kb=0;
 					}
+					for(i=kb;i<AT_LEN;i++) at[i]=0x00;	// çµ‚ç«¯ã‚’è¦‹ãšã«ATè§£æã—ã¦ã„ã‚‹ã®ã§å¿…è¦
 					printf("\nAT>%s",at);
 				}else if( (byte)c == 0x7F){	// TeraTerm
 					if( kb > 0 ){
-						kb -= 1; at[kb] = '\0';
+						kb -= 1;
 					}else {
-						kb=0; at[0] = '\0';
+						kb=0;
 					}
+					for(i=kb;i<AT_LEN;i++) at[i]=0x00;	// çµ‚ç«¯ã‚’è¦‹ãšã«ATè§£æã—ã¦ã„ã‚‹ã®ã§å¿…è¦
 					printf("\nAT>%s",at);
 				}
-				for(i=kb;i<AT_LEN;i++) at[i]=0x00;	// I’[‚ğŒ©‚¸‚ÉAT‰ğÍ‚µ‚Ä‚¢‚é‚Ì‚Å•K—v
 			}
 			
-			/* ƒf[ƒ^óM(‘Ò‚¿ó‚¯‚ÄóM‚·‚é) */
-			xbee_result.MODE = MODE_AUTO;	// ©“®óMƒ‚[ƒh‚Éİ’è
-			rx = xbee_rx_call( &xbee_result );	// ƒf[ƒ^‚ğóM‚µ‚Ü‚·B(ˆ—‚É50ms‚©‚©‚è‚Ü‚·)
-											// rxFóMŒ‹‰Ê‚Ì‘ã•\’l
-											// xbee_resultFÚ×‚ÈóMŒ‹‰Ê
-											// xbee_result.MODEFóMƒ‚[ƒh
-			switch( xbee_result.MODE ){		// óM‚µ‚½ƒf[ƒ^‚Ì“à—e(MODE’l)‚É‰‚¶‚Ä
+			/* ãƒ‡ãƒ¼ã‚¿å—ä¿¡(å¾…ã¡å—ã‘ã¦å—ä¿¡ã™ã‚‹) */
+			xbee_result.MODE = MODE_AUTO;	// è‡ªå‹•å—ä¿¡ãƒ¢ãƒ¼ãƒ‰ã«è¨­å®š
+			rx = xbee_rx_call( &xbee_result );	// ãƒ‡ãƒ¼ã‚¿ã‚’å—ä¿¡ã—ã¾ã™ã€‚(å‡¦ç†ã«50msã‹ã‹ã‚Šã¾ã™)
+											// rxï¼šå—ä¿¡çµæœã®ä»£è¡¨å€¤
+											// xbee_resultï¼šè©³ç´°ãªå—ä¿¡çµæœ
+											// xbee_result.MODEï¼šå—ä¿¡ãƒ¢ãƒ¼ãƒ‰
+			switch( xbee_result.MODE ){		// å—ä¿¡ã—ãŸãƒ‡ãƒ¼ã‚¿ã®å†…å®¹(MODEå€¤)ã«å¿œã˜ã¦
 				case 0x00:
 					break;
 				case MODE_RESP:	
@@ -343,7 +343,7 @@ int main(int argc,char **argv){
 					printf("status :%02X", xbee_result.STATUS);
 					print_status( xbee_result.STATUS );
 					printf("\n");
-					if( xbee_result.AT[0]=='I' && xbee_result.AT[1]=='S' ){	// ATIS‚Ì‰“š‚ÌóM
+					if( xbee_result.AT[0]=='I' && xbee_result.AT[1]=='S' ){	// ATISã®å¿œç­”ã®å—ä¿¡
 						printf("gpi1-0 :");
 						lcd_disp_bin( xbee_result.GPI.BYTE[1] ); printf(" ");
 						lcd_disp_bin( xbee_result.GPI.BYTE[0] ); printf("\n");
@@ -375,14 +375,14 @@ int main(int argc,char **argv){
 					printf("\nAT>%s",at);
 					break;
 				case MODE_UART:
-					/* ƒVƒŠƒAƒ‹ƒf[ƒ^‚ğóM */
+					/* ã‚·ãƒªã‚¢ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’å—ä¿¡ */
 					printf("\n--------------------\nrecieved UART\n--------------------\n");
 					printf("from   :");
 					for(i=0;i<4;i++) lcd_disp_hex( xbee_result.FROM[i] ); lcd_putch( ' ' );
 					for(i=4;i<8;i++) lcd_disp_hex( xbee_result.FROM[i] ); lcd_putch( '\n' );
 					printf("status :%02X ", xbee_result.STATUS);
 					print_packet(xbee_result.STATUS);
-					bytecpy(dev_tmp, xbee_result.FROM, 8);	// ƒAƒhƒŒƒX‚ğdev_tmp‚É“Ç‚İ‚İ
+					bytecpy(dev_tmp, xbee_result.FROM, 8);	// ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’dev_tmpã«èª­ã¿è¾¼ã¿
 					printf("length :%d (0x%02X)\n", rx , rx);
 					printf("data   :");
 					for(i=0;i<rx;i++){
@@ -416,7 +416,7 @@ int main(int argc,char **argv){
 					for(i=0;i<4;i++) lcd_disp_hex( xbee_result.FROM[i] ); lcd_putch( ' ' );
 					for(i=4;i<8;i++) lcd_disp_hex( xbee_result.FROM[i] ); lcd_putch( '\n' );
 					printf("status :%02X\n", xbee_result.STATUS);
-					// lcd_disp_bin( rx );	// rx‚É“ü‚Á‚½’l‚ğƒoƒCƒiƒŠ‚Å•\¦
+					// lcd_disp_bin( rx );	// rxã«å…¥ã£ãŸå€¤ã‚’ãƒã‚¤ãƒŠãƒªã§è¡¨ç¤º
 					// lcd_putch( '\n' );
 					printf("gpi1-0 :");
 					lcd_disp_bin( xbee_result.GPI.BYTE[1] ); printf(" ");
@@ -431,14 +431,14 @@ int main(int argc,char **argv){
 					print_packet(xbee_result.STATUS);
 					printf("\nAT>%s",at);
 					break;
-				case MODE_IDNT:				// V‚µ‚¢ƒfƒoƒCƒX‚ğ”­Œ©
+				case MODE_IDNT:				// æ–°ã—ã„ãƒ‡ãƒã‚¤ã‚¹ã‚’ç™ºè¦‹
 					printf("\n--------------------\nrecieved IDNT\n--------------------\n");
 					printf("from   :");
 					for(i=0;i<4;i++) lcd_disp_hex( xbee_result.FROM[i] ); lcd_putch( ' ' );
 					for(i=4;i<8;i++) lcd_disp_hex( xbee_result.FROM[i] ); lcd_putch( ' ' );
 					for(i=0;i<2;i++) lcd_disp_hex( xbee_result.SHORT[i] ); lcd_putch( ' ' );
 					for(i=0;i<2;i++) lcd_disp_hex( xbee_result.DATA[i+15-15] ); lcd_putch( '\n' );
-					bytecpy(dev, xbee_result.FROM, 8);	// ”­Œ©‚µ‚½ƒAƒhƒŒƒX‚ğdev‚É“Ç‚İ‚İ
+					bytecpy(dev, xbee_result.FROM, 8);	// ç™ºè¦‹ã—ãŸã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’devã«èª­ã¿è¾¼ã¿
 					printf("network:");
 					for(i=0;i<4;i++) lcd_disp_hex( xbee_result.DATA[i+17-15] ); lcd_putch( ' ' );
 					for(i=4;i<8;i++) lcd_disp_hex( xbee_result.DATA[i+17-15+4] ); lcd_putch( '\n' );
@@ -457,8 +457,8 @@ int main(int argc,char **argv){
 					print_packet(xbee_result.STATUS);
 										
 				//	printf("xbee_ratd_myaddress (0x%02X)\n", xbee_ratd_myaddress(dev));
-					// Œ©‚Â‚¯‚½ƒfƒoƒCƒX‚É–{‹@‚ÌƒAƒhƒŒƒX‚ğiˆ¶æ‚Æ‚µ‚Äjİ’è‚·‚é
-					xbee_atd(dev);	// –{ƒ‚ƒWƒ…[ƒ‹‚Ì‘—MæATDH/L‚Édev‚ÌƒAƒhƒŒƒX‚ğİ’è‚·‚é
+					// è¦‹ã¤ã‘ãŸãƒ‡ãƒã‚¤ã‚¹ã«æœ¬æ©Ÿã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’ï¼ˆå®›å…ˆã¨ã—ã¦ï¼‰è¨­å®šã™ã‚‹
+					xbee_atd(dev);	// æœ¬ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®é€ä¿¡å…ˆATDH/Lã«devã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¨­å®šã™ã‚‹
 					
 					printf("\nAT>%s",at);
 					break;
@@ -483,10 +483,15 @@ int main(int argc,char **argv){
 					printf("\nAT>%s",at);
 					break;
 			}
+			if( strcmp(at,"---")==0 ){
+				strcpy(at,"Q!");
+				c='\n';
+				kb=2;
+			}
 		}while( c != '\n' && kb < AT_LEN );
 		
 		// test
-	//	printf("at=%s\n",at);
+	//	printf("at(%d,%d)=[%s]\n",strlen(at),kb,at);
 		printf("\n");
 		
 		if( at[0] == '!' ) for(i=0;i<AT_LEN;i++) at[i] = at_bk[i];
@@ -505,8 +510,11 @@ int main(int argc,char **argv){
 				printf("adc 1 (0x%02X)\n",xbee_gpio_config( dev, 1 , AIN ));
 				printf("adc 2 (0x%02X)\n",xbee_gpio_config( dev, 2 , AIN ));
 				printf("adc 3 (0x%02X)\n",xbee_gpio_config( dev, 3 , AIN ));
-			}else if( at[2]>='1' && at[2]<='3'){
-				printf("adc port %c = (%d)\n",at[2],(int)xbee_adc(dev,(byte)(at[2]-'0')) );
+			}else{
+				if( at[2]=='=' ) at[2]=at[3];
+				if( at[2]>='1' && at[2]<='3'){
+					printf("adc port %c = (%d)\n",at[2],(int)xbee_adc(dev,(byte)(at[2]-'0')) );
+				}
 			}
 		}else if( at[0] == 'A' && at[1] == 'I' ){
 			xbee_log(3,"XBee Association Indication ",strlen(at)-2);
@@ -556,28 +564,36 @@ int main(int argc,char **argv){
 			xbee_log(3,"Help about ZCL ",strlen(at)-2);
 			if( (fp = fopen("xbee_test_help_zc.txt","r")) == NULL ){
 				if( (fp = fopen("tools/xbee_test_help_zc.txt","r")) == NULL ){
-					printf("no help files\n");
+					if( (fp = fopen("../tools/xbee_test_help_zc.txt","r")) == NULL ){
+						printf("no help files\n");
+					}
 				}
 			}
-			while( feof(fp) == 0 ){
-				c=getc(fp);
-				if( !feof(fp) ) printf("%c",c);
+			if(fp){
+				while( feof(fp) == 0 ){
+					c=getc(fp);
+					if( !feof(fp) ) printf("%c",c);
+				}
+				printf("\n");
+				fclose( fp );                                // Output
 			}
-			printf("\n");
-			fclose( fp );                                // Output
 		}else if(at[0] == 'H' ){
 			xbee_log(3,"Help ('hz' for more) ",strlen(at)-1);
 			if( (fp = fopen("xbee_test_help.txt","r")) == NULL ){
 				if( (fp = fopen("tools/xbee_test_help.txt","r")) == NULL ){
-					printf("no help files\n");
+					if( (fp = fopen("../tools/xbee_test_help.txt","r")) == NULL ){
+						printf("no help files\n");
+					}
 				}
 			}
-			while( feof(fp) == 0 ){
-				c=getc(fp);
-				if( !feof(fp) ) printf("%c",c);
+			if(fp){
+				while( feof(fp) == 0 ){
+					c=getc(fp);
+					if( !feof(fp) ) printf("%c",c);
+				}
+				printf("\n");
+				fclose( fp );                                // Output
 			}
-			printf("\n");
-			fclose( fp );                                // Output
 		}else if( at[0] == 'G' && at[1] == 'P' && at[2] == 'O' ){
 			xbee_log(3,"Digital IO Output 'xbee_gpo' ",strlen(at)-3);
 			if( at[3] == '=' ) j=4; else j=3;
@@ -644,17 +660,26 @@ int main(int argc,char **argv){
 			i=xbee_ping(dev);
 			printf("result :");
 			switch(i){
-				case DEV_TYPE_XBEE:		// 0x00		// XBeeƒ‚ƒWƒ…[ƒ‹
+				case DEV_TYPE_XBEE:		// 0x00		// XBeeãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«
 					printf("OK (DEV_TYPE_XBEE)\n");
 					break;
-				case DEV_TYPE_RS232:	// 0x05		// RS-232CƒAƒ_ƒvƒ^
+				case DEV_TYPE_RS232:	// 0x05		// RS-232Cã‚¢ãƒ€ãƒ—ã‚¿
 					printf("OK (DEV_TYPE_RS232)\n");
 					break;
-				case DEV_TYPE_SENS:		// 0x07		// Sensor (1wireê—p)
+				case DEV_TYPE_SENS:		// 0x07		// Sensor (1wireå°‚ç”¨)
 					printf("OK (DEV_TYPE_SENS)\n");
+					break;
+				case DEV_TYPE_WALL:		// 0x08		// Wall Router
+					printf("OK (DEV_TYPE_WALL)\n");
 					break;
 				case DEV_TYPE_PLUG:		// 0x0F		// SmartPlug
 					printf("OK (DEV_TYPE_PLUG)\n");
+					break;
+				case 0x0E:		// XBee Sensor /L/T
+					printf("OK (XBee Sensor /L/T)\n");
+					break;
+				case 0x0D:		// XBee Sensor /L/T/H
+					printf("OK (XBee Sensor /L/T/H)\n");
 					break;
 				case 0xFF:
 					printf("ERROR\n");
@@ -674,11 +699,11 @@ int main(int argc,char **argv){
 			printf("xbee_rat(%s)\n",at);
 			printf("return(0x%02X)\n",xbee_rat(dev,at) );
 		}else if( at[0] == 'J' && at[1] == 'H' && at[2] == 'J' && at[3] == 'h' ){
-			// JHƒVƒXƒeƒ€iIEEE802.15.4j‚Åg—p‚³‚ê‚Ä‚¢‚é–³ü•û®‚ğ‰ğÍ‚µ‚½‚Æ‚±‚ë
-			// ZigBee PRO‚É‹ß‚¢d—l‚Å‚ ‚é‚±‚Æ‚ª”»–¾B
-			// g—p‚µ‚Ä‚¢‚éƒNƒ‰ƒXƒ^ID‚ÍFD0CAƒvƒƒtƒ@ƒCƒ‹ID‚Í0104AƒGƒ“ƒhƒ|ƒCƒ“ƒg‚Í14
-			// ‘®«‚Í4010‚Æ4013‚ª‚ ‚éBi­‚È‚­‚Æ‚à‚±‚ê‚ç‚É‘‚«‚İ‚ğs‚Á‚Ä‚¢‚éj
-			// î•ñ’ñ‹ŸFTsunekichi Yoshida —l
+			// JHã‚·ã‚¹ãƒ†ãƒ ï¼ˆIEEE802.15.4ï¼‰ã§ä½¿ç”¨ã•ã‚Œã¦ã„ã‚‹ç„¡ç·šæ–¹å¼ã‚’è§£æã—ãŸã¨ã“ã‚
+			// ZigBee PROã«è¿‘ã„ä»•æ§˜ã§ã‚ã‚‹ã“ã¨ãŒåˆ¤æ˜ã€‚
+			// ä½¿ç”¨ã—ã¦ã„ã‚‹ã‚¯ãƒ©ã‚¹ã‚¿IDã¯FD0Cã€ãƒ—ãƒ­ãƒ•ã‚¡ã‚¤ãƒ«IDã¯0104ã€ã‚¨ãƒ³ãƒ‰ãƒã‚¤ãƒ³ãƒˆã¯14
+			// å±æ€§ã¯4010ã¨4013ãŒã‚ã‚‹ã€‚ï¼ˆå°‘ãªãã¨ã‚‚ã“ã‚Œã‚‰ã«æ›¸ãè¾¼ã¿ã‚’è¡Œã£ã¦ã„ã‚‹ï¼‰
+			// æƒ…å ±æä¾›ï¼šTsunekichi Yoshida æ§˜
 			xbee_log(3,"ZigBee JH System ",strlen(at)-4);
 			zcl_sep	=0x14;
 			zcl_dep	=0x14;
@@ -688,8 +713,8 @@ int main(int argc,char **argv){
 			zcl_prid[1]=0x04;
 			zcl_fc		=0x00;
 			zcl_command=0x00;		// read
-			zcl_att[0] =0x40;		// ƒvƒƒgƒRƒ‹ƒAƒiƒ‰ƒCƒU‚Å‰ğÍ‚µ‚½‚Æ‚±‚ë4010‚Æ4013‚ÉWrite‚µ‚Ä‚¢‚éB
-			zcl_att[1] =0x10;		// ‚»‚ê‚¼‚ê‰½‚Ì‘®«‚©‚Í¡‚Ì‚Æ‚±‚ë•s–¾B
+			zcl_att[0] =0x40;		// ãƒ—ãƒ­ãƒˆã‚³ãƒ«ã‚¢ãƒŠãƒ©ã‚¤ã‚¶ã§è§£æã—ãŸã¨ã“ã‚4010ã¨4013ã«Writeã—ã¦ã„ã‚‹ã€‚
+			zcl_att[1] =0x10;		// ãã‚Œãã‚Œä½•ã®å±æ€§ã‹ã¯ä»Šã®ã¨ã“ã‚ä¸æ˜ã€‚
 			zcl_att_len=2;
 		}else if( at[0] == 'T' && at[1] == 'T' && at[2] != '=' && at[2] != '\0' ){
 			xbee_log(3,"uartTX command [lib] ",strlen(at)-2);
@@ -831,7 +856,7 @@ int main(int argc,char **argv){
 				at[i++] = byte2a(zcl_att[zcl_att_len-j-1],1);
 				at[i++] = byte2a(zcl_att[zcl_att_len-j-1],0);
 				if(i >= XB_AT_SIZE ){
-					// ”O‚Ì‚½‚ß‚Ìƒƒ‚ƒŠ•ÛŒì
+					// å¿µã®ãŸã‚ã®ãƒ¡ãƒ¢ãƒªä¿è­·
 					printf("ERROR:Segmentation fault at at[XB_AT_SIZE]\n");
 					exit(-1);
 				}
@@ -894,7 +919,7 @@ ZCL
 				else zcl_seq=0x01;
 			}
 		}else{
-			/* ŠJ”­—pF“Æ©‰ğÍ‚ÌŠJn */
+			/* é–‹ç™ºç”¨ï¼šç‹¬è‡ªè§£æã®é–‹å§‹ */
 			xbee_log(3,"XBee API Test ",strlen(at));
 			printf("Execute '%s'\n",at);
 			wait_add = 0;
@@ -903,7 +928,7 @@ ZCL
 					if( at[1] == 'T' ){
 						at_len=2;
 						r_dat = 0; r_at=0;
-						if( at[2] == 'W' && at[3] == 'R' ) wait_add = 100;			// ATWR 110`1100ms
+						if( at[2] == 'W' && at[3] == 'R' ) wait_add = 100;			// ATWR 110ï½1100ms
 					}
 					break;
 				case 'R':
@@ -915,7 +940,7 @@ ZCL
 						for(i=4;i<8;i++) lcd_disp_hex( dev[i] ); lcd_putch( '\n' );
 						at_len=3;
 						r_dat = 10; r_at=1;
-						if( at[3] == 'W' && at[4] == 'R' ) wait_add = 100;	// RATWR 220`2200ms
+						if( at[3] == 'W' && at[4] == 'R' ) wait_add = 100;	// RATWR 220ï½2200ms
 					}
 					break;
 				case 'T':
@@ -1022,16 +1047,16 @@ ZCL
 					}
 					at[i+at_len+1]=0x00;
 				}
-				/* ƒRƒ}ƒ“ƒh‘—M */
+				/* ã‚³ãƒãƒ³ãƒ‰é€ä¿¡ */
 				xbee_address(dev);
 				printf("xbee_tx:%s[%d]",at,val_len);
 				for( i=0 ; i< val_len ; i++) lcd_disp_hex( data[i] ); printf("\n");
 				if( xbee_at_tx( at ,data ,val_len ) > 0){
-					err = 12;							// óM‚È‚µƒGƒ‰[
+					err = 12;							// å—ä¿¡ãªã—ã‚¨ãƒ©ãƒ¼
 					for( retry = 10 ; ( retry > 0 && err == 12 ) ; retry-- ){
-						wait_millisec( 10 + r_dat );	// ‰“šŠÔ‘Ò‚¿ AT 10`100ms / RAT 20`200ms
+						wait_millisec( 10 + r_dat );	// å¿œç­”æ™‚é–“å¾…ã¡ AT 10ï½100ms / RAT 20ï½200ms
 						if( wait_add != 0 ){
-							wait_millisec( wait_add );	// ’Ç‰ÁƒEƒFƒCƒg
+							wait_millisec( wait_add );	// è¿½åŠ ã‚¦ã‚§ã‚¤ãƒˆ
 							printf("added wait time\n");
 						}
 						for(j=0;j<(API_SIZE-1);j++) data[j] = 0x00;  data[API_SIZE-1] = 0x00;
@@ -1042,13 +1067,13 @@ ZCL
 							 && data[6+r_dat] == (byte)at[3+r_at] ){
 								if( data[7+r_dat] == 0x00 ){
 									err=0;
-								}else err = data[7+r_dat];	// AT‚ÌERRORƒR[ƒh (AT:data[7] RAT:data[17])
-							}else	err = 13;				// óMƒpƒPƒbƒg‚Ì‘Šˆá
+								}else err = data[7+r_dat];	// ATã®ERRORã‚³ãƒ¼ãƒ‰ (AT:data[7] RAT:data[17])
+							}else	err = 13;				// å—ä¿¡ãƒ‘ã‚±ãƒƒãƒˆã®ç›¸é•
 						}
 					}
-				}else				err = 11;				// ‘—M¸”s
+				}else				err = 11;				// é€ä¿¡å¤±æ•—
 				
-				/* ERROR •\¦ */
+				/* ERROR è¡¨ç¤º */
 				switch(err){
 					case 0:             // 01234567890123456789
 						break;
@@ -1081,7 +1106,7 @@ ZCL
 						break;
 				}
 				
-				/* DATA •\¦ */
+				/* DATA è¡¨ç¤º */
 				printf("xbee_rx:%s[%d]\n",at,res_len);
 				if( res_len ){
 					for( i=0; i < res_len ; i++ ){
@@ -1091,7 +1116,7 @@ ZCL
 					printf("checksum = 0x%02X     (%d)\n",data[res_len],(int)data[res_len]);
 				}
 				return_MODE = xbee_from_acum( data );
-				switch( return_MODE ){		// óM‚µ‚½ƒf[ƒ^‚Ì“à—e(MODE’l)‚É‰‚¶‚Ä
+				switch( return_MODE ){		// å—ä¿¡ã—ãŸãƒ‡ãƒ¼ã‚¿ã®å†…å®¹(MODEå€¤)ã«å¿œã˜ã¦
 					case MODE_RESP:	
 						printf("\n--------------------\nrecieved RAT_RESP\n--------------------\n");
 						printf("from   :");
@@ -1101,17 +1126,17 @@ ZCL
 						printf("status :%02X", data[17]);
 						print_status( data[17] );
 						printf("\n");
-						if( data[15]=='I' && data[16]=='S' ){	// ATIS‚Ì‰“š‚ÌóM
+						if( data[15]=='I' && data[16]=='S' ){	// ATISã®å¿œç­”ã®å—ä¿¡
 							printf("gpi1-0 :");
 							lcd_disp_bin( data[22] & data[19] ); printf(" ");
 							lcd_disp_bin( data[23] & data[20] ); printf("\n");
 							if( data[19] == 0x00 && data[20] == 0x00 ){
-								j = 1;											// ƒfƒWƒ^ƒ‹ƒf[ƒ^‚ª–³‚¢‚Æ‚«
+								j = 1;											// ãƒ‡ã‚¸ã‚¿ãƒ«ãƒ‡ãƒ¼ã‚¿ãŒç„¡ã„ã¨ã
 							}else{
-								j = 0;											// ƒfƒWƒ^ƒ‹ƒf[ƒ^‚ª‚ ‚é
+								j = 0;											// ãƒ‡ã‚¸ã‚¿ãƒ«ãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚‹æ™‚
 							}
-							for( i=0; i < 4 ; i++ ){							// ‚±‚Ì’†‚Åj‚ğg—p‚µ‚Ä‚¢‚é
-								if( (data[21]>>i) & 0x01 ){						// data[21] ADCƒ}ƒXƒN
+							for( i=0; i < 4 ; i++ ){							// ã“ã®ä¸­ã§jã‚’ä½¿ç”¨ã—ã¦ã„ã‚‹
+								if( (data[21]>>i) & 0x01 ){						// data[21] ADCãƒã‚¹ã‚¯
 									xbee_result.ADCIN[i] =  (unsigned int)(data[(2*i+24-2*j)]);
 									xbee_result.ADCIN[i] *= (unsigned int)256;
 									xbee_result.ADCIN[i] += (unsigned int)(data[2*i+25-2*j]);
@@ -1128,7 +1153,7 @@ ZCL
 							}
 							printf("adc1-3 :%d %d %d\n", xbee_result.ADCIN[1], xbee_result.ADCIN[2],xbee_result.ADCIN[3] );
 							if( xbee_result.ADCIN[0] != 0 )printf("battery:%d mV\n", xbee_result.ADCIN[0] );
-						}else if( data[15] == '%' && data[16] == 'V'){	// BATT‚ÌóM
+						}else if( data[15] == '%' && data[16] == 'V'){	// BATTã®å—ä¿¡
 							printf("BATT   :");
 							lcd_disp_bin( data[18] ); printf(" ");
 							lcd_disp_bin( data[19] ); printf("\n");
@@ -1150,5 +1175,6 @@ ZCL
 		}
 		printf("done\n");
 	}
+	close_serial_port();
 	return(ret);
 }
