@@ -98,6 +98,7 @@
 				#define 	LCD_ROW_4		0x54	//４行目先頭アドレス
 			#endif
 		#else // PC
+			#define LINUX_PC
 			#include <stdio.h>
 			#include <stdlib.h>
 			#include <string.h>
