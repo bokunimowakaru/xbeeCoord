@@ -260,6 +260,7 @@
 	#define 	ZB_TYPE_COORD	0x21		// ZigBee Coordinator
 	#define 	ZB_TYPE_ROUTER	0x23		// ZigBee Router
 	#define 	ZB_TYPE_ENDDEV	0x29		// ZigBee End Device
+	#define 	ZB_TYPE_TH_Reg	0x40		// ZigBee TH Reg
 	#define 	XB_TYPE_NULL	0x00		// XBee Wi-Fi バージョン未取得
 	#define 	XB_TYPE_WIFI10	0x10		// XBee Wi-Fi Ver. 10xx
 	#define 	XB_TYPE_WIFI20	0x20		// XBee Wi-Fi Ver. 20xx
