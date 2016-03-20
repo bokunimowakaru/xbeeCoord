@@ -1,5 +1,16 @@
 /***************************************************************************************
-ZIGBEE COORDINATORに設定する
+ZIGBEE Device Type Switcher for XBee ZB S2C Series
+
+実行すると以下のようなメッセージが表示されます。変更したいファームウェアの番号を入力すると、
+自動的に設定を開始します。
+途中でエラーが出たとしても最後に「SUCCESS」が表示されれば変更完了です。
+
+ZIGBEE Device Type Switcher for XBee ZB S2C Series
+00:Coordinator AT,  01:Router AT,  02:End Device AT
+10:Coordinator API, 11:Router API, 12:End Device API
+mode = 10⏎
+Coordinator API
+
                                                         Copyright (c) 2016 Wataru KUNINO
 ***************************************************************************************/
 
@@ -104,7 +115,7 @@ int main(int argc,char **argv){
         port=j;
     }
     
-    printf("ZIGBEE Mode Switcher for XBee ZB S2C Series\n");
+    printf("ZIGBEE Device Type Switcher for XBee ZB S2C Series\n");
     printf("00:Coordinator AT,  01:Router AT,  02:End Device AT\n");
     printf("10:Coordinator API, 11:Router API, 12:End Device API\n");
     printf("Mode = ");
