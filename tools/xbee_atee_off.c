@@ -21,7 +21,7 @@ int main(int argc,char **argv){
         }else port = (byte)(atoi(argv[1]));
     }
     xbee_init( port );                          // XBee用COMポートの初期化
-    printf("Disable Encription\n");                    // エラー表示
+    printf("Disabling Encryption\n");
     ret = xbee_atee_off();
     if( ret <= 1 ){                             // 暗号化をオフにする
         printf("SUCCESS\n");                    // 表示

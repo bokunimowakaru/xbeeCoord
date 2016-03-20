@@ -19,9 +19,12 @@ PROGS = examples/sample01_led \
 		examples/PocketGeiger_xbee \
 		examples/PocketGeiger_xbee_fet \
 		tools/xbee_test \
-		tools/xbee_aging \
-		tools/xbee_atee_off \
+		tools/xbee_at_term \
+		tools/xbee_com \
 		tools/xbee_atcb04 \
+		tools/xbee_atee_off \
+		tools/xbee_zb_mode \
+		tools/xbee_aging \
 		examples_lite/sample01_led \
 		examples_lite/sample02_sw \
 		examples_lite/sample04_sens \
