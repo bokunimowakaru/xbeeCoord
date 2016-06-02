@@ -16,7 +16,7 @@ int main(void){
 
     xbee_init( 0 );                     // XBeeの初期化
     printf("Example 31 LED ('q' to Exit)\n");
-    while( xbee_ping(dev)==00 ){        // 繰り返し処理
+    while( xbee_ping(dev)==0 ){         // 繰り返し処理
         xbee_gpo(dev,port,value);       // リモート機ポート(port)に制御値(value)を設定
         printf("Port  =");              // ポート番号入力のための表示
         fgets(s, 4, stdin);             // 標準入力から取得(キーボード入力)

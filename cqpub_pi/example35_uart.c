@@ -22,7 +22,7 @@ int main(void){
     printf("Example 35 UART (ESC key to Exit)\n");
     s[0]='\0';                                      // 文字列の初期化
     printf("TX-> ");                                // 待ち受け中の表示
-    if( xbee_ping(dev)==00 ){
+    if( xbee_ping(dev)==0 ){
         xbee_myaddress(dev_my);                     // Raspberry Piのアドレスを登録する
         xbee_ratd_myaddress(dev);                   // 子機にPCのアドレスを設定する
         xbee_rat(dev,"ATAP00");                     // XBee APIを解除(UARTモードに設定)
