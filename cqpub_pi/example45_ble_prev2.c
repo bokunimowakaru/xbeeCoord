@@ -41,7 +41,7 @@ int main(int argc,char **argv){
             sprintf(s,"sudo gatttool -b %s --char-write -a 13 -n 0%c",argv[1],c);                                                          // コマンド作成
             system(s);                                                  // コマンド実行
         }
-        system("sudo hcitool lescan --passive > /dev/null &");          // LEスキャン
+        system("sudo hcitool lescan --pa --du > /dev/null &");          // LEスキャン
         fp=popen("sudo hcidump","r");                                   // hcidump実行
         while(fp){
             fgets(s,256,fp);                                            // hcidumpから

@@ -12,7 +12,7 @@ int main(){
     FILE  *fp;
     int i;
     
-    system("sudo hcitool lescan --passive > /dev/null &");      // LEスキャンの実行
+    system("sudo hcitool lescan --pa --du > /dev/null &");      // LEスキャンの実行
     fp=popen("sudo hcidump","r");                               // hcidumpの実行
     if( fp==NULL ){                                             // 開始できなかった時
         fprintf(stderr,"System Command Error!\n");              // エラー表示

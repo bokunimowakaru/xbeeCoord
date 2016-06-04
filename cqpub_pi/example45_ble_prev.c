@@ -30,7 +30,7 @@ int main(int argc,char **argv){
     printf("Example 45 BLE Prev\n");                                    // 起動表示
     while(1){
         if( kbhit() ) if( getchar() =='q' ) break;                      // 「Q」で終了
-        system("sudo hcitool lescan --passive > /dev/null &");          // LEスキャン
+        system("sudo hcitool lescan --pa --du > /dev/null &");          // LEスキャン
         fp=popen("sudo hcidump","r");                                   // hcidump実行
         while(fp){
             fgets(s,256,fp);                                            // hcidumpから
