@@ -21,7 +21,7 @@ int main(int argc,char **argv){
         }else port = (byte)(atoi(argv[1]));
     }
     xbee_init( port );                          // XBee用COMポートの初期化
-    printf("Restore Network Settings\n");                    // エラー表示
+    printf("Resetting Network Setting\n");
     ret = xbee_atcb(4);                         // ネットワーク設定をリセットする
     if( ret==00 ){                              // 暗号化をオフにする
         printf("SUCCESS\n");                    // 表示

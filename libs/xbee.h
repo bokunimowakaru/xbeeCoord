@@ -3,7 +3,7 @@
 本ソースリストおよびソフトウェアは、ライセンスフリーです。
 利用、編集、再配布等が自由に行えますが、著作権表示の改変は禁止します。
 
-							   Copyright (c) 2010-2014 Wataru KUNINO
+							   Copyright (c) 2010-2016 Wataru KUNINO
 							   http://www.geocities.jp/bokunimowakaru/
 *********************************************************************/
 
@@ -132,13 +132,8 @@
 #ifndef XB_DEFINE_H
 	#define XB_DEFINE_H
 	#ifndef NAME
-		#ifdef LITE // BeeBee Lite by 蘭
-			#define 	NAME		"BeeBee Lite"
-			#define 	COPYRIGHT	"by Wataru & Ran"
-		#else
-			#define 	NAME		"ZB Coord"
-			#define 	COPYRIGHT	"by Wataru KUNINO"
-		#endif
+		#define 	NAME		"ZB Coord"
+		#define 	COPYRIGHT	"by Wataru KUNINO"
 	#endif
 
 	#ifdef H3694
@@ -260,6 +255,7 @@
 	#define 	ZB_TYPE_COORD	0x21		// ZigBee Coordinator
 	#define 	ZB_TYPE_ROUTER	0x23		// ZigBee Router
 	#define 	ZB_TYPE_ENDDEV	0x29		// ZigBee End Device
+	#define 	ZB_TYPE_TH_Reg	0x40		// ZigBee TH Reg
 	#define 	XB_TYPE_NULL	0x00		// XBee Wi-Fi バージョン未取得
 	#define 	XB_TYPE_WIFI10	0x10		// XBee Wi-Fi Ver. 10xx
 	#define 	XB_TYPE_WIFI20	0x20		// XBee Wi-Fi Ver. 20xx

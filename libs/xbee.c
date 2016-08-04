@@ -242,19 +242,11 @@ XBee AT commands.
 						- [重要] xbee_gpiの不具合修正・簡易テスト完
 	2015/11/08	1.94	- xbee_delayのwait方法を変更(while->usleep)
 						- init追加 0xAF～0xAA:AMA0～5
-<<<<<<< HEAD
-						- xbee_adcの不具合修正
-=======
 						- [重要] xbee_adcの不具合修正・簡易テスト完
 	2016/02/22	1.95	- エラー時のログ出力機能を追加（RasPi用）
 						- gcc Version 4.9.2対応
-						- TODO Raspberry Pi版のサンプル作成
-						- TODO Raspberry Pi版XBee Wi-Fi対応
-						- TODO Raspberry Pi版pubフォルダ対応
-						- TODO Arduino版の更新
-						- TODO mbed版の更新
-	2016/03/XX	1.96	- ZigBee Raspberry Pi版の正式対応版の作成完了
->>>>>>> raspi
+	2016/08/04	1.96	- XBee ZB S2Cシリーズ対応
+						- ZigBee Raspberry Pi版の正式対応版の作成完了
 
 *********************************************************************/
 /*
@@ -262,7 +254,7 @@ XBee AT commands.
 */
 #ifndef VERSION
 
-	#define 	VERSION "1.95"		// 1.XX 4バイト形式 XXは半角文字
+	#define 	VERSION "1.96"		// 1.XX 4バイト形式 XXは半角文字
 
 #endif
 /*
@@ -531,13 +523,8 @@ XBee AT commands.
 #ifndef XB_DEFINE_H
 	#define XB_DEFINE_H
 	#ifndef NAME
-		#ifdef LITE // BeeBee Lite 
-			#define 	NAME		"BeeBee Lite"
-			#define 	COPYRIGHT	"by Wataru & Ran"
-		#else
-			#define 	NAME		"ZB Coord"
-			#define 	COPYRIGHT	"by Wataru KUNINO"
-		#endif
+		#define 	NAME		"ZB Coord"
+		#define 	COPYRIGHT	"by Wataru KUNINO"
 	#endif
 
 	#ifdef H3694
@@ -660,6 +647,7 @@ XBee AT commands.
 	#define 	ZB_TYPE_COORD	0x21		// ZigBee Coordinator
 	#define 	ZB_TYPE_ROUTER	0x23		// ZigBee Router
 	#define 	ZB_TYPE_ENDDEV	0x29		// ZigBee End Device
+	#define 	ZB_TYPE_TH_Reg	0x40		// ZigBee TH Reg
 	#define 	XB_TYPE_NULL	0x00		// XBee Wi-Fi バージョン未取得
 	#define 	XB_TYPE_WIFI10	0x10		// XBee Wi-Fi Ver. 10xx
 	#define 	XB_TYPE_WIFI20	0x20		// XBee Wi-Fi Ver. 20xx
@@ -3056,7 +3044,8 @@ byte xbee_reset( void ){
 					DEVICE_TYPE = value[8];
 					if( DEVICE_TYPE != ZB_TYPE_COORD && 
 						DEVICE_TYPE != ZB_TYPE_ROUTER && 
-						DEVICE_TYPE != ZB_TYPE_ENDDEV){ // VRの確認
+						DEVICE_TYPE != ZB_TYPE_ENDDEV && 
+						DEVICE_TYPE != ZB_TYPE_TH_Reg){ // VRの確認
 						#ifdef LCD_H
 							lcd_cls();
 							#ifdef H3694
@@ -3690,7 +3679,8 @@ byte xbee_atvr( void ){
 			DEVICE_TYPE = data[8];
 			if( DEVICE_TYPE != ZB_TYPE_COORD &&
 				DEVICE_TYPE != ZB_TYPE_ROUTER &&
-				DEVICE_TYPE != ZB_TYPE_ENDDEV) ret = 0xFF;
+				DEVICE_TYPE != ZB_TYPE_ENDDEV && 
+				DEVICE_TYPE != ZB_TYPE_TH_Reg) ret = 0xFF;
 			else ret = DEVICE_TYPE;
 		}
 		#ifdef LCD_H
@@ -3716,8 +3706,8 @@ byte xbee_atcb( byte cb ){
 		if( cb == 1 || cb == 2 ){
 			if( xbee_tx_rx( "ATCB", data ,1 ) > 0) ret = 0x00;
 		}else if( cb == 4){
-			if( xbee_tx_rx( "ATCB", data ,1 ) > 0){
-				if( DEVICE_TYPE == ZB_TYPE_COORD ){
+			if( xbee_tx_rx( "ATCB", data ,1 ) > 0){	// ATCB実行後のメッセージ対応
+				if( DEVICE_TYPE == ZB_TYPE_COORD ){	// XBee S2Cで何らかの対応が必要かもしれない
 					wait_millisec(1000);
 					sci_clear();
 					wait_millisec(5000);
@@ -3839,7 +3829,7 @@ byte xbee_atee_on(const char *key ){
 			if( data[8] == 0x00 ){	// ATEEの応答が00の時
 				data[0] = 0x01; 				// ATEE = 0x01に設定
 				if( xbee_tx_rx( "ATEE", data ,1 ) > 0 ){
-					if( DEVICE_TYPE == ZB_TYPE_COORD ){
+					if( DEVICE_TYPE == ZB_TYPE_COORD ){	// XBee S2Cで何らかの対応が必要かもしれない
 						wait_millisec(1000);
 						sci_clear();
 						wait_millisec(5000);
@@ -5107,6 +5097,7 @@ byte xbee_init( const byte port ){
 						case ZB_TYPE_COORD: 	lcd_putstr( " COORD."); break;
 						case ZB_TYPE_ROUTER:	lcd_putstr( " ROUTER"); break;
 						case ZB_TYPE_ENDDEV:	lcd_putstr( " ENDDEV"); break;
+						case ZB_TYPE_TH_Reg:	lcd_putstr( " TH Reg"); break;
 					#else
 						case XB_TYPE_NULL:		lcd_putstr( " XBee Wi-Fi"); break;
 						case XB_TYPE_WIFI10:	lcd_putstr( " XBee Wi-Fi Ver 1.0"); break;
