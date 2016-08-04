@@ -3,7 +3,7 @@
 本ソースリストおよびソフトウェアは、ライセンスフリーです。
 利用、編集、再配布等が自由に行えますが、著作権表示の改変は禁止します。
 
-							   Copyright (c) 2010-2014 Wataru KUNINO
+							   Copyright (c) 2010-2016 Wataru KUNINO
 							   http://www.geocities.jp/bokunimowakaru/
 *********************************************************************/
 
@@ -132,13 +132,8 @@
 #ifndef XB_DEFINE_H
 	#define XB_DEFINE_H
 	#ifndef NAME
-		#ifdef LITE // BeeBee Lite by 蘭
-			#define 	NAME		"BeeBee Lite"
-			#define 	COPYRIGHT	"by Wataru & Ran"
-		#else
-			#define 	NAME		"ZB Coord"
-			#define 	COPYRIGHT	"by Wataru KUNINO"
-		#endif
+		#define 	NAME		"ZB Coord"
+		#define 	COPYRIGHT	"by Wataru KUNINO"
 	#endif
 
 	#ifdef H3694

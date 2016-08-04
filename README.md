@@ -18,7 +18,7 @@ XBee ZigBee、XBee Wi-Fi によるセンサネットワークを構築するた�
 ボクにもわかるRaspberry Pi：  
 	http://www.geocities.jp/bokunimowakaru/q/pi/  
 
-							   Copyright (c) 2010-2015 Wataru KUNINO
+							   Copyright (c) 2010-2016 Wataru KUNINO
 							   http://www.geocities.jp/bokunimowakaru/
 
 -----------------------------------------------------------------------------------------

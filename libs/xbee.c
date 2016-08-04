@@ -245,13 +245,8 @@ XBee AT commands.
 						- [重要] xbee_adcの不具合修正・簡易テスト完
 	2016/02/22	1.95	- エラー時のログ出力機能を追加（RasPi用）
 						- gcc Version 4.9.2対応
-	2016/03/XX	1.96	- XBee ZB S2Cシリーズ対応
+	2016/08/04	1.96	- XBee ZB S2Cシリーズ対応
 						- ZigBee Raspberry Pi版の正式対応版の作成完了
-						- TODO Raspberry Pi版のサンプル作成
-						- TODO Raspberry Pi版XBee Wi-Fi対応
-						- TODO Raspberry Pi版pubフォルダ対応
-						- TODO Arduino版の更新
-						- TODO mbed版の更新
 
 *********************************************************************/
 /*
@@ -528,13 +523,8 @@ XBee AT commands.
 #ifndef XB_DEFINE_H
 	#define XB_DEFINE_H
 	#ifndef NAME
-		#ifdef LITE // BeeBee Lite 
-			#define 	NAME		"BeeBee Lite"
-			#define 	COPYRIGHT	"by Wataru & Ran"
-		#else
-			#define 	NAME		"ZB Coord"
-			#define 	COPYRIGHT	"by Wataru KUNINO"
-		#endif
+		#define 	NAME		"ZB Coord"
+		#define 	COPYRIGHT	"by Wataru KUNINO"
 	#endif
 
 	#ifdef H3694
