@@ -30,7 +30,8 @@ char HTTP_ADDR[16]=     "127.0.0.1";            // HTTPサーバのサーバの�
 #define HTDOCSIN_SIZE   2048                    // 2 kB (コマンド入力用バッファ)
 #define HTDOCS "htdocs/httpd.html"              // 制御用HTMLファイル(htdocsは固定長)
 #define HTSTAT "htdocs/stat.html"               // 結果HTMLファイル
-// #define DEBUG
+
+// #define DEBUG								// デバッグ用
 
 int readHtml(char *buf,int size,char *filename);
 int writeHtml(char *filename);
@@ -48,22 +49,23 @@ int main(int argc,char **argv){
     int sock0;
     struct sockaddr_in addr;
     struct sockaddr_in client;
+    socklen_t addrlen;
     struct ifreq ifr;
 //  struct timeval timeout;
 //  fd_set Mask; fd_set readOk;
     int len, sock, yes = 1;
-    socklen_t socklen;
     char buf[HTDOCS_SIZE],inbuf[HTDOCSIN_SIZE],filename[256];
     char *strP;
     char user_command='\0';
 
     printf("------------------------------------------------------------\n");
-    printf("                      httpd is started \n");
+    printf("   %s ver %s (gcc:%s), ",NAME,VERSION,__VERSION__);
+    printf("date:%s %s\n",__DATE__,__TIME__);
+    printf("\n                      httpd is started \n");
     printf("------------------------------------------------------------\n");
 
     /* HTTPサーバ 初期処理 */
-//  timeout.tv_sec = 0; timeout.tv_usec = HTTP_TIMEOUT * 1000;
-    if((sock0=socket(AF_INET, SOCK_STREAM, 0)) < 0){
+    if((sock0=socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0){
         perror("ERROR socket fault\n"); return -1;
     }
     if(argc>1){
@@ -82,7 +84,6 @@ int main(int argc,char **argv){
     if(bind(sock0, (struct sockaddr *)&addr, sizeof(addr)) != 0){
         perror("ERROR bind fault\n"); return -1;
     }
-//  FD_ZERO(&Mask); FD_SET(sock0,&Mask); FD_SET(0,&Mask);
     if(listen(sock0, 5) != 0){                  // 同時セッション数：5
         perror("ERROR listen fault"); return -1;
     }
@@ -99,22 +100,16 @@ int main(int argc,char **argv){
     strcpy(filename,&filename[7]);
     printf("Usage for Web UI: http://%s/%s\n",HTTP_ADDR,filename);
 
-    /* メイン処理 */
+    /* HTTPサーバ処理 */
     while( !EXIT ){ // ほぼ永久に受信する
-
-        /* HTTPサーバ処理 */
         user_command = '\0';
-    //  readOk=Mask;
-    //  timeout.tv_sec = 0; 
-    //  timeout.tv_usec = HTTP_TIMEOUT * 1000;
-    //  if(select(sock0+1,(fd_set *)&readOk,NULL,NULL,&timeout)>0){
 
         /* 待ち受け */
         #ifdef DEBUG
             printf("Waiting for packets\n");
         #endif
-        socklen = (socklen_t)sizeof(client);
-        sock = accept(sock0, (struct sockaddr *)&client, &socklen);
+        addrlen = (socklen_t)sizeof(client);
+        sock = accept(sock0, (struct sockaddr *)&client, &addrlen);
         time(&timer);
         time_st = localtime(&timer);
         sprintf(today_s,"%4d/%02d/%02d",
@@ -128,18 +123,30 @@ int main(int argc,char **argv){
                 ntohs(client.sin_port));
             continue;
         }
+        
+        /* ソケット受信処理 */
+        yes = 1;
+		ioctl(sock, FIONBIO, &yes);				// ノンブロッキング設定
         memset(inbuf, 0, sizeof(inbuf));
-        usleep(1000);                           // パケット待ち時間 1ms
-        recv(sock,inbuf,sizeof(inbuf),0);       // パケット受信の実行
-        if(strlen(inbuf)==0){
-            fprintf(stderr,"%s %s ERROR:no HTTP commands\n",today_s,time_s);
+    //  usleep(1000);　recv(sock,inbuf,sizeof(inbuf),0);       // パケット受信の実行
+    	len=0;
+    	for(i=0;i<10;i++){						// リトライ10回
+    		len=recvfrom(sock,inbuf,sizeof(inbuf),0,(struct sockaddr *)&client,&addrlen);
+    		if(len>0) break;
+    		usleep(1000);
+    	}
+        if(!strlen(inbuf) || !len){
+            fprintf(stderr,"%s %s ERROR:no HTTP commands ",today_s,time_s);
+            fprintf(stderr,"(DEBUG:len=%d, strlen=%d, i=%d)\n",len,strlen(inbuf),i);
             close(sock);
             continue;
         }
         #ifdef DEBUG
             printf("%s[EOF]\n\n",inbuf);        // テスト用
         #endif
-        usleep(1000);                           // クライアント側の切り替え待ち時間
+     // usleep(1000);                           // クライアント側の切り替え待ち時間
+     
+     	/* ヘッダの解析と応答 */
         printf("%s %s ",today_s,time_s);
         if(strncmp(inbuf,"GET",3)==0){          // HTTP-GETの時
             strP=strchr(&inbuf[4],' ');         // スペースを検索
@@ -155,7 +162,7 @@ int main(int argc,char **argv){
             }else{
                 fprintf(stderr,"%s %s ERROR:readHtml '%s'(%d bytes)\n",today_s,time_s,filename,len);
                 //          12345678901234567890123 4 -> 24文字
-                write(sock,"HTTP/1.0 404 Not Found\r\n",24);
+                write(sock,"HTTP/1.1 404 Not Found\r\n",24);
             }
         }else if(strncmp(inbuf,"POST",4)==0){   // HTTP-POSTの時
             i=0; user_command='\0';
@@ -190,7 +197,7 @@ int main(int argc,char **argv){
                 printf("ERROR 400\n");
                 fprintf(stderr,"%s %s ERROR:No HTTP Content\n",today_s,time_s);
                 //          1234567890123456789012345 6 -> 26文字
-                write(sock,"HTTP/1.0 400 Bad Request\r\n",26);
+                write(sock,"HTTP/1.1 400 Bad Request\r\n",26);
             }
         }else{
             printf("ERROR 500\n");
@@ -198,12 +205,13 @@ int main(int argc,char **argv){
             fprintf(stderr,"%s %s ERROR:unsupported HTTP command '%s'\n",today_s,time_s,inbuf);
             //          12345678901234567890123456789012345 6 -> 36文字
             usleep(20);
-            write(sock,"HTTP/1.0 500 Internal Server Error\r\n",36);
+            write(sock,"HTTP/1.1 500 Internal Server Error\r\n",36);
             #ifdef DEBUG
                 printf("\n==== recieved ====\n%s[EOF]\n",inbuf);        // テスト用
             #endif
         }
         close(sock);
+    //  usleep(1000);                           // クライアント側の切り替え待ち時間
         switch( user_command ){
             case 'Z':
                 EXIT=1;
@@ -242,9 +250,9 @@ int readHtml(char *buf,int size,char *filename){
     len = ftell(fp);                            // その位置を取得。つまりファイルサイズ
     fseek(fp, 0L, SEEK_SET);                    // ファイルの先頭に戻る
     */
-    sprintf(buf,"HTTP/1.0 200 OK\r\n");
+    sprintf(buf,"HTTP/1.1 200 OK\r\n");
     strcat(buf,"Content-Type: ");
-//  sprintf(buf,"HTTP/1.0 200 OK\r\nContent-Length: %d\r\nContent-Type: ",len);
+//  sprintf(buf,"HTTP/1.1 200 OK\r\nContent-Length: %d\r\nContent-Type: ",len);
     if(strncmp(".html",&filename[strlen(filename)-5],5)==0){
         strcat(buf,"text/html\r\n");
     }else if(strncmp(".jpg",&filename[strlen(filename)-4],4)==0){
@@ -325,12 +333,40 @@ int writeHtmlPrint(char *filename,char *url,char *s){
 Geekなぺーじ TCPサーバサンプル
 http://www.geekpage.jp/programming/linux-network/http-server.php
 
+Geekなぺーじ インターフェースのIPアドレスを取得する
+http://www.geekpage.jp/programming/linux-network/get-ipaddr.php
+
+Geekなぺーじ ノンブロッキングソケット
+http://www.geekpage.jp/programming/linux-network/nonblocking.php
+
+C言語-socket関数
+http://capm-network.com/?tag=C%E8%A8%80%E8%AA%9E-socket%E9%96%A2%E6%95%B0
+
 ソケットプログラミング
 http://www.katto.comm.waseda.ac.jp/~katto/Class/GazoTokuron/code/socket.html
 
 C言語講座：TCP/IPプログラム(その2：サーバ) selectによるタイムアウト
 http://www.ncad.co.jp/~komata/c-kouza10.htm
 
-Geekなぺーじ インターフェースのIPアドレスを取得する
-http://www.geekpage.jp/programming/linux-network/get-ipaddr.php
+HTTPサーバプログラムの作成
+http://research.nii.ac.jp/~ichiro/syspro98/wwwserver.html
+*/
+
+
+/*
+        FD_ZERO(&Mask); FD_SET(sock0,&Mask); 	// FD_SET(0,&Mask);
+        readOk=Mask;
+        timeout.tv_sec = 0; 
+        timeout.tv_usec = HTTP_TIMEOUT * 1000;
+        i=select(sock,(fd_set *)&readOk,NULL,NULL,&timeout);
+        if(i<0){
+            fprintf(stderr,"%s %s ERROR:select\n",today_s,time_s);
+            close(sock);
+			continue;
+		}
+        printf("end select (i=%d)\n",i);
+		if(i==0){
+            close(sock);
+			continue;
+		}
 */
