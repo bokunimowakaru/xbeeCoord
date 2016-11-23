@@ -1,8 +1,7 @@
-/*********************************************************************
+/***************************************************************************************
 本ソースリストおよびソフトウェアは、ライセンスフリーです。
 利用、編集、再配布等が自由に行えますが、著作権表示の改変は禁止します。
 
-バックグラウンドでの実行は出来ません。
 HTMLファイルとGIF,PNG,JPEG画像ファイル(拡張子)のみサポートしています。
 
 コンパイル	gcc -Wall httpd.c -o httpd.exe
@@ -12,16 +11,14 @@ HTMLファイルとGIF,PNG,JPEG画像ファイル(拡張子)のみサポート�
                                					http://www.geocities.jp/bokunimowakaru/
 ***************************************************************************************/
 #include <stdio.h>								// 標準入出力
-#include <sys/types.h>							// socket.hに必要
-#include <sys/socket.h>							// TCPソケット
+#include <unistd.h>								// Unix関数用 write usleep
+#include <arpa/inet.h>							// htons, INADDR_ANY, inet_ntoa
 #include <string.h>								// str*を使用
 #include <ctype.h>								// isdigit,isgraphを使用
-#include <termios.h>
-#include <sys/signal.h>
-#include <sys/time.h>
-#include <arpa/inet.h>
-#include <fcntl.h>								// flock
-#include <unistd.h>								// write
+#include <time.h>								// time, localtime
+#include <sys/file.h>							// flock
+#include <sys/socket.h>							// Windows用TCPソケット
+
 #define NAME			"HTTPD"					// 本ソフトの名前
 #define VERSION			"1.1.0"					// 本ソフトのバージョン
 #define HTTP_ADDR		"127.0.0.1"				// HTTPサーバのサーバのアドレス
@@ -152,6 +149,7 @@ int main(int argc,char **argv){
 //	fd_set Mask;
 //	fd_set readOk;
 	int len, sock, yes = 1;
+	socklen_t socklen;
 	char buf[HTDOCS_SIZE],inbuf[HTDOCSIN_SIZE],filename[256];
 	char *strP;
 	char user_command='\0';
@@ -206,8 +204,8 @@ int main(int argc,char **argv){
 
 		/* 待ち受け */
 		printf("Waiting for packets\n");
-		len = sizeof(client);
-		sock = accept(sock0, (struct sockaddr *)&client, &len);
+		socklen = (socklen_t)sizeof(client);
+		sock = accept(sock0, (struct sockaddr *)&client, &socklen);
 		time(&timer);
 		time_st = localtime(&timer);
 		sprintf(today_s,"%4d/%02d/%02d",time_st->tm_year+1900,time_st->tm_mon+1,time_st->tm_mday);
