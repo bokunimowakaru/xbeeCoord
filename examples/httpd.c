@@ -5,7 +5,7 @@
 HTMLファイルとGIF,PNG,JPEG画像ファイル(拡張子)のみサポートしています。
 
 コンパイル  gcc -Wall httpd.c -o httpd
-実行方法    sudo ./httpd 2>> err.log
+実行方法    sudo ./httpd <サーバのIPアドレスorURL>
 
                                                 Copyright (c) 2014-2016 Wataru KUNINO
                                                 http://www.geocities.jp/bokunimowakaru/
@@ -66,11 +66,15 @@ int main(int argc,char **argv){
     if((sock0=socket(AF_INET, SOCK_STREAM, 0)) < 0){
         perror("ERROR socket fault\n"); return -1;
     }
-    ifr.ifr_addr.sa_family = AF_INET;
-    strncpy(ifr.ifr_name, "eth0", IFNAMSIZ-1);
-    ioctl(sock0, SIOCGIFADDR, &ifr);            // IFのIPアドレスを取得する
-    strncpy(HTTP_ADDR,inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr),15);
-
+    if(argc>1){
+        strncpy(HTTP_ADDR,argv[1],15);
+    }else{
+        ifr.ifr_addr.sa_family = AF_INET;
+        strncpy(ifr.ifr_name, "eth0", IFNAMSIZ-1);
+        ioctl(sock0, SIOCGIFADDR, &ifr);            // IFのIPアドレスを取得する
+        strncpy(HTTP_ADDR,inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr),15);
+    }
+    
     addr.sin_family = AF_INET;
     addr.sin_port = htons(HTTP_PORT);
     addr.sin_addr.s_addr = INADDR_ANY;
