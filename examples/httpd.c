@@ -30,7 +30,7 @@ char HTTP_ADDR[16]=     "127.0.0.1";            // HTTPサーバのサーバの�
 #define HTDOCSIN_SIZE   2048                    // 2 kB (コマンド入力用バッファ)
 #define HTDOCS "htdocs/httpd.html"              // 制御用HTMLファイル(htdocsは固定長)
 #define HTSTAT "htdocs/stat.html"               // 結果HTMLファイル
-#define DEBUG
+// #define DEBUG
 
 int readHtml(char *buf,int size,char *filename);
 int writeHtml(char *filename);
