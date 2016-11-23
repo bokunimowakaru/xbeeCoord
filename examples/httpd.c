@@ -79,7 +79,7 @@ int main(int argc,char **argv){
         perror("ERROR bind fault\n"); return -1;
     }
 //  FD_ZERO(&Mask); FD_SET(sock0,&Mask); FD_SET(0,&Mask);
-    if(listen(sock0, 5) != 0){
+    if(listen(sock0, 1) != 0){
         perror("ERROR listen fault"); return -1;
     }
     if( writeHtml(HTDOCS)==0 ) return -1;
