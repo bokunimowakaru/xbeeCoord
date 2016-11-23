@@ -120,7 +120,7 @@ int main(int argc,char **argv){
         sprintf(today_s,"%4d/%02d/%02d",
             time_st->tm_year+1900,time_st->tm_mon+1,time_st->tm_mday);
         sprintf(time_s,"%02d:%02d",time_st->tm_hour,time_st->tm_min);
-        printf("%s %s %s:%d ",
+        printf("%s %s Connetted from %s:%d\n",
             today_s,time_s,inet_ntoa(client.sin_addr), ntohs(client.sin_port));
         if(sock<0){
             fprintf(stderr,"%s %s ERROR:open socket from %s:%d\n",
@@ -143,6 +143,7 @@ int main(int argc,char **argv){
             printf("%s[EOF] i=%d\n\n", inbuf, i);       // テスト用
         #endif
         usleep(1000);                        	// クライアント側の切り替え待ち時間
+        printf("%s %s ",today_s,time_s);
         if(strncmp(inbuf,"GET",3)==0){          // HTTP-GETの時
             strP=strchr(&inbuf[4],' ');         // スペースを検索
             i = strP - &inbuf[4];               // スペースまでの文字数
