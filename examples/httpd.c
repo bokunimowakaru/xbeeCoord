@@ -129,20 +129,17 @@ int main(int argc,char **argv){
             continue;
         }
         memset(inbuf, 0, sizeof(inbuf));
-        for(i=0;i<100;i++){
-            recv(sock,inbuf,sizeof(inbuf),0);   // パケット受信の実行
-			if(strlen(inbuf)>0) break;			// 受信があれば抜ける
-            usleep(100);                        // パケット待ち時間
-        }
-        if(i==100){
+        usleep(1000);                           // パケット待ち時間 1ms
+        recv(sock,inbuf,sizeof(inbuf),0);       // パケット受信の実行
+        if(strlen(inbuf)==0){
             fprintf(stderr,"%s %s ERROR:no HTTP commands\n",today_s,time_s);
             close(sock);
             continue;
-		}
+        }
         #ifdef DEBUG
-            printf("%s[EOF] i=%d\n\n", inbuf, i);       // テスト用
+            printf("%s[EOF] i=%d\n\n",inbuf,i); // テスト用
         #endif
-        usleep(1000);                        	// クライアント側の切り替え待ち時間
+        usleep(1000);                           // クライアント側の切り替え待ち時間
         printf("%s %s ",today_s,time_s);
         if(strncmp(inbuf,"GET",3)==0){          // HTTP-GETの時
             strP=strchr(&inbuf[4],' ');         // スペースを検索
