@@ -3,70 +3,79 @@
 利用、編集、再配布等が自由に行えますが、著作権表示の改変は禁止します。
 
 バックグラウンドでの実行は出来ません。
-HTMLファイルとGIF画像ファイルのみサポートしています。
+HTMLファイルとGIF,PNG,JPEG画像ファイル(拡張子)のみサポートしています。
 
-コンパイル	gcc -Wall httpd.c
+コンパイル	gcc -Wall httpd.c -o httpd.exe
 実行方法	./httpd 2>> err.log
 
-                               Copyright (c) 2014-2016 Wataru KUNINO
-                               http://www.geocities.jp/bokunimowakaru/
-*********************************************************************/
-#include <stdio.h>							// 標準入出力
-#include <sys/types.h>						// socket.hに必要
-#include <sys/socket.h>						// TCPソケット
-#include <string.h>							// str*を使用
-#include <ctype.h>							// isdigitを使用
+                               					Copyright (c) 2014-2016 Wataru KUNINO
+                               					http://www.geocities.jp/bokunimowakaru/
+***************************************************************************************/
+#include <stdio.h>								// 標準入出力
+#include <sys/types.h>							// socket.hに必要
+#include <sys/socket.h>							// TCPソケット
+#include <string.h>								// str*を使用
+#include <ctype.h>								// isdigit,isgraphを使用
 #include <termios.h>
 #include <sys/signal.h>
 #include <sys/time.h>
 #include <arpa/inet.h>
-#include <fcntl.h>							// flock
-#include <unistd.h>							// write
-#include <windows.h>						// Sleep
-#define NAME		"HTTPD"
-#define VERSION		"1.0.1"
-#define HTTP_ADDR	"127.0.0.1"				// HTTPサーバのサーバのアドレス
-#define HTTP_PORT	80						// HTTPサーバのポート番号
-#define HTTP_TIMEOUT 500					// HTTPサーバ待ち受け時間 500ms
-#define HTDOCS_SIZE		32767				// 32 K Bytes (最大ファイルサイズ)
-#define HTDOCSIN_SIZE	2048				// 2kB
-#define HTDOCS "htdocs/httpd.html"			// 制御用HTMLファイル(htdocsは固定長)
-#define HTSTAT "htdocs/stat.html"  			// 結果HTMLファイル
+#include <fcntl.h>								// flock
+#include <unistd.h>								// write
+#define NAME			"HTTPD"					// 本ソフトの名前
+#define VERSION			"1.1.0"					// 本ソフトのバージョン
+#define HTTP_ADDR		"127.0.0.1"				// HTTPサーバのサーバのアドレス
+#define HTTP_PORT		80						// HTTPサーバのポート番号
+#define HTTP_TIMEOUT 	500						// HTTPサーバ待ち受け時間 500ms
+#define HTDOCS_SIZE		32767					// 32 K Bytes (最大ファイルサイズ)
+#define HTDOCSIN_SIZE	2048					// 2 kB (コマンド入力用バッファ)
+#define HTDOCS "htdocs/httpd.html"				// 制御用HTMLファイル(htdocsは固定長)
+#define HTSTAT "htdocs/stat.html"  				// 結果HTMLファイル
 
 int readHtml(char *buf,int size,char *filename){
 	FILE *fp;
-	int len=0,lenP=0;
+	int i,len=0,lenP=0;
 	
-	if( (fp = fopen(filename,"rb")) == NULL ){
-		fprintf(stderr,"ERROR open file:%s\n",filename);
-		return(0);
+	if(size < 90) return 0;						// HTML応答の最小容量を確認
+	for(i=0;i<strlen(filename);i++)if(!isgraph((int)filename[i])){
+		fprintf(stderr,"ERROR Detected ctrl code:0x%X\n",filename[i]);
+		return 0;
 	}
-	flock(fileno(fp),LOCK_EX);	// ファイルをロック
-	fseek(fp, 0L, SEEK_END);	// ファイルの最後から0バイトつまり最後へ移動
-	len = ftell(fp);			// その位置を取得。つまりファイルサイズ
-	fseek(fp, 0L, SEEK_SET);	// ファイルの先頭に戻る
-	
+	if((fp=fopen(filename,"rb"))==NULL){		// ファイルオープン
+		fprintf(stderr,"ERROR open file:%s\n",filename);
+		return 0;
+	}
+	flock(fileno(fp),LOCK_EX);					// ファイルをロック
+	fseek(fp, 0L, SEEK_END);					// ファイルの最後へ移動
+	len = ftell(fp);							// その位置を取得。つまりファイルサイズ
+	fseek(fp, 0L, SEEK_SET);					// ファイルの先頭に戻る
+
+	sprintf(buf,"HTTP/1.0 200 OK\r\nContent-Length: %d\r\nContent-Type: ",len);
 	if(strncmp(".html",&filename[strlen(filename)-5],5)==0){
-		//           0123456789012345 6 7890123456789012  3 4 567890123456789012345678 9 0 1 = 62文字+len桁数
-		sprintf(buf,"HTTP/1.0 200 OK\r\nContent-Length: %d\r\nContent-Type: text/html\r\n\r\n",len);
+		strcat(buf,"text/html\r\n");
+	}else if(strncmp(".jpg",&filename[strlen(filename)-4],4)==0){
+		strcat(buf,"image/jpeg\r\n");
+	}else if(strncmp(".png",&filename[strlen(filename)-4],4)==0){
+		strcat(buf,"image/png\r\n");
 	}else if(strncmp(".gif",&filename[strlen(filename)-4],4)==0){
-		sprintf(buf,"HTTP/1.0 200 OK\r\nContent-Length: %d\r\nContent-Type: image/gif\r\n\r\n",len);
+		strcat(buf,"image/gif\r\n");
 	}else{
 		flock(fileno(fp),LOCK_UN);
 		fclose( fp );
 		buf[0]='\0';
-		return( 0 );
-	}
+		return 0;								// 拡張子がhtml,jpg,png,gifでないときに
+	}											// リターン
+	strcat(buf,"Connection: close\r\n\r\n");
 	lenP = (int)strlen(buf);
 	size -= lenP + 1;
-	while( feof(fp) == 0 && lenP < size){
+	while( feof(fp) == 0 && lenP < size){		// ファイルの読み込み
 		buf[lenP]=getc(fp);
 		lenP++;
 	}
-	flock(fileno(fp),LOCK_UN);	// ファイルロックの解除
-	buf[--lenP]='\0';
-	fclose( fp );
-	return(lenP);	// ファイルサイズ+HTMLヘッダ
+	flock(fileno(fp),LOCK_UN);					// ファイルロックの解除
+	buf[--lenP]='\0';							// 文字の終端
+	fclose( fp );								// ファイルを閉じる
+	return lenP;								// ファイルサイズ+HTMLヘッダ
 }
 
 int writeHtml(char *filename){
@@ -74,10 +83,10 @@ int writeHtml(char *filename){
 	
 	if( (fp_html = fopen(filename,"w")) == NULL ){
 		fprintf(stderr,"ERROR open file:%s\n",filename);
-		return(0);
+		return 0;
 	}
 	fprintf(fp_html,"<head><title>httpd Web UI</title>\r\n");
-	fprintf(fp_html, "<meta charset=\"Shift_JIS\">\r\n");
+	fprintf(fp_html, "<meta charset=\"utf-8\">\r\n");
 	fprintf(fp_html, "<meta http-equiv=\"refresh\" content=127></head>\r\n");
 	fprintf(fp_html, "<body><center>\r\n");
 	fprintf(fp_html, "<h3>httpd Web UI</h3><table><tr><td>\r\n");
@@ -97,7 +106,7 @@ int writeHtml(char *filename){
 	fprintf(fp_html, "[<a href=\"index.html\">戻る</a>]\r\n");
 	fprintf(fp_html, "</center></body></html>\r\n");
 	fclose(fp_html);
-	return(1);
+	return 1;
 }
 
 int writeHtmlPrint(char *filename,char *url,char *s){
@@ -105,26 +114,26 @@ int writeHtmlPrint(char *filename,char *url,char *s){
 	
 	if( (fp_html = fopen(filename,"w")) == NULL ){
 		fprintf(stderr,"ERROR open file:%s\n",filename);
-		return(0);
+		return 0;
 	}
 	fprintf(fp_html,"<head><title>XBee Responce</title>\r\n");
-	fprintf(fp_html, "<meta charset=\"Shift_JIS\">\r\n");
+	fprintf(fp_html, "<meta charset=\"utf-8\">\r\n");
 	fprintf(fp_html, "<meta http-equiv=\"refresh\" content=\"3;URL=%s\"></head>\r\n",url);
 	fprintf(fp_html, "<body><center>\r\n");
 	fprintf(fp_html, "<h3>%s</h3>\r\n",s);
 	fprintf(fp_html, "</center></body></html>\r\n");
 	fclose(fp_html);
-	return(1);
+	return 1;
 }
 
 int checkHtml(char *filename){
 	FILE *fp;
 	if( (fp = fopen(filename,"r")) == NULL ){
 		fprintf(stderr,"ERROR open file:%s\n",filename);
-		return(0);
+		return 0;
 	}
 	fclose( fp );
-	return(1);
+	return 1;
 }
 
 int main(int argc,char **argv){
@@ -140,7 +149,7 @@ int main(int argc,char **argv){
 	struct sockaddr_in addr;
 	struct sockaddr_in client;
 //	struct timeval timeout;
-	fd_set Mask;
+//	fd_set Mask;
 //	fd_set readOk;
 	int len, sock, yes = 1;
 	char buf[HTDOCS_SIZE],inbuf[HTDOCSIN_SIZE],filename[256];
@@ -155,22 +164,24 @@ int main(int argc,char **argv){
 //	timeout.tv_sec = 0; 
 //	timeout.tv_usec = HTTP_TIMEOUT * 1000;
 	if((sock0=socket(AF_INET, SOCK_STREAM, 0)) < 0){
-		perror("ERROR socket fault\n"); return(-1);
+		perror("ERROR socket fault\n"); return -1;
 	}
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(HTTP_PORT);
 	addr.sin_addr.s_addr = INADDR_ANY;
 	setsockopt(sock0, SOL_SOCKET, SO_REUSEADDR, (const char *)&yes, sizeof(yes));
 	if(bind(sock0, (struct sockaddr *)&addr, sizeof(addr)) != 0){
-		perror("ERROR bind fault\n"); return(-1);
+		perror("ERROR bind fault\n"); return -1;
 	}
+	/*
 	FD_ZERO(&Mask);
 	FD_SET(sock0,&Mask);
 	FD_SET(0,&Mask);
+	*/
 	if(listen(sock0, 5) != 0){
-		perror("ERROR listen fault"); return(-1);
+		perror("ERROR listen fault"); return -1;
 	}
-	if( writeHtml(HTDOCS)==0 ) return(-1);
+	if( writeHtml(HTDOCS)==0 ) return -1;
 
 	// 初期化処理　時刻
 	time(&timer);
@@ -184,7 +195,6 @@ int main(int argc,char **argv){
 	printf("Usage for Web UI: http://%s/%s\n",HTTP_ADDR,filename);
 
 	// メイン処理
-	printf("Receiving\n");
 	while( !EXIT ){	// ほぼ永久に受信する
 
 		/* HTTPサーバ処理 */
@@ -195,6 +205,7 @@ int main(int argc,char **argv){
 	//	if(select(sock0+1,(fd_set *)&readOk,NULL,NULL,&timeout)>0){
 
 		/* 待ち受け */
+		printf("Waiting for packets\n");
 		len = sizeof(client);
 		sock = accept(sock0, (struct sockaddr *)&client, &len);
 		time(&timer);
@@ -206,6 +217,7 @@ int main(int argc,char **argv){
 			memset(inbuf, 0, sizeof(inbuf));
 			usleep(1000);						// クライアント側の待ち時間
 			recv(sock, inbuf, sizeof(inbuf),0);
+			usleep(1000);						// クライアント側の待ち時間
 		//	printf("%s[EOF]\n\n", inbuf);		// テスト用
 			if(strncmp(inbuf,"GET",3)==0){		// HTTP-GETの時
 				strP=strchr(&inbuf[4],' ');		// スペースを検索
@@ -216,8 +228,8 @@ int main(int argc,char **argv){
 				printf(" GET [%s]\n",filename);
 				len = readHtml(buf,sizeof(buf),filename);
 				if(len){
-				//	send(sock, buf, len, 0);
-					write(sock, buf, len);
+					i=send(sock, buf, len, 0);		// write(sock, buf, len);
+					if(i<=0) fprintf(stderr,"%s %s ERROR:sending sockets (%d)\n",today_s,time_s,i);
 				}else{
 					fprintf(stderr,"%s %s ERROR:readHtml '%s'(%d bytes)\n",today_s,time_s,filename,len);
 					//          12345678901234567890123 4 -> 24文字
@@ -283,7 +295,7 @@ int main(int argc,char **argv){
 	printf("------------------------------------------------------------\n");
 	printf("        Bye! (restart to './httpd 2>> err.log')\n");
 	printf("------------------------------------------------------------\n");
-	return(0);
+	return 0;
 }
 /*
 参考文献
