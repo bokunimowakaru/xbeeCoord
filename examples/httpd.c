@@ -162,7 +162,7 @@ int main(int argc,char **argv){
             }else{
                 fprintf(stderr,"%s %s ERROR:readHtml '%s'(%d bytes)\n",today_s,time_s,filename,len);
                 //          12345678901234567890123 4 -> 24文字
-                write(sock,"HTTP/1.1 404 Not Found\r\n",24);
+                write(sock,"HTTP/1.0 404 Not Found\r\n",24);
             }
         }else if(strncmp(inbuf,"POST",4)==0){   // HTTP-POSTの時
             i=0; user_command='\0';
@@ -197,7 +197,7 @@ int main(int argc,char **argv){
                 printf("ERROR 400\n");
                 fprintf(stderr,"%s %s ERROR:No HTTP Content\n",today_s,time_s);
                 //          1234567890123456789012345 6 -> 26文字
-                write(sock,"HTTP/1.1 400 Bad Request\r\n",26);
+                write(sock,"HTTP/1.0 400 Bad Request\r\n",26);
             }
         }else{
             printf("ERROR 500\n");
@@ -205,7 +205,7 @@ int main(int argc,char **argv){
             fprintf(stderr,"%s %s ERROR:unsupported HTTP command '%s'\n",today_s,time_s,inbuf);
             //          12345678901234567890123456789012345 6 -> 36文字
             usleep(20);
-            write(sock,"HTTP/1.1 500 Internal Server Error\r\n",36);
+            write(sock,"HTTP/1.0 500 Internal Server Error\r\n",36);
             #ifdef DEBUG
                 printf("\n==== recieved ====\n%s[EOF]\n",inbuf);        // テスト用
             #endif
@@ -250,9 +250,9 @@ int readHtml(char *buf,int size,char *filename){
     len = ftell(fp);                            // その位置を取得。つまりファイルサイズ
     fseek(fp, 0L, SEEK_SET);                    // ファイルの先頭に戻る
     */
-    sprintf(buf,"HTTP/1.1 200 OK\r\n");
+    sprintf(buf,"HTTP/1.0 200 OK\r\n");
     strcat(buf,"Content-Type: ");
-//  sprintf(buf,"HTTP/1.1 200 OK\r\nContent-Length: %d\r\nContent-Type: ",len);
+//  sprintf(buf,"HTTP/1.0 200 OK\r\nContent-Length: %d\r\nContent-Type: ",len);
     if(strncmp(".html",&filename[strlen(filename)-5],5)==0){
         strcat(buf,"text/html\r\n");
     }else if(strncmp(".jpg",&filename[strlen(filename)-4],4)==0){
