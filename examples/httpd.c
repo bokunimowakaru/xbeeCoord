@@ -71,7 +71,7 @@ int main(int argc,char **argv){
     }else{
         ifr.ifr_addr.sa_family = AF_INET;
         strncpy(ifr.ifr_name, "eth0", IFNAMSIZ-1);
-        ioctl(sock0, SIOCGIFADDR, &ifr);            // IFのIPアドレスを取得する
+        ioctl(sock0, SIOCGIFADDR, &ifr);        // IFのIPアドレスを取得する
         strncpy(HTTP_ADDR,inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr),15);
     }
     
@@ -83,7 +83,7 @@ int main(int argc,char **argv){
         perror("ERROR bind fault\n"); return -1;
     }
 //  FD_ZERO(&Mask); FD_SET(sock0,&Mask); FD_SET(0,&Mask);
-    if(listen(sock0, 1) != 0){
+    if(listen(sock0, 5) != 0){                  // 同時セッション数：5
         perror("ERROR listen fault"); return -1;
     }
     if( writeHtml(HTDOCS)==0 ) return -1;
@@ -137,7 +137,7 @@ int main(int argc,char **argv){
             continue;
         }
         #ifdef DEBUG
-            printf("%s[EOF] i=%d\n\n",inbuf,i); // テスト用
+            printf("%s[EOF]\n\n",inbuf);        // テスト用
         #endif
         usleep(1000);                           // クライアント側の切り替え待ち時間
         printf("%s %s ",today_s,time_s);
