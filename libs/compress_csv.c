@@ -373,7 +373,8 @@ int _csv_daily_data(char *csv,int y,int m,int d,float *avr,enum xbee_sensor_type
 						}
 					}
 				}
-				if(feof(fp) == EOF ) break;
+				//if(feof(fp) == EOF ) break;
+				if(feof(fp)) break;
 			}
 			fclose(fp);
 			for(i=0;i<3;i++) if( n[i] > 0 ) vavr[i] /= (float)n[i]; else vavr[i] = -1;
@@ -882,7 +883,8 @@ int compress_data(char *date_lim , char *filename , enum xbee_sensor_type val1, 
 				i=csv2html( write, html, valn , html_b, type);
 				if( i == -1 ) fprintf(fpe,"ERROR open for read :%s\n",write);
 				if( i == -2 ) fprintf(fpe,"ERROR to write : %s\n", html );
-			}while( feof(fpr) != EOF );
+		//	}while( feof(fpr) != EOF );
+			}while( feof(fpr) == 0 );
 			fclose( fpr );
 			sprintf( html_b2, "%02d%02d%02d_%s.html", yb-2000, mb, db , filename );  // html_b2をCSVデータ出力(fpw)の日付に
 			_html_jump( html_b2, filename);
