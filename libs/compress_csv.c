@@ -1,40 +1,40 @@
 /*********************************************************************
-–{ƒ\[ƒXƒŠƒXƒg‚¨‚æ‚Ñƒ\ƒtƒgƒEƒFƒA‚ÍAƒ‰ƒCƒZƒ“ƒXƒtƒŠ[‚Å‚·B
-—˜—pA•ÒWAÄ”z•z“™‚ª©—R‚És‚¦‚Ü‚·‚ªA’˜ìŒ •\¦‚Ì‰ü•Ï‚Í‹Ö~‚µ‚Ü‚·B
+æœ¬ã‚½ãƒ¼ã‚¹ãƒªã‚¹ãƒˆãŠã‚ˆã³ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ã€ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ãƒ•ãƒªãƒ¼ã§ã™ã€‚
+åˆ©ç”¨ã€ç·¨é›†ã€å†é…å¸ƒç­‰ãŒè‡ªç”±ã«è¡Œãˆã¾ã™ãŒã€è‘—ä½œæ¨©è¡¨ç¤ºã®æ”¹å¤‰ã¯ç¦æ­¢ã—ã¾ã™ã€‚
 
                                Copyright (c) 2010-2015 Wataru KUNINO
                                http://www.geocities.jp/bokunimowakaru/
 *********************************************************************/
 /*
-İŒv–€
-	Œ³‚Ìcsv‚©‚çƒf[ƒ^‚ğ‚PŠÔ‚²‚Æ24ŠÔ•ª‚Ìƒf[ƒ^Ø‚èo‚µA
-	•½‹Ï‰»‚µAƒtƒ@ƒCƒ‹–¼(16•¶š‚Ü‚Å)‚ÉYYMMDD‚ğ’Ç‰Á‚µ‚Ä•Û‘¶‚·‚éB
-	w’è“ú‚æ‚è‘O‚Ìƒtƒ@ƒCƒ‹‚Í•ÏX‚µ‚È‚¢B
-	ig—p—áFˆ—‚·‚é‘O“ú‚Ì“ú•t‚ğ“ü—Í‚·‚é‚ÆA‘OX“úˆÈ‘O‚ÌÄˆ—‚ğ–h~‚Å‚«‚éj
-	¦w’è“ú‚Ìƒtƒ@ƒCƒ‹‚ÍÀs‚³‚ê‚Ü‚·B
+è¨­è¨ˆäº‹é …
+	å…ƒã®csvã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’ï¼‘æ™‚é–“ã”ã¨24æ™‚é–“åˆ†ã®ãƒ‡ãƒ¼ã‚¿åˆ‡ã‚Šå‡ºã—ã€
+	å¹³å‡åŒ–ã—ã€ãƒ•ã‚¡ã‚¤ãƒ«å(16æ–‡å­—ã¾ã§)ã«YYMMDDã‚’è¿½åŠ ã—ã¦ä¿å­˜ã™ã‚‹ã€‚
+	æŒ‡å®šæ—¥ã‚ˆã‚Šå‰ã®ãƒ•ã‚¡ã‚¤ãƒ«ã¯å¤‰æ›´ã—ãªã„ã€‚
+	ï¼ˆä½¿ç”¨ä¾‹ï¼šå‡¦ç†ã™ã‚‹å‰æ—¥ã®æ—¥ä»˜ã‚’å…¥åŠ›ã™ã‚‹ã¨ã€å‰ã€…æ—¥ä»¥å‰ã®å†å‡¦ç†ã‚’é˜²æ­¢ã§ãã‚‹ï¼‰
+	â€»æŒ‡å®šæ—¥ã®ãƒ•ã‚¡ã‚¤ãƒ«ã¯å®Ÿè¡Œã•ã‚Œã¾ã™ã€‚
 
                  0123 56 89
-	“ü—Í date = "2000/01/01";
+	å…¥åŠ› date = "2000/01/01";
 	
 	compress_data(
-		char *date_lim , 				w’è“ú
-		char *filename , 				‘ÎÛ‚Ìƒtƒ@ƒCƒ‹–¼i‘ÎÛ‹@Ší–¼j
-		enum xbee_sensor_type val1, 	ƒtƒ@ƒCƒ‹“à‚Ìƒf[ƒ^‚Ìí—Ş ¦1
+		char *date_lim , 				æŒ‡å®šæ—¥
+		char *filename , 				å¯¾è±¡ã®ãƒ•ã‚¡ã‚¤ãƒ«åï¼ˆå¯¾è±¡æ©Ÿå™¨åï¼‰
+		enum xbee_sensor_type val1, 	ãƒ•ã‚¡ã‚¤ãƒ«å†…ã®ãƒ‡ãƒ¼ã‚¿ã®ç¨®é¡ â€»1
 		enum xbee_sensor_type val2, 	
 		enum xbee_sensor_type val3 ){	
 		
-	¦1 : LIGHT,TEMP,HUMIDITY,WATT,BATT,PRESS,VALUE,TIMES,NA
+	â€»1 : LIGHT,TEMP,HUMIDITY,WATT,BATT,PRESS,VALUE,TIMES,NA
 
-CSVƒtƒ@ƒCƒ‹Œ`®
+CSVãƒ•ã‚¡ã‚¤ãƒ«å½¢å¼
 
 01234567890123456789012345678901234567890123456789012345678901234567890123456789
 
 2012/8/11,19:06, 1008.511047, 263.533997, 28.250099
 2012/8/11,19:06, 6286.179199, 263.533997, 28.250099
-“ú•t 17ƒoƒCƒg    ƒf[ƒ^Å‘å14ƒoƒCƒg ~ 3          ‰üs1ƒoƒCƒg  60ƒoƒCƒg(1ƒf[ƒ^Å‘å)
+æ—¥ä»˜ 17ãƒã‚¤ãƒˆ    ãƒ‡ãƒ¼ã‚¿æœ€å¤§14ãƒã‚¤ãƒˆ Ã— 3          æ”¹è¡Œ1ãƒã‚¤ãƒˆ  60ãƒã‚¤ãƒˆ(1ãƒ‡ãƒ¼ã‚¿æœ€å¤§)
 
-ŠÔ: 1ŠÔ‚É‚Â‚«255ƒf[ƒ^‚Ü‚Å (ƒf[ƒ^‹L˜^‚Í15•b‚É1‰ñˆÈ‰º‚Ì•p“x‚É‚·‚é)
-@@@24ŠÔ‚É1‰ñ‚µ‚©ŒÄ‚Î‚È‚¢ê‡‚Í1ŠÔ‚É‚Â‚«60ƒf[ƒ^‚Ü‚Å
+æ™‚é–“: 1æ™‚é–“ã«ã¤ã255ãƒ‡ãƒ¼ã‚¿ã¾ã§ (ãƒ‡ãƒ¼ã‚¿è¨˜éŒ²ã¯15ç§’ã«1å›ä»¥ä¸‹ã®é »åº¦ã«ã™ã‚‹)
+ã€€ã€€ã€€24æ™‚é–“ã«1å›ã—ã‹å‘¼ã°ãªã„å ´åˆã¯1æ™‚é–“ã«ã¤ã60ãƒ‡ãƒ¼ã‚¿ã¾ã§
 
 */
 void _html_jump(char *html, char *filename){
@@ -45,19 +45,19 @@ void _html_jump(char *html, char *filename){
 	sprintf(write, "htdocs/%s.html", filename );
 	if( (fp_html = fopen(write , "w")) ){
 		fprintf(fp_html, "<head><title>XBee Dairy Graph</title>\r\n");
-		fprintf(fp_html, "<meta http-equiv=\"Content-type\" content=\"text/html; charset=Shift_JIS\">\r\n");
+		fprintf(fp_html, "<meta http-equiv=\"Content-type\" content=\"text/html; charset=UTF-8\">\r\n");
 		fprintf(fp_html, "<meta http-equiv=\"REFRESH\" content=\"0; url=%s\">\r\n",html);
 		fprintf(fp_html, "<meta name=\"viewport\" content=\"width=440, \">\r\n");
 		fprintf(fp_html, "</head>\r\n");
 		fprintf(fp_html, "<body>\r\n");
-		fprintf(fp_html, "[<a href=\"%s\">ƒWƒƒƒ“ƒv</a>]@@[<a href=\"index.html\">–ß‚é</a>]<br>\r\n",html);
+		fprintf(fp_html, "[<a href=\"%s\">ã‚¸ãƒ£ãƒ³ãƒ—</a>]ã€€ã€€[<a href=\"index.html\">æˆ»ã‚‹</a>]<br>\r\n",html);
 		fprintf(fp_html, "</body></html>\r\n");
 		fclose( fp_html );
 	}
 }
 
-float _sensor_value_max(enum xbee_sensor_type val){	// –_ƒOƒ‰ƒt‚Ì‚Ä‚Á‚Ø‚ñ‚Æ‚È‚éÅ‘å’l‚ğ’è‹`‚·‚é
-	switch( val ){									// ’ˆÓFŸ€–Ú‚Ìofs‚ğˆø‚¢‚Ä‚¨‚­•K—v‚ª‚ ‚é
+float _sensor_value_max(enum xbee_sensor_type val){	// æ£’ã‚°ãƒ©ãƒ•ã®ã¦ã£ãºã‚“ã¨ãªã‚‹æœ€å¤§å€¤ã‚’å®šç¾©ã™ã‚‹
+	switch( val ){									// æ³¨æ„ï¼šæ¬¡é …ç›®ã®ofsã‚’å¼•ã„ã¦ãŠãå¿…è¦ãŒã‚ã‚‹
 		case LIGHT:
 			return( 200. );
 			break;
@@ -65,16 +65,16 @@ float _sensor_value_max(enum xbee_sensor_type val){	// –_ƒOƒ‰ƒt‚Ì‚Ä‚Á‚Ø‚ñ‚Æ‚È‚é
 			return( 40. );
 			break;
 		case HUMIDITY:
-			return( 20. );							// ofs=50%‚È‚Ì‚Å¼“x‚ÍÅ‘å70% ‚±‚±‚É‚Í70-50‚ğ“ü‚ê‚é
+			return( 20. );							// ofs=50%ãªã®ã§æ¹¿åº¦ã¯æœ€å¤§70% ã“ã“ã«ã¯70-50ã‚’å…¥ã‚Œã‚‹
 			break;
 		case WATT:
 			return( 1000. );
 			break;
 		case BATT:
-			return( 2. );							// ofs=2V‚È‚Ì‚ÅÅ‘å4V‚É‚È‚éB2`4‚u
+			return( 2. );							// ofs=2Vãªã®ã§æœ€å¤§4Vã«ãªã‚‹ã€‚2ï½4ï¼¶
 			break;
 		case PRESS:
-			return( 26.5 );							// ofs=1000hPa‚È‚Ì‚ÅÅ‘å1026.5hPa
+			return( 26.5 );							// ofs=1000hPaãªã®ã§æœ€å¤§1026.5hPa
 			break;
 		case VALUE:
 			return( 10 );
@@ -139,31 +139,31 @@ float _sensor_value_ofs(enum xbee_sensor_type val){
 }
 
 int _day_end_month(int y,int m,int d){
-	if(	/* ‘¶İ‚µ‚È‚¢“ú -1 ‚ğ‰“š*/
+	if(	/* å­˜åœ¨ã—ãªã„æ—¥ -1 ã‚’å¿œç­”*/
 		y < 2000 || m < 1 || d < 1 ||
 		y > 2099 || m > 12 || d > 31 ||
 		(( m == 4 || m == 6 || m == 9 || m == 11 ) && d > 30 )||
 		(y%4 == 0 && m == 2 && d > 29) ||
 		(y%4 != 0 && m == 2 && d > 28)
 	) return(-1);
-	else if(	/* Œ––“ú 1 ‚ğ‰“š*/
+	else if(	/* æœˆæœ«æ—¥ 1 ã‚’å¿œç­”*/
 		( d == 31) ||
 		(( m == 4 || m == 6 || m == 9 || m == 11 ) && d==30 )||
 		(y%4 == 0 && m == 2 && d == 29) ||
 		(y%4 != 0 && m == 2 && d == 28)
 	) return(1);
-	else return(0); /* Œ––ˆÈŠO‚Í 0 ‚ğ‰“š */
+	else return(0); /* æœˆæœ«ä»¥å¤–ã¯ 0 ã‚’å¿œç­” */
 }
 
 int _bar_graph_html(char *csv, float vday[][31], enum xbee_sensor_type *type ){
 	//             0123456789012345678901234567890123456789
-	// “ü—Í csv    data/120923_0123456789ABCDF.csv
+	// å…¥åŠ› csv    data/120923_0123456789ABCDF.csv
 
 	FILE *fp;
 	//             0123456789012345678901234567890123456789
-//	char html[] = "htdocs/120900_0123456789ABCDF.csv.html";	// 38•¶š+\0   39ƒoƒCƒg
+//	char html[] = "htdocs/120900_0123456789ABCDF.csv.html";	// 38æ–‡å­—+\0   39ãƒã‚¤ãƒˆ
 	char html[39]="htdocs/";
-	char html_b[32]; // æŒƒŠƒ“ƒN—p‚Ìƒtƒ@ƒCƒ‹–¼(htdocs/‚Í“ü‚ç‚È‚¢)
+	char html_b[32]; // å…ˆæœˆãƒªãƒ³ã‚¯ç”¨ã®ãƒ•ã‚¡ã‚¤ãƒ«å(htdocs/ã¯å…¥ã‚‰ãªã„)
 	char name[17];
 	
 	float vavr, vmax, vmin, min, max;
@@ -202,11 +202,11 @@ int _bar_graph_html(char *csv, float vday[][31], enum xbee_sensor_type *type ){
 	if( (fp = fopen(html , "w")) ){
 		// printf("html_out(%ld)=[%s]\n", ymd, name );
 		fprintf(fp, "<head><title>XBee monthly Graph</title>\r\n");
-		fprintf(fp, "<meta http-equiv=\"Content-type\" content=\"text/html; charset=Shift_JIS\">\r\n");
+		fprintf(fp, "<meta http-equiv=\"Content-type\" content=\"text/html; charset=UTF-8\">\r\n");
 		fprintf(fp, "<meta name=\"viewport\" content=\"width=440,  \">\r\n");
 		fprintf(fp, "</head>\r\n");
 		fprintf(fp, "<body>\r\n");
-		fprintf(fp, "<center><h3>%d”N%dŒ</h3></center><br><div align=right>[<a href=\"%s\">‘OŒ</a>]@@[<a href=\"index.html\">–ß‚é</a>]<br></div><br>\r\n",y,m,html_b);
+		fprintf(fp, "<center><h3>%då¹´%dæœˆ</h3></center><br><div align=right>[<a href=\"%s\">å‰æœˆ</a>]ã€€ã€€[<a href=\"index.html\">æˆ»ã‚‹</a>]<br></div><br>\r\n",y,m,html_b);
 		fprintf(fp, "<h2>%s</h2>\r\n<center><table border=1>\r\n", name);
 	
 		for( row=0 ; row<3 ; row++){
@@ -215,14 +215,14 @@ int _bar_graph_html(char *csv, float vday[][31], enum xbee_sensor_type *type ){
 			if(n>0){
 				fprintf(fp, "<tr><td colspan=31><b>(%d) ",row+1);
 				switch( type[row] ){
-					case LIGHT:		fprintf(fp, "Æ“x[Lux]");	break;
-					case TEMP:		fprintf(fp, "‰·“x[]");	break;
-					case HUMIDITY:	fprintf(fp, "¼“x[“]");	break;
-					case WATT:		fprintf(fp, "“d—Í[W]");		break;
-					case BATT:		fprintf(fp, "“dˆ³[V]");		break;
-					case PRESS:		fprintf(fp, "‹Cˆ³[hPa]");	break;
-					case VALUE:		fprintf(fp, "’l");			break;
-					case TIMES:		fprintf(fp, "‰ñ”");		break;
+					case LIGHT:		fprintf(fp, "ç…§åº¦[Lux]");	break;
+					case TEMP:		fprintf(fp, "æ¸©åº¦[â„ƒ]");	break;
+					case HUMIDITY:	fprintf(fp, "æ¹¿åº¦[ï¼…]");	break;
+					case WATT:		fprintf(fp, "é›»åŠ›[W]");		break;
+					case BATT:		fprintf(fp, "é›»åœ§[V]");		break;
+					case PRESS:		fprintf(fp, "æ°—åœ§[hPa]");	break;
+					case VALUE:		fprintf(fp, "å€¤");			break;
+					case TIMES:		fprintf(fp, "å›æ•°");		break;
 					default:	break;
 				}
 				vavr=0.; vmax=0.; vmin=200000.; min=0.; n=0;
@@ -268,7 +268,7 @@ int _bar_graph_html(char *csv, float vday[][31], enum xbee_sensor_type *type ){
 			}
 		}
 		fprintf(fp, "</table></center><br>\r\n");
-		fprintf(fp, "[<a href=\"index.html\">–ß‚é</a>]@@[<a href=\"%s\">‘OŒ</a>]<br>\r\n",html_b);
+		fprintf(fp, "[<a href=\"index.html\">æˆ»ã‚‹</a>]ã€€ã€€[<a href=\"%s\">å‰æœˆ</a>]<br>\r\n",html_b);
 		fprintf(fp, "</body></html>\r\n");
 		fclose( fp );
 	}else{
@@ -278,10 +278,10 @@ int _bar_graph_html(char *csv, float vday[][31], enum xbee_sensor_type *type ){
 	return(0);
 }
 
-/* •½‹Ïƒf[ƒ^avr‚ğƒtƒ@ƒCƒ‹‚Éo—Í‚·‚éB1“ú•ª‚Ìƒf[ƒ^‚Ì‘‚İ(Œ³‚ÌCSVƒf[ƒ^‚ª‚ ‚é‚±‚Æ‚ğŠm”FÏ‚İ‚ÅŒÄ‚Ô‚±‚ÆB) */
+/* å¹³å‡ãƒ‡ãƒ¼ã‚¿avrã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«å‡ºåŠ›ã™ã‚‹ã€‚1æ—¥åˆ†ã®ãƒ‡ãƒ¼ã‚¿ã®æ›¸è¾¼ã¿(å…ƒã®CSVãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚‹ã“ã¨ã‚’ç¢ºèªæ¸ˆã¿ã§å‘¼ã¶ã“ã¨ã€‚) */
 int _csv_daily_data(char *csv,int y,int m,int d,float *avr,enum xbee_sensor_type *type){
 	FILE *fp;
-	char s[128];	// •¶š‚Ì‹ó“Ç‚İ—p
+	char s[128];	// æ–‡å­—ã®ç©ºèª­ã¿ç”¨
 	unsigned long ymd;
 	int yy,mm,dd;
 	int i,j;
@@ -298,30 +298,30 @@ int _csv_daily_data(char *csv,int y,int m,int d,float *avr,enum xbee_sensor_type
 	sscanf(csv,       "data/%6ld_%[^.].csv", &ymd, name);
 	sprintf(file_name,"data/%s.csv", name);
 	
-	// ƒf[ƒ^‚ªŠù‚É‘‚«‚Ü‚ê‚Ä‚¢‚È‚¢‚©‚Ç‚¤‚©‚ğŠm”F‚·‚é.ƒtƒ@ƒCƒ‹‚ª‚ ‚ê‚ÎƒŠƒ^[ƒ“
-	if( (fp = fopen(file_name , "r")) ){		/* csvƒf[ƒ^‚ğƒŠ[ƒh‚ÅƒI[ƒvƒ“(fp) */
-		fseek(fp, 0L, SEEK_END);			// ƒtƒ@ƒCƒ‹‚ÌÅŒã‚©‚ç0ƒoƒCƒg‚Â‚Ü‚èÅŒã‚ÖˆÚ“®
-		fpoint = ftell(fp);					// —e—Ê‚ğ•Û‘¶
+	// ãƒ‡ãƒ¼ã‚¿ãŒæ—¢ã«æ›¸ãè¾¼ã¾ã‚Œã¦ã„ãªã„ã‹ã©ã†ã‹ã‚’ç¢ºèªã™ã‚‹.ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚Œã°ãƒªã‚¿ãƒ¼ãƒ³
+	if( (fp = fopen(file_name , "r")) ){		/* csvãƒ‡ãƒ¼ã‚¿ã‚’ãƒªãƒ¼ãƒ‰ã§ã‚ªãƒ¼ãƒ—ãƒ³(fp) */
+		fseek(fp, 0L, SEEK_END);			// ãƒ•ã‚¡ã‚¤ãƒ«ã®æœ€å¾Œã‹ã‚‰0ãƒã‚¤ãƒˆã¤ã¾ã‚Šæœ€å¾Œã¸ç§»å‹•
+		fpoint = ftell(fp);					// å®¹é‡ã‚’ä¿å­˜
 		if( fpoint > 127L ){
 			fseek(fp, -160L, SEEK_END);
-			fgets(s,127,fp);				// 1s(Å‘å60ƒoƒCƒg‚É­‚µƒ}[ƒWƒ“)‚Ì‹ó“Ç‚İ
+			fgets(s,127,fp);				// 1è¡Œ(æœ€å¤§60ãƒã‚¤ãƒˆã«å°‘ã—ãƒãƒ¼ã‚¸ãƒ³)ã®ç©ºèª­ã¿
 		}else{
-			fseek(fp, 0L, SEEK_SET);		// ƒtƒ@ƒCƒ‹‚Ìæ“ª‚Ö
+			fseek(fp, 0L, SEEK_SET);		// ãƒ•ã‚¡ã‚¤ãƒ«ã®å…ˆé ­ã¸
 		}
-		// ÅIs‚ğ“Ç‚ñ‚ÅA‘‚«‚İ—\’è‚Æ“¯‚¶“ú‚â–¢—ˆ‚Ìƒf[ƒ^‚ªŠù‚É‚ ‚ê‚Îreturn‚·‚é
+		// æœ€çµ‚è¡Œã‚’èª­ã‚“ã§ã€æ›¸ãè¾¼ã¿äºˆå®šã¨åŒã˜æ—¥ã‚„æœªæ¥ã®ãƒ‡ãƒ¼ã‚¿ãŒæ—¢ã«ã‚ã‚Œã°returnã™ã‚‹
 		fscanf(fp, "%d/%d/%d, %f, %f, %f\n", &yy,&mm,&dd,&value[0],&value[1],&value[2]);
 		if(yy >= y && mm >= m && dd >= d ){
 			fclose(fp);
 			return(-1);
 		}
-		// ÅV‚Ì1‚©Œ•ª(31“ú)‚Ìƒf[ƒ^‚ğ“Ç‚İ‚ŞB64ƒoƒCƒg~31 = 1984ƒoƒCƒg
+		// æœ€æ–°ã®1ã‹æœˆåˆ†(31æ—¥)ã®ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€ã€‚64ãƒã‚¤ãƒˆÃ—31 = 1984ãƒã‚¤ãƒˆ
 		if( ftell(fp) > 1984L ){
 			fseek(fp, -1984L, SEEK_END);
-			fgets(s,128,fp);				// 1s‚Ì‹ó“Ç‚İ
+			fgets(s,128,fp);				// 1è¡Œã®ç©ºèª­ã¿
 		}else{
-			fseek(fp, 0L, SEEK_SET);		// ƒtƒ@ƒCƒ‹‚Ìæ“ª‚Ö
+			fseek(fp, 0L, SEEK_SET);		// ãƒ•ã‚¡ã‚¤ãƒ«ã®å…ˆé ­ã¸
 		}
-		// ‘‚«‚İ“ú‚Æ“¯‚¶Œ‚ÌuˆÙ‚È‚é“ú‚ğŠÜ‚Şvƒf[ƒ^‚ğ“Ç‚Ş
+		// æ›¸ãè¾¼ã¿æ—¥ã¨åŒã˜æœˆã®ã€Œç•°ãªã‚‹æ—¥ã‚’å«ã‚€ã€ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã‚€
 		while( !feof(fp) ){
 			fscanf(fp, "%d/%d/%d, %f, %f, %f\n", &yy,&mm,&dd,&value[0],&value[1],&value[2]);
 			if(yy==y && mm==m && dd>=1 && dd<=31){
@@ -342,7 +342,7 @@ int _csv_daily_data(char *csv,int y,int m,int d,float *avr,enum xbee_sensor_type
 	_bar_graph_html(csv, vday, type );
 	if( _day_end_month(y,m,d)==1 ){
 		d=0;
-		if( (fp = fopen(file_name , "r")) ){		/* csvƒf[ƒ^‚ğƒŠ[ƒh‚ÅƒI[ƒvƒ“(fp) */
+		if( (fp = fopen(file_name , "r")) ){		/* csvãƒ‡ãƒ¼ã‚¿ã‚’ãƒªãƒ¼ãƒ‰ã§ã‚ªãƒ¼ãƒ—ãƒ³(fp) */
 			while( !feof(fp) ){
 				fscanf(fp, "%d/%d/%d, %f, %f, %f\n", &yy,&mm,&dd,&value[0],&value[1],&value[2]);
 				if(yy==y && mm==m ){
@@ -379,7 +379,7 @@ int _csv_daily_data(char *csv,int y,int m,int d,float *avr,enum xbee_sensor_type
 			fclose(fp);
 			for(i=0;i<3;i++) if( n[i] > 0 ) vavr[i] /= (float)n[i]; else vavr[i] = -1;
 			
-			/*  ƒtƒ@ƒCƒ‹–¼‚Ì•ÏX 1ƒf[ƒ^Œ`® */
+			/*  ãƒ•ã‚¡ã‚¤ãƒ«åã®å¤‰æ›´ 1ãƒ‡ãƒ¼ã‚¿å½¢å¼ */
 			sscanf(csv,       "data/%6ld_%[^.].csv", &ymd, name);
 			sprintf(file_name,"data/%s.mon.csv", name);
 			
@@ -393,7 +393,7 @@ int _csv_daily_data(char *csv,int y,int m,int d,float *avr,enum xbee_sensor_type
 }
 
 int _delete_csv_daily_data(char *csv){
-// dataƒtƒHƒ‹ƒ_“à‚Ìcsvƒf[ƒ^‚ğÁ‚· ¦Às’ˆÓ
+// dataãƒ•ã‚©ãƒ«ãƒ€å†…ã®csvãƒ‡ãƒ¼ã‚¿ã‚’æ¶ˆã™ â€»å®Ÿè¡Œæ³¨æ„
 	FILE *fp;
 	char file_name[32];
 	char name[17];
@@ -416,14 +416,14 @@ int csv2html( char *csv, char *html, int valn, char *html_b, enum xbee_sensor_ty
 
 	FILE *fp, *fp_html;
 	
-	float value[3][24];	// •½‹ÏŒvZ—pFŠe“ü—Í’l
-	float min,max;				// Å‘å’l
+	float value[3][24];	// å¹³å‡è¨ˆç®—ç”¨ï¼šå„å…¥åŠ›å€¤
+	float min,max;				// æœ€å¤§å€¤
 	float vmax, vmin;
 	float vavr[3];
-	int flag24=1;				// ƒf[ƒ^‚ª24ŠÔ•ª‘µ‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	int flag24=1;				// ãƒ‡ãƒ¼ã‚¿ãŒ24æ™‚é–“åˆ†æƒã£ã¦ã„ã‚‹ã‹ã©ã†ã‹
 	
 	char name[17];					//  0123456
-	char html_m[32];			// “–Œ 120923_ABC.csv.html
+	char html_m[32];			// å½“æœˆ 120923_ABC.csv.html
 
 	int i,j,row,n;
 	int bar;
@@ -439,8 +439,8 @@ int csv2html( char *csv, char *html, int valn, char *html_b, enum xbee_sensor_ty
 	
 	for(i=0;i<3;i++)for(j=0;j<24;j++)value[i][j]=-1.;
 	
-	/* html o—Í */
-	if( (fp = fopen(csv , "r")) ){		/* csvƒf[ƒ^‚ğƒŠ[ƒh‚ÅƒI[ƒvƒ“(fp) */
+	/* html å‡ºåŠ› */
+	if( (fp = fopen(csv , "r")) ){		/* csvãƒ‡ãƒ¼ã‚¿ã‚’ãƒªãƒ¼ãƒ‰ã§ã‚ªãƒ¼ãƒ—ãƒ³(fp) */
 		for( i=0; i< 24 ; i++){
 			if( valn == 3 ){
 				if( fscanf(fp, "%d/%d/%d,%d:%d,%f,%f,%f\n", &y,&m,&d,&hh,&mm,&value[0][i], &value[1][i], &value[2][i] ) == EOF ){
@@ -455,7 +455,7 @@ int csv2html( char *csv, char *html, int valn, char *html_b, enum xbee_sensor_ty
 					flag24=0;
 				}
 			}
-			if(!flag24){	// EOF‚Æ‚È‚Á‚½ ¦‚±‚ê‚Å‚àÅIs‚Í“Ç‚ß‚é‚Í‚¸B
+			if(!flag24){	// EOFã¨ãªã£ãŸæ™‚ â€»ã“ã‚Œã§ã‚‚æœ€çµ‚è¡Œã¯èª­ã‚ã‚‹ã¯ãšã€‚
 				value[0][i] = -1.;
 				value[1][i] = -1.;
 				value[2][i] = -1.;
@@ -467,24 +467,24 @@ int csv2html( char *csv, char *html, int valn, char *html_b, enum xbee_sensor_ty
 		if( (fp_html = fopen(html , "w")) ){
 			// printf("html_out(%ld)=[%s]\n", ymd, name );
 			fprintf(fp_html, "<head><title>XBee Daily Graph</title>\r\n");
-			fprintf(fp_html, "<meta http-equiv=\"Content-type\" content=\"text/html; charset=Shift_JIS\">\r\n");
+			fprintf(fp_html, "<meta http-equiv=\"Content-type\" content=\"text/html; charset=UTF-8\">\r\n");
 			fprintf(fp_html, "<meta name=\"viewport\" content=\"width=440,  \">\r\n");
 			fprintf(fp_html, "</head>\r\n");
 			fprintf(fp_html, "<body>\r\n");
-			fprintf(fp_html, "<center><h3>%d”N%dŒ%d“ú</h3></center><br><div align=right>[<a href=\"%s\">‘O“ú</a>]@@[<a href=\"%s\">ŒŠÔ</a>]@@[<a href=\"index.html\">–ß‚é</a>]<br></div><br>\r\n",y,m,d,html_b,html_m);
+			fprintf(fp_html, "<center><h3>%då¹´%dæœˆ%dæ—¥</h3></center><br><div align=right>[<a href=\"%s\">å‰æ—¥</a>]ã€€ã€€[<a href=\"%s\">æœˆé–“</a>]ã€€ã€€[<a href=\"index.html\">æˆ»ã‚‹</a>]<br></div><br>\r\n",y,m,d,html_b,html_m);
 			fprintf(fp_html, "<h2>%s</h2>\r\n<center><table border=1>\r\n", name);
 			
 			for( row = 0 ; row < valn ; row++){
 				fprintf(fp_html, "<tr><td colspan=24><b>(%d) ",row+1);
 				switch( type[row] ){
-					case LIGHT:		fprintf(fp_html, "Æ“x[Lux]");	break;
-					case TEMP:		fprintf(fp_html, "‰·“x[]");	break;
-					case HUMIDITY:	fprintf(fp_html, "¼“x[“]");	break;
-					case WATT:		fprintf(fp_html, "“d—Í[W]");	break;
-					case BATT:		fprintf(fp_html, "“dˆ³[V]");	break;
-					case PRESS:		fprintf(fp_html, "‹Cˆ³[hPa]");	break;
-					case VALUE:		fprintf(fp_html, "’l");			break;
-					case TIMES:		fprintf(fp_html, "‰ñ”");		break;
+					case LIGHT:		fprintf(fp_html, "ç…§åº¦[Lux]");	break;
+					case TEMP:		fprintf(fp_html, "æ¸©åº¦[â„ƒ]");	break;
+					case HUMIDITY:	fprintf(fp_html, "æ¹¿åº¦[ï¼…]");	break;
+					case WATT:		fprintf(fp_html, "é›»åŠ›[W]");	break;
+					case BATT:		fprintf(fp_html, "é›»åœ§[V]");	break;
+					case PRESS:		fprintf(fp_html, "æ°—åœ§[hPa]");	break;
+					case VALUE:		fprintf(fp_html, "å€¤");			break;
+					case TIMES:		fprintf(fp_html, "å›æ•°");		break;
 					default:	break;
 				}
 				vmax = 0.; vmin = 99999.; vavr[row]= 0.; n=0;
@@ -525,7 +525,7 @@ int csv2html( char *csv, char *html, int valn, char *html_b, enum xbee_sensor_ty
 				fprintf(fp_html, "</tr>\r\n");
 			}
 			fprintf(fp_html, "</table></center><br>\r\n");
-			fprintf(fp_html, "[<a href=\"index.html\">–ß‚é</a>]@@[<a href=\"%s\">ŒŠÔ</a>]@@[<a href=\"%s\">‘O“ú</a>]<br>\r\n",html_m,html_b);
+			fprintf(fp_html, "[<a href=\"index.html\">æˆ»ã‚‹</a>]ã€€ã€€[<a href=\"%s\">æœˆé–“</a>]ã€€ã€€[<a href=\"%s\">å‰æ—¥</a>]<br>\r\n",html_m,html_b);
 			fprintf(fp_html, "</body></html>\r\n");
 			fclose( fp_html );
 		}else{
@@ -546,27 +546,27 @@ int compress_data(char *date_lim , char *filename , enum xbee_sensor_type val1, 
 	// enum xbee_sensor_type LIGHT,TEMP,HUMIDITY,WATT,BATT,PRESS,VALUE,TIMES,NA
 	
 	//                 012345Y7M9D12345678901234567890123456789
-	char write[]    = "data/120923_0123456789ABCDF.csv";		// 31•¶š 32ƒoƒCƒg
-	char html[]     = "htdocs/120923_0123456789ABCDF.csv.html";	// 38•¶š+\0   39ƒoƒCƒg
-	char html_b[]   = "120923_0123456789ABCDF.csv.html";	// ‚»‚Ì‘O‚Ì•ª 31•¶š   32ƒoƒCƒg
-	char html_b2[]  = "120923_0123456789ABCDF.csv.html";	// Œ»İ•ª
+	char write[]    = "data/120923_0123456789ABCDF.csv";		// 31æ–‡å­— 32ãƒã‚¤ãƒˆ
+	char html[]     = "htdocs/120923_0123456789ABCDF.csv.html";	// 38æ–‡å­—+\0   39ãƒã‚¤ãƒˆ
+	char html_b[]   = "120923_0123456789ABCDF.csv.html";	// ãã®å‰ã®åˆ† 31æ–‡å­—   32ãƒã‚¤ãƒˆ
+	char html_b2[]  = "120923_0123456789ABCDF.csv.html";	// ç¾åœ¨åˆ†
 	
-	int y,m,d;		// Ÿ‰ñ‚Ì”NŒ“ú
+	int y,m,d;		// æ¬¡å›ã®å¹´æœˆæ—¥
 	unsigned long ymd;		// y * 12 * 31 + m * 31 + d;
-	int yb,mb,db;	// ‘O‰ñ‚Ì”NŒ“ú
-	int yl,ml,dl;	// “ü—Í‚³‚ê‚Ä date_lim‚Ì“WŠJ’l
+	int yb,mb,db;	// å‰å›ã®å¹´æœˆæ—¥
+	int yl,ml,dl;	// å…¥åŠ›ã•ã‚Œã¦ date_limã®å±•é–‹å€¤
 	unsigned long ymd_l;		// y * 12 * 31 + m * 31 + d;
-	int hh,hour;	// Ÿ‰ñ‚ÌA¡‚Ì
-	int hhb;		// ‘O‰ñ‚Ì
+	int hh,hour;	// æ¬¡å›ã®æ™‚ã€ä»Šã®æ™‚
+	int hhb;		// å‰å›ã®æ™‚
 	int mm;
-	int vals;		// 0`3 ‰½—ñ‚Ìƒf[ƒ^‚ª‚ ‚é‚©
+	int vals;		// 0ï½3 ä½•åˆ—ã®ãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚‹ã‹
 	
-	char s[128];	// •¶šˆ——p
-	float value[3][256];	// •½‹ÏŒvZ—pFŠe“ü—Í’l
-	float sum;				// •½‹ÏŒvZ—pF‡Œv’l
-	int div;				// •½‹ÏŒvZ—pFœZ’l
-	int i,j;				// ”Ä—p•Ï”
-	byte f;					// ”Ä—pƒtƒ‰ƒO
+	char s[128];	// æ–‡å­—å‡¦ç†ç”¨
+	float value[3][256];	// å¹³å‡è¨ˆç®—ç”¨ï¼šå„å…¥åŠ›å€¤
+	float sum;				// å¹³å‡è¨ˆç®—ç”¨ï¼šåˆè¨ˆå€¤
+	int div;				// å¹³å‡è¨ˆç®—ç”¨ï¼šé™¤ç®—å€¤
+	int i,j;				// æ±ç”¨å¤‰æ•°
+	byte f;					// æ±ç”¨ãƒ•ãƒ©ã‚°
 	int valn = 3;
 	long fpoint;
 
@@ -611,18 +611,18 @@ int compress_data(char *date_lim , char *filename , enum xbee_sensor_type val1, 
 			fprintf(fpe,"-> %s\n",filename);
 		}
 		if( (fpr = fopen(filename , "r")) ){
-			/* ƒf[ƒ^ŒŸõ */
-			fseek(fpr, 0L, SEEK_END);		// ƒtƒ@ƒCƒ‹‚ÌÅŒã‚©‚ç0ƒoƒCƒg‚Â‚Ü‚èÅŒã‚ÖˆÚ“®
-			fpoint = ftell(fpr);			// ‚»‚ÌˆÊ’u‚ğæ“¾B‚Â‚Ü‚èƒtƒ@ƒCƒ‹ƒTƒCƒY
-			fpoint /= 2;					// ƒtƒ@ƒCƒ‹ƒTƒCƒY‚Ì”¼•ª‚ğ‘ã“ü
-			if( strcmp(date_lim,"2000/01/01" ) ){	// 2000/01/01‚Æˆê’v‚µ–³‚¢i’Êí“®ìj
-				if( fpoint <= 172800L ) fseek(fpr, 0L, SEEK_SET);		// ƒtƒ@ƒCƒ‹‚Ìæ“ª‚É–ß‚é
-				else do{	// 172800ƒoƒCƒgˆÈã‚Ì 60ƒf[ƒ^~24ŠÔ~60ƒoƒCƒg~2 = 172800 (256ƒf[ƒ^~60~2=30720)
+			/* ãƒ‡ãƒ¼ã‚¿æ¤œç´¢ */
+			fseek(fpr, 0L, SEEK_END);		// ãƒ•ã‚¡ã‚¤ãƒ«ã®æœ€å¾Œã‹ã‚‰0ãƒã‚¤ãƒˆã¤ã¾ã‚Šæœ€å¾Œã¸ç§»å‹•
+			fpoint = ftell(fpr);			// ãã®ä½ç½®ã‚’å–å¾—ã€‚ã¤ã¾ã‚Šãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚º
+			fpoint /= 2;					// ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºã®åŠåˆ†ã‚’ä»£å…¥
+			if( strcmp(date_lim,"2000/01/01" ) ){	// 2000/01/01ã¨ä¸€è‡´ã—ç„¡ã„æ™‚ï¼ˆé€šå¸¸å‹•ä½œæ™‚ï¼‰
+				if( fpoint <= 172800L ) fseek(fpr, 0L, SEEK_SET);		// ãƒ•ã‚¡ã‚¤ãƒ«ã®å…ˆé ­ã«æˆ»ã‚‹
+				else do{	// 172800ãƒã‚¤ãƒˆä»¥ä¸Šã®æ™‚ 60ãƒ‡ãƒ¼ã‚¿Ã—24æ™‚é–“Ã—60ãƒã‚¤ãƒˆÃ—2 = 172800 (256ãƒ‡ãƒ¼ã‚¿Ã—60Ã—2=30720)
 					fseek(fpr, -fpoint, SEEK_END);
-					fgets(s,127,fpr);		// 1s‚Ì‹ó“Ç‚İ
+					fgets(s,127,fpr);		// 1è¡Œã®ç©ºèª­ã¿
 					fscanf(fpr,"%d/%d/%d,%d:%d,",&y,&m,&d,&hh,&mm);
-					fgets(s,127,fpr);		// 1s‚Ì‹ó“Ç‚İ
-				//	printf("fp=%ld,y=%d,m=%d,d=%d\n",fpoint,y,m,d);	//ƒfƒoƒbƒO—p
+					fgets(s,127,fpr);		// 1è¡Œã®ç©ºèª­ã¿
+				//	printf("fp=%ld,y=%d,m=%d,d=%d\n",fpoint,y,m,d);	//ãƒ‡ãƒãƒƒã‚°ç”¨
 					ymd = (unsigned long)y * 12 * 31 + (unsigned long)m * 31 + (unsigned long)d;
 					if( ymd >= ymd_l ){
 						fseek(fpr, -fpoint, SEEK_CUR);
@@ -632,7 +632,7 @@ int compress_data(char *date_lim , char *filename , enum xbee_sensor_type val1, 
 					}
 				}while( fpoint > 172800L );
 			}else{
-				fseek(fpr, 0L, SEEK_SET);		// ƒtƒ@ƒCƒ‹‚Ìæ“ª‚É–ß‚é
+				fseek(fpr, 0L, SEEK_SET);		// ãƒ•ã‚¡ã‚¤ãƒ«ã®å…ˆé ­ã«æˆ»ã‚‹
 				if( _delete_csv_daily_data(filename) == 0){
 					printf("### delete file: data/%s\n",filename);
 					fprintf(fpe,"delete file: data/%s\n",filename);
@@ -640,20 +640,20 @@ int compress_data(char *date_lim , char *filename , enum xbee_sensor_type val1, 
 					fprintf(fpe,"ERROR cannot delete file:data/%s\n",filename);
 				}
 			}
-			/* ƒf[ƒ^“Ç‚İæ‚èˆ— */
+			/* ãƒ‡ãƒ¼ã‚¿èª­ã¿å–ã‚Šå‡¦ç† */
 			yb=0; mb=0; db=0; hhb=0; ymd=0UL;
 			y=0;  m=0;  d= 0; hh=0;
 			sprintf( html_b, "index.html");
 			sprintf( html_b2, "index.html");
-		//	printf("data read\n");	//ƒfƒoƒbƒO—p
-			do{	// “Çæ‚Pƒtƒ@ƒCƒ‹‚ÌŒJ‚è•Ô‚µ
-				/* ‘ÎÛ“ú‚Ìƒf[ƒ^‚ğ’T‚· */
-				if( db == 0 ){	// ƒ‹[ƒv‚Ì‰‰ñ
+		//	printf("data read\n");	//ãƒ‡ãƒãƒƒã‚°ç”¨
+			do{	// èª­å–ï¼‘ãƒ•ã‚¡ã‚¤ãƒ«ã®ç¹°ã‚Šè¿”ã—
+				/* å¯¾è±¡æ—¥ã®ãƒ‡ãƒ¼ã‚¿ã‚’æ¢ã™ */
+				if( db == 0 ){	// ãƒ«ãƒ¼ãƒ—ã®åˆå›
 					while( ymd_l > ymd ){
-						yb=y;	mb=m;	db=d;	hhb=hh;	//“Ç‚İæ‚è‘O‚ÌƒoƒbƒNƒAƒbƒv
+						yb=y;	mb=m;	db=d;	hhb=hh;	//èª­ã¿å–ã‚Šå‰ã®ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—
 						if( fscanf(fpr,"%d/%d/%d,%d:%d,",&y,&m,&d,&hh,&mm) != EOF ){
-						//	printf("ymd:%04d/%02d/%02d,%02d:%02d (%ld>%ld)\n", y, m, d, hh, mm, ymd_l, ymd);	// test	//ƒfƒoƒbƒO—p
-						//	fprintf(fpe,"ymd:%04d/%02d/%02d,%02d:%02d (%ld>%ld)\n", y, m, d, hh, mm, ymd_l, ymd);	// test	//ƒfƒoƒbƒO—p
+						//	printf("ymd:%04d/%02d/%02d,%02d:%02d (%ld>%ld)\n", y, m, d, hh, mm, ymd_l, ymd);	// test	//ãƒ‡ãƒãƒƒã‚°ç”¨
+						//	fprintf(fpe,"ymd:%04d/%02d/%02d,%02d:%02d (%ld>%ld)\n", y, m, d, hh, mm, ymd_l, ymd);	// test	//ãƒ‡ãƒãƒƒã‚°ç”¨
 							ymd = (unsigned long)y * 12 * 31 + (unsigned long)m * 31 + (unsigned long)d;
 							if( y < 2000 || y > 2099 || m < 1 || m > 12 || d < 1 || d > 31 || hh < 0 || hh > 23){
 								fprintf(fpe,"ERROR ymd:%04d/%02d/%02d,%02d:00\n", y, m, d, hh);
@@ -668,8 +668,8 @@ int compress_data(char *date_lim , char *filename , enum xbee_sensor_type val1, 
 								// fprintf(fpe, "<%s>\n", s); // test
 								
 								/*
-								ƒf[ƒ^‚Ì–³‚¢ŠúŠÔ‚ª“ú‚ğ‚Ü‚½‚®‚Ææ‚Ì“ú‚Ìƒf[ƒ^‚ª“ü‚Á‚Ä‚µ‚Ü‚¤
-								6/22‚Ì4`6/24‚Ì11‚Ü‚Åƒf[ƒ^‚ªŒ‡—‚µ‚½ê‡F
+								ãƒ‡ãƒ¼ã‚¿ã®ç„¡ã„æœŸé–“ãŒæ—¥ã‚’ã¾ãŸãã¨å…ˆã®æ—¥ã®ãƒ‡ãƒ¼ã‚¿ãŒå…¥ã£ã¦ã—ã¾ã†
+								6/22ã®4æ™‚ï½6/24ã®11æ™‚ã¾ã§ãƒ‡ãƒ¼ã‚¿ãŒæ¬ è½ã—ãŸå ´åˆï¼š
 								
 								averaging  data/120622_press.csv
 								2012/06/22,00:00, 23.810288, 994.871094
@@ -693,7 +693,7 @@ int compress_data(char *date_lim , char *filename , enum xbee_sensor_type val1, 
 								sprintf( html_b2, "%02d%02d%02d_%s.html", yb-2000, mb, db , filename );
 							}
 						}else{
-						//	printf("done (ymd)\n");	//ƒfƒoƒbƒO—p
+						//	printf("done (ymd)\n");	//ãƒ‡ãƒãƒƒã‚°ç”¨
 							fprintf(fpe,"done (nothing to do)\n");
 							printf("done (nothing to do)\n");
 							fclose( fpr );
@@ -703,14 +703,14 @@ int compress_data(char *date_lim , char *filename , enum xbee_sensor_type val1, 
 					}
 				}
 				
-				/* ‘‚«‚İ ‚P“ú•ª*/
-				/* csv o—Í */
-			//	printf("data write\n");	//ƒfƒoƒbƒO—p
+				/* æ›¸ãè¾¼ã¿ ï¼‘æ—¥åˆ†*/
+				/* csv å‡ºåŠ› */
+			//	printf("data write\n");	//ãƒ‡ãƒãƒƒã‚°ç”¨
 				sprintf(write, "data/%02d%02d%02d_%s", y-2000, m, d , filename );
 				fprintf(fpe,"averaging  %s\n", write );
 				if( (fpw = fopen(write , "w")) ){
-					f = 1;	// “¯‚¶“ú‚Ìˆ—‚ğs‚Á‚Ä‚¢‚é‚±‚Æ‚ğ¦‚·ƒtƒ‰ƒO
-					for( hour=0 ; hour < 24 ; hour++ ){	// “¯‚¶“ú“à‚Ì24ŠÔ•ª‚ÌŒJ‚è•Ô‚µ
+					f = 1;	// åŒã˜æ—¥ã®å‡¦ç†ã‚’è¡Œã£ã¦ã„ã‚‹ã“ã¨ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°
+					for( hour=0 ; hour < 24 ; hour++ ){	// åŒã˜æ—¥å†…ã®24æ™‚é–“åˆ†ã®ç¹°ã‚Šè¿”ã—
 						while( hour < hh ){
 							fprintf(fpw, "%04d/%02d/%02d,%02d:00", y, m, d, hour);
 							fprintf(fpe, "skipped %04d/%02d/%02d,%02d:00\n", y, m, d, hour);
@@ -721,7 +721,7 @@ int compress_data(char *date_lim , char *filename , enum xbee_sensor_type val1, 
 						}
 						vals= 1;
 						for( i=0 ; i<256 ; i++ ){
-							/* ƒf[ƒ^“Ç‚İæ‚è */
+							/* ãƒ‡ãƒ¼ã‚¿èª­ã¿å–ã‚Š */
 							fscanf(fpr,"%[^\r\n]\n",s);
 							if( valn == 3 ){
 								sscanf(s, "%f,%f,%f", &value[0][i], &value[1][i], &value[2][i] );
@@ -733,8 +733,8 @@ int compress_data(char *date_lim , char *filename , enum xbee_sensor_type val1, 
 							/* test*/
 						//	printf("test[%d,%ld] %s %f\n",i,ymd,s,value[0][i]);
 							
-							/* Ÿ‰ñ‚Ì‚Ì“Ç‚İæ‚è */
-							yb=y;	mb=m;	db=d;	hhb=hh;	//“Ç‚İæ‚è‘O‚ÌƒoƒbƒNƒAƒbƒv
+							/* æ¬¡å›ã®æ™‚åˆ»ã®èª­ã¿å–ã‚Š */
+							yb=y;	mb=m;	db=d;	hhb=hh;	//èª­ã¿å–ã‚Šå‰ã®ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—
 							if( fscanf(fpr,"%d/%d/%d,%d:%d,",&y,&m,&d,&hh,&mm) != EOF ){
 								vals=i+1;
 								// printf("ymd:%04d/%02d/%02d,%02d:%02d\n", y, m, d, hh, mm);	// test
@@ -748,30 +748,30 @@ int compress_data(char *date_lim , char *filename , enum xbee_sensor_type val1, 
 									fclose( fpe );
 									return(-1);
 								}
-								/* “ú•t‚ªˆê’v‚µ‚Ä‚¢‚È‚¢ê‡‚Éhtml—p‚Ì“ú•t‚ğXV
-									html_b		b2‚ÌƒoƒbƒNƒAƒbƒv
-									html_b2		Œ»İ‚Ìƒtƒ@ƒCƒ‹–¼(•sˆê’v‚É‚È‚é‘O‚Ì’l)‚ÉXV
+								/* æ—¥ä»˜ãŒä¸€è‡´ã—ã¦ã„ãªã„å ´åˆã«htmlç”¨ã®æ—¥ä»˜ã‚’æ›´æ–°
+									html_b		b2ã®ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—
+									html_b2		ç¾åœ¨ã®ãƒ•ã‚¡ã‚¤ãƒ«å(ä¸ä¸€è‡´ã«ãªã‚‹å‰ã®å€¤)ã«æ›´æ–°
 								*/
 								if( db != d && yb > 2000 ){
 									sprintf( html_b, "%s" , html_b2 );
 									sprintf( html_b2, "%02d%02d%02d_%s.html", yb-2000, mb, db , filename );
 								}
-								/* “Çæ’†‚Ì“ú•t‚ªˆê’v‚µ‚Ä‚¢‚È‚¢ê‡‚Éhourƒ‹[ƒv‚ğ”²‚¯‚é */
+								/* èª­å–ä¸­ã®æ—¥ä»˜ãŒä¸€è‡´ã—ã¦ã„ãªã„å ´åˆã«hourãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹ */
 								if( yb != y || mb != m || db != d ){
-									i = 256;		// i‚Ì’l‚Ívals‚Éi+1‚ªƒoƒbƒNƒAƒbƒv‚³‚ê‚Ä‚¢‚é
-									// hour = 24;	// ˆ—’†‚Ì‚ª•Ï‚í‚Á‚Ä‚µ‚Ü‚¤‚Ì‚Åhour‚Í•ÏX‚Å‚«‚È‚¢B
-									f = 0;			// hourƒ‹[ƒv‚ğ”²‚¯‚é‚½‚ß‚Ìƒtƒ‰ƒO‘€ì
+									i = 256;		// iã®å€¤ã¯valsã«i+1ãŒãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã•ã‚Œã¦ã„ã‚‹
+									// hour = 24;	// å‡¦ç†ä¸­ã®æ™‚åˆ»ãŒå¤‰ã‚ã£ã¦ã—ã¾ã†ã®ã§hourã¯å¤‰æ›´ã§ããªã„ã€‚
+									f = 0;			// hourãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹ãŸã‚ã®ãƒ•ãƒ©ã‚°æ“ä½œ
 									break;
 								}
-								/* “Çæ’†‚Ìhour‚Æˆê’v‚µ‚Ä‚¢‚È‚¢ê‡‚É‚†‚‚’i‚‰jƒ‹[ƒv‚ğ”²‚¯‚é */
+								/* èª­å–ä¸­ã®houræ™‚ã¨ä¸€è‡´ã—ã¦ã„ãªã„å ´åˆã«ï½†ï½ï½’ï¼ˆï½‰ï¼‰ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹ */
 								if( hour != hh){
-									i = 256;		// i‚Ì’l‚Ívals‚Éi+1‚ªƒoƒbƒNƒAƒbƒv‚³‚ê‚Ä‚¢‚é
+									i = 256;		// iã®å€¤ã¯valsã«i+1ãŒãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã•ã‚Œã¦ã„ã‚‹
 									break;
 								}
 							} else {
-								/* “Ç‚İ‚İƒtƒ@ƒCƒ‹‚Ì‚d‚n‚e‚É‚Ä•ÏŠ·I—¹ˆ— */
+								/* èª­ã¿è¾¼ã¿ãƒ•ã‚¡ã‚¤ãƒ«ã®ï¼¥ï¼¯ï¼¦ã«ã¦å¤‰æ›çµ‚äº†å‡¦ç† */
 							//	vals=i;
-								/* CSVƒf[ƒ^o—Í(ÅŒã‚Ì•ª) hour = 23 ‚Ì‚Æ‚«A‚à‚µ‚­‚Í’†’f‚³‚ê‚Ä‚¢‚½‚ç 23ˆÈ‰º‚à‚ ‚è“¾‚é */
+								/* CSVãƒ‡ãƒ¼ã‚¿å‡ºåŠ›(æœ€å¾Œã®æ™‚åˆ»åˆ†) hour = 23 ã®ã¨ãã€ã‚‚ã—ãã¯ä¸­æ–­ã•ã‚Œã¦ã„ãŸã‚‰ 23ä»¥ä¸‹ã‚‚ã‚ã‚Šå¾—ã‚‹ */
 								fprintf(fpw, "%04d/%02d/%02d,%02d:00", yb, mb, db, hour);
 								for( j = 0 ; j < valn ; j++){
 									fprintf(fpw, ", ");
@@ -779,12 +779,12 @@ int compress_data(char *date_lim , char *filename , enum xbee_sensor_type val1, 
 									sum = 0.;
 									for( i = 0 ; i < vals ; i++ ){
 										if( value[j][i] >= 0.0 ){
-											if(	(j == 0 && val1 == TIMES) ||	// ƒf[ƒ^‚ªu‰ñ”‚Ìv
+											if(	(j == 0 && val1 == TIMES) ||	// ãƒ‡ãƒ¼ã‚¿ãŒã€Œå›æ•°ã®æ™‚ã€
 												(j == 1 && val2 == TIMES) ||
 												(j == 2 && val3 == TIMES) ){
 												sum += 1;
 												div = 1;
-											}else{							// ƒf[ƒ^‚ª‰ñ”ˆÈŠO‚Ì
+											}else{							// ãƒ‡ãƒ¼ã‚¿ãŒå›æ•°ä»¥å¤–ã®æ™‚
 												sum += value[j][i];
 												div++;
 											}
@@ -793,37 +793,37 @@ int compress_data(char *date_lim , char *filename , enum xbee_sensor_type val1, 
 									// fprintf(fpe,"%s j=%d sum=%f div=%f\n", write, j ,sum, (float)div); //test
 									if( div > 0 ) fprintf(fpw, "%f", ( sum / (float)div ) );
 									else{
-										fprintf(fpw, "-1.0" );		// div=0‚ÌA‚»‚¤‚È‚é‚Ì‚Ívalue‚ª‘S‚Ä-1‚Ì
+										fprintf(fpw, "-1.0" );		// div=0ã®æ™‚ã€ãã†ãªã‚‹ã®ã¯valueãŒå…¨ã¦-1ã®æ™‚
 										fprintf(fpe, "WARNING:vals=%d\n",vals);
 									}
 								}
 								fprintf(fpw, "\n" );
-								/* CSVo—Í‚±‚±‚Ü‚Å */
+								/* CSVå‡ºåŠ›ã“ã“ã¾ã§ */
 								
 								fclose( fpw );
 								fclose( fpr );
-								/* htmlo—Í */
+								/* htmlå‡ºåŠ› */
 								sprintf( html, "htdocs/%02d%02d%02d_%s.html", yb-2000, mb, db , filename );
 								fprintf(fpe,"html_out %s\n", html );
 								
-								/*		EOF‚ÅI‚í‚Á‚½ê‡‚ÍAhtml_b2‚Ì“ú•t‚ªXV‚³‚ê‚Ä‚¢‚È‚¢‚Ì‚ÅA
-										‘OX“ú‚Íhtml_b‚Å‚Í‚È‚­html_b2‚É‚È‚éB
-										‚±‚Ì‚½‚ßA csv2html‚Åu‘O“úv‚ÌURLw’è‚Íhtml_b2‚ğg‚Á‚Ä‚¢‚éB */
+								/*		EOFã§çµ‚ã‚ã£ãŸå ´åˆã¯ã€html_b2ã®æ—¥ä»˜ãŒæ›´æ–°ã•ã‚Œã¦ã„ãªã„ã®ã§ã€
+										å‰ã€…æ—¥ã¯html_bã§ã¯ãªãhtml_b2ã«ãªã‚‹ã€‚
+										ã“ã®ãŸã‚ã€ csv2htmlã§ã€Œå‰æ—¥ã€ã®URLæŒ‡å®šã¯html_b2ã‚’ä½¿ã£ã¦ã„ã‚‹ã€‚ */
 								i = csv2html( write, html, valn , html_b2, type);
 								if( i == -1 ) fprintf(fpe,"ERROR open for read :%s\n",write);
 								if( i == -2 ) fprintf(fpe,"ERROR to write : %s\n", html );
-								/* return ˆ— */
+								/* return å‡¦ç† */
 								fprintf(fpe,"done (EOF)\n");
 								printf("done (EOF)\n");
 								fclose( fpe );
-								sprintf( html_b2, "%02d%02d%02d_%s.html", yb-2000, mb, db , filename );  // html_b2‚ğCSVƒf[ƒ^o—Í(fpw)‚Ì“ú•t‚É
+								sprintf( html_b2, "%02d%02d%02d_%s.html", yb-2000, mb, db , filename );  // html_b2ã‚’CSVãƒ‡ãƒ¼ã‚¿å‡ºåŠ›(fpw)ã®æ—¥ä»˜ã«
 								_html_jump( html_b2, filename);
 								return( 0 );
 							}
 						}
-						if( vals > 256) vals = 256;	// for(i)‚Å256‰ñ‚ğŒÄ‚ñ‚Å‚àƒf[ƒ^‚ªc‚Á‚Ä‚¢‚é‚ÍÌ‚Ä‚é
+						if( vals > 256) vals = 256;	// for(i)ã§256å›ã‚’å‘¼ã‚“ã§ã‚‚ãƒ‡ãƒ¼ã‚¿ãŒæ®‹ã£ã¦ã„ã‚‹æ™‚ã¯æ¨ã¦ã‚‹
 						
-						/* CSVƒf[ƒ^o—Í(–ˆ‚P‰ñ) */
+						/* CSVãƒ‡ãƒ¼ã‚¿å‡ºåŠ›(æ¯æ™‚ï¼‘å›) */
 						fprintf(fpw, "%04d/%02d/%02d,%02d:00", yb, mb, db, hour);
 						for( j = 0 ; j < valn ; j++){
 							fprintf(fpw, ", ");
@@ -831,12 +831,12 @@ int compress_data(char *date_lim , char *filename , enum xbee_sensor_type val1, 
 							sum = 0.;
 							for( i = 0 ; i < vals ; i++ ){
 								if( value[j][i] >= 0.0 ){
-									if(	(j == 0 && val1 == TIMES) ||	// ƒf[ƒ^‚ªu‰ñ”‚Ìv
+									if(	(j == 0 && val1 == TIMES) ||	// ãƒ‡ãƒ¼ã‚¿ãŒã€Œå›æ•°ã®æ™‚ã€
 										(j == 1 && val2 == TIMES) ||
 										(j == 2 && val3 == TIMES) ){
 										sum += 1;
 										div = 1;
-									}else{							// ƒf[ƒ^‚ª‰ñ”ˆÈŠO‚Ì
+									}else{							// ãƒ‡ãƒ¼ã‚¿ãŒå›æ•°ä»¥å¤–ã®æ™‚
 										sum += value[j][i];
 										div++;
 									}
@@ -845,23 +845,23 @@ int compress_data(char *date_lim , char *filename , enum xbee_sensor_type val1, 
 							// fprintf(fpe,"%s j=%d sum=%f div=%f\n", write, j ,sum, (float)div); //test
 							if( div > 0 ) fprintf(fpw, "%f", ( sum / (float)div ) );
 							else{
-								fprintf(fpw, "-1.0" );		// div=0‚ÌA‚»‚¤‚È‚é‚Ì‚Ívalue‚ª‘S‚Ä-1‚Ì
+								fprintf(fpw, "-1.0" );		// div=0ã®æ™‚ã€ãã†ãªã‚‹ã®ã¯valueãŒå…¨ã¦-1ã®æ™‚
 								fprintf(fpe, "WARNING:vals=%d\n",vals);
 							}
 						}
 						fprintf(fpw, "\n" );
-						/* ƒoƒbƒtƒ@256ŒÂ‚ğ’´‚¦‚½ê‡‚Ì“Ç‚İÌ‚Äˆ— */
+						/* ãƒãƒƒãƒ•ã‚¡256å€‹ã‚’è¶…ãˆãŸå ´åˆã®èª­ã¿æ¨ã¦å‡¦ç† */
 						if( vals == 256 ){
 							fprintf(fpe, "WARNING:vals=%d\n",vals);
 							do{
 								fscanf(fpr,"%[^\r\n]\n", s);
-								yb=y;	mb=m;	db=d;	hhb=hh;	//“Ç‚İæ‚è‘O‚ÌƒoƒbƒNƒAƒbƒv
+								yb=y;	mb=m;	db=d;	hhb=hh;	//èª­ã¿å–ã‚Šå‰ã®ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—
 								if( fscanf(fpr,"%d/%d/%d,%d:%d,",&y,&m,&d,&hh,&mm) != EOF ){
 									if( yb != y || mb != m || db != d ) hhb = -1;
 								}else hhb = -1;
-							}while( hh == hhb);		// “¯‚¶ŠÔ‚Ì‚à‚Ì‚Í“Ç‚İÌ‚Ä‚é
+							}while( hh == hhb);		// åŒã˜æ™‚é–“ã®ã‚‚ã®ã¯èª­ã¿æ¨ã¦ã‚‹
 						}
-						/* “ú•t‚ª•Ï‚í‚Á‚Ä‚¢‚½‚Ìbreakˆ— */
+						/* æ—¥ä»˜ãŒå¤‰ã‚ã£ã¦ã„ãŸæ™‚ã®breakå‡¦ç† */
 						if( f == 0 ) break;
 					}
 					fclose( fpw );
@@ -871,14 +871,14 @@ int compress_data(char *date_lim , char *filename , enum xbee_sensor_type val1, 
 					break;
 				}
 				// fprintf(fpe, "WARNING:unwanted data existed befor EOF\n");
-				/* htmlo—Í B
-				“ú•t‚Ì•Ï‚í‚è–Ú‚Åhtmlo—Í‚·‚é•”•ªB
-				“úX‚Ìƒoƒbƒ`ˆ—‚Å‚ÍA“ú‚Ì•Ï‚í‚è–Ú‚ÌŒã‚Éƒf[ƒ^‚ª–³‚¢‚Ì‚Å’Ê‚ç‚È‚¢B
-				‰‰ñ‚Ìƒoƒbƒ`ˆ—‚Å‚ÍA‘SŒ•ÏŠ·‚È‚Ì‚ÅA“ú‚ª•Ï‚í‚é‚½‚Ñ‚É’Ê‚é */
+				/* htmlå‡ºåŠ› ã€‚
+				æ—¥ä»˜ã®å¤‰ã‚ã‚Šç›®ã§htmlå‡ºåŠ›ã™ã‚‹éƒ¨åˆ†ã€‚
+				æ—¥ã€…ã®ãƒãƒƒãƒå‡¦ç†ã§ã¯ã€æ—¥ã®å¤‰ã‚ã‚Šç›®ã®å¾Œã«ãƒ‡ãƒ¼ã‚¿ãŒç„¡ã„ã®ã§é€šã‚‰ãªã„ã€‚
+				åˆå›ã®ãƒãƒƒãƒå‡¦ç†ã§ã¯ã€å…¨ä»¶å¤‰æ›ãªã®ã§ã€æ—¥ãŒå¤‰ã‚ã‚‹ãŸã³ã«é€šã‚‹ */
 				sprintf( html, "htdocs/%02d%02d%02d_%s.html", yb-2000, mb, db , filename );
 				fprintf(fpe,"html_out %s\n", html );
 				
-				/*		23‚Ü‚Å‚¢‚©‚È‚©‚Á‚½ê‡‚ÍAHHH
+				/*		23æ™‚ã¾ã§ã„ã‹ãªã‹ã£ãŸå ´åˆã¯ã€ï¼Ÿï¼Ÿï¼Ÿ
 				*/
 				i=csv2html( write, html, valn , html_b, type);
 				if( i == -1 ) fprintf(fpe,"ERROR open for read :%s\n",write);
@@ -886,7 +886,7 @@ int compress_data(char *date_lim , char *filename , enum xbee_sensor_type val1, 
 		//	}while( feof(fpr) != EOF );
 			}while( feof(fpr) == 0 );
 			fclose( fpr );
-			sprintf( html_b2, "%02d%02d%02d_%s.html", yb-2000, mb, db , filename );  // html_b2‚ğCSVƒf[ƒ^o—Í(fpw)‚Ì“ú•t‚É
+			sprintf( html_b2, "%02d%02d%02d_%s.html", yb-2000, mb, db , filename );  // html_b2ã‚’CSVãƒ‡ãƒ¼ã‚¿å‡ºåŠ›(fpw)ã®æ—¥ä»˜ã«
 			_html_jump( html_b2, filename);
 		}else{
 			fprintf(fpe,"ERROR open for log:%s\n",filename);

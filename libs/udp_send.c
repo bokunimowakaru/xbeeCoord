@@ -5,13 +5,13 @@ int sendUdpData(char *data){
 	int xbeeTSFd;
 	struct sockaddr_in xbeeT_addr;
 	
-	/* ‘—MƒAƒhƒŒƒXİ’è */
-	memset(&xbeeT_addr, 0, sizeof(xbeeT_addr)); 		// xbeeT_addr‚Ì‰Šú‰»
-	xbeeT_addr.sin_family = AF_INET;					// ƒAƒhƒŒƒXƒtƒ@ƒ~ƒŠ[ AF_INET
-	xbeeT_addr.sin_port = htons( 1024 );				// ‘—Mƒ|[ƒg”Ô†
-	xbeeT_addr.sin_addr.s_addr = (in_addr_t)192+(in_addr_t)168*256+(in_addr_t)0*256*256+(in_addr_t)255*256*256*256;		// ‘—MIPƒAƒhƒŒƒX
-	/* ƒ\ƒPƒbƒg¶¬ */
-	xbeeTSFd = socket(AF_INET, SOCK_DGRAM, 0);	// ‘—M—pƒ\ƒPƒbƒg‚Ì¶¬
+	/* é€ä¿¡ã‚¢ãƒ‰ãƒ¬ã‚¹è¨­å®š */
+	memset(&xbeeT_addr, 0, sizeof(xbeeT_addr)); 		// xbeeT_addrã®åˆæœŸåŒ–
+	xbeeT_addr.sin_family = AF_INET;					// ã‚¢ãƒ‰ãƒ¬ã‚¹ãƒ•ã‚¡ãƒŸãƒªãƒ¼ AF_INET
+	xbeeT_addr.sin_port = htons( 1024 );				// é€ä¿¡ãƒãƒ¼ãƒˆç•ªå·
+	xbeeT_addr.sin_addr.s_addr = (in_addr_t)192+(in_addr_t)168*256+(in_addr_t)0*256*256+(in_addr_t)255*256*256*256;		// é€ä¿¡IPã‚¢ãƒ‰ãƒ¬ã‚¹
+	/* ã‚½ã‚±ãƒƒãƒˆç”Ÿæˆ */
+	xbeeTSFd = socket(AF_INET, SOCK_DGRAM, 0);	// é€ä¿¡ç”¨ã‚½ã‚±ãƒƒãƒˆã®ç”Ÿæˆ
 //	printf("IP(TX)=%s\n", inet_ntoa( xbeeT_addr.sin_addr ) );
 
 	i=sendto(xbeeTSFd, data, strlen(data), 0, (struct sockaddr *)&xbeeT_addr, sizeof(xbeeT_addr));
