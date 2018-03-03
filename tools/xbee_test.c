@@ -337,8 +337,10 @@ int main(int argc,char **argv){
 				case MODE_RESP:	
 					printf("\n--------------------\nrecieved RAT_RESP\n--------------------\n");
 					printf("from   :");
-					for(i=0;i<4;i++) lcd_disp_hex( xbee_result.FROM[i] ); lcd_putch( ' ' );
-					for(i=4;i<8;i++) lcd_disp_hex( xbee_result.FROM[i] ); lcd_putch( '\n' );
+					for(i=0;i<4;i++) lcd_disp_hex( xbee_result.FROM[i] );
+					lcd_putch( ' ' );
+					for(i=4;i<8;i++) lcd_disp_hex( xbee_result.FROM[i] );
+					lcd_putch( '\n' );
 					printf("id     :%02X\n", xbee_result.ID);
 					printf("status :%02X", xbee_result.STATUS);
 					print_status( xbee_result.STATUS );
@@ -355,8 +357,10 @@ int main(int argc,char **argv){
 				case MODE_BATT:	
 					printf("\n--------------------\nrecieved RAT_BATT\n--------------------\n");
 					printf("from   :");
-					for(i=0;i<4;i++) lcd_disp_hex( xbee_result.FROM[i] ); lcd_putch( ' ' );
-					for(i=4;i<8;i++) lcd_disp_hex( xbee_result.FROM[i] ); lcd_putch( '\n' );
+					for(i=0;i<4;i++) lcd_disp_hex( xbee_result.FROM[i] );
+					lcd_putch( ' ' );
+					for(i=4;i<8;i++) lcd_disp_hex( xbee_result.FROM[i] );
+					lcd_putch( '\n' );
 					printf("id     :%02X\n", xbee_result.ID);
 					printf("status :%02X", xbee_result.STATUS);
 					print_status(xbee_result.STATUS);
@@ -378,8 +382,10 @@ int main(int argc,char **argv){
 					/* シリアルデータを受信 */
 					printf("\n--------------------\nrecieved UART\n--------------------\n");
 					printf("from   :");
-					for(i=0;i<4;i++) lcd_disp_hex( xbee_result.FROM[i] ); lcd_putch( ' ' );
-					for(i=4;i<8;i++) lcd_disp_hex( xbee_result.FROM[i] ); lcd_putch( '\n' );
+					for(i=0;i<4;i++) lcd_disp_hex( xbee_result.FROM[i] );
+					lcd_putch( ' ' );
+					for(i=4;i<8;i++) lcd_disp_hex( xbee_result.FROM[i] );
+					lcd_putch( '\n' );
 					printf("status :%02X ", xbee_result.STATUS);
 					print_packet(xbee_result.STATUS);
 					bytecpy(dev_tmp, xbee_result.FROM, 8);	// アドレスをdev_tmpに読み込み
@@ -395,9 +401,12 @@ int main(int argc,char **argv){
 				case MODE_UAR2:
 					printf("\n--------------------\nrecieved UAR2 AO=1\n--------------------\n");
 					printf("from   :");
-					for(i=0;i<4;i++) lcd_disp_hex( xbee_result.FROM[i] ); lcd_putch( ' ' );
-					for(i=4;i<8;i++) lcd_disp_hex( xbee_result.FROM[i] ); lcd_putch( ' ' );
-					for(i=0;i<2;i++) lcd_disp_hex( xbee_result.SHORT[i] ); lcd_putch( '\n' );
+					for(i=0;i<4;i++) lcd_disp_hex( xbee_result.FROM[i] );
+					lcd_putch( ' ' );
+					for(i=4;i<8;i++) lcd_disp_hex( xbee_result.FROM[i] );
+					lcd_putch( ' ' );
+					for(i=0;i<2;i++) lcd_disp_hex( xbee_result.SHORT[i] );
+					lcd_putch( '\n' );
 					printf("endpt  :%02X to %02X\n", xbee_result.ZCL[0],xbee_result.ZCL[1]);
 					printf("Cluster:%02X%02X\n", xbee_result.ZCL[2],xbee_result.ZCL[3]);
 					printf("Profile:%02X%02X\n", xbee_result.ZCL[4],xbee_result.ZCL[5]);
@@ -413,8 +422,10 @@ int main(int argc,char **argv){
 				case MODE_GPIN:
 					printf("\n--------------------\nrecieved GPIO input\n--------------------\n");
 					printf("from   :");
-					for(i=0;i<4;i++) lcd_disp_hex( xbee_result.FROM[i] ); lcd_putch( ' ' );
-					for(i=4;i<8;i++) lcd_disp_hex( xbee_result.FROM[i] ); lcd_putch( '\n' );
+					for(i=0;i<4;i++) lcd_disp_hex( xbee_result.FROM[i] );
+					lcd_putch( ' ' );
+					for(i=4;i<8;i++) lcd_disp_hex( xbee_result.FROM[i] );
+					lcd_putch( '\n' );
 					printf("status :%02X\n", xbee_result.STATUS);
 					// lcd_disp_bin( rx );	// rxに入った値をバイナリで表示
 					// lcd_putch( '\n' );
@@ -434,14 +445,20 @@ int main(int argc,char **argv){
 				case MODE_IDNT:				// 新しいデバイスを発見
 					printf("\n--------------------\nrecieved IDNT\n--------------------\n");
 					printf("from   :");
-					for(i=0;i<4;i++) lcd_disp_hex( xbee_result.FROM[i] ); lcd_putch( ' ' );
-					for(i=4;i<8;i++) lcd_disp_hex( xbee_result.FROM[i] ); lcd_putch( ' ' );
-					for(i=0;i<2;i++) lcd_disp_hex( xbee_result.SHORT[i] ); lcd_putch( ' ' );
-					for(i=0;i<2;i++) lcd_disp_hex( xbee_result.DATA[i+15-15] ); lcd_putch( '\n' );
+					for(i=0;i<4;i++) lcd_disp_hex( xbee_result.FROM[i] );
+					lcd_putch( ' ' );
+					for(i=4;i<8;i++) lcd_disp_hex( xbee_result.FROM[i] );
+					lcd_putch( ' ' );
+					for(i=0;i<2;i++) lcd_disp_hex( xbee_result.SHORT[i] );
+					lcd_putch( ' ' );
+					for(i=0;i<2;i++) lcd_disp_hex( xbee_result.DATA[i+15-15] );
+					lcd_putch( '\n' );
 					bytecpy(dev, xbee_result.FROM, 8);	// 発見したアドレスをdevに読み込み
 					printf("network:");
-					for(i=0;i<4;i++) lcd_disp_hex( xbee_result.DATA[i+17-15] ); lcd_putch( ' ' );
-					for(i=4;i<8;i++) lcd_disp_hex( xbee_result.DATA[i+17-15+4] ); lcd_putch( '\n' );
+					for(i=0;i<4;i++) lcd_disp_hex( xbee_result.DATA[i+17-15] );
+					lcd_putch( ' ' );
+					for(i=4;i<8;i++) lcd_disp_hex( xbee_result.DATA[i+17-15+4] );
+					lcd_putch( '\n' );
 					printf("type   :%02X ",rx);
 					print_atvr(rx);
 					printf("Node ID:%02X%02X\n",xbee_result.DATA[25-15],xbee_result.DATA[26-15]);
@@ -496,7 +513,8 @@ int main(int argc,char **argv){
 		
 		if( at[0] == '!' ) for(i=0;i<AT_LEN;i++) at[i] = at_bk[i];
 		else for(i=0;i<AT_LEN;i++) at_bk[i] = at[i];
-		for(i=0;i<(API_SIZE-1);i++) data[i] = 0x00; data[API_SIZE-1] = 0x00;
+		for(i=0;i<(API_SIZE-1);i++) data[i] = 0x00;
+		data[API_SIZE-1] = 0x00;
 		at_len=0;
 		for(i=0;i<3;i++) if( at[i] >='a' && at[i] <= 'z' ) at[i] -= ('a'-'A');
 		
@@ -611,14 +629,18 @@ int main(int argc,char **argv){
 		}else if( at[0] == 'I' && at[1] == 'D' ){
 			xbee_from(dev);
 			xbee_log(3,"Stored recieved IEEE to destination's ",strlen(at)-2);
-			for(i=0;i<4;i++) lcd_disp_hex( dev[i] ); lcd_putch( ' ' );
-			for(i=4;i<8;i++) lcd_disp_hex( dev[i] ); lcd_putch( '\n' );
+			for(i=0;i<4;i++) lcd_disp_hex( dev[i] );
+			lcd_putch( ' ' );
+			for(i=4;i<8;i++) lcd_disp_hex( dev[i] );
+			lcd_putch( '\n' );
 		}else if( at[0] == 'I' && at[1] == 'E' && at[2] != '\0'){
 			xbee_log(3,"Stored destination IEEE ",strlen(at)-2);
 			for(i=0;i<8;i++) dev[i]=hex2byte( &at[2+i*2] );
 			for(i=0;i<8;i++) ADR_DEST[i]  = dev[i];
-			for(i=0;i<4;i++) lcd_disp_hex( dev[i] ); lcd_putch( ' ' );
-			for(i=4;i<8;i++) lcd_disp_hex( dev[i] ); lcd_putch( '\n' );
+			for(i=0;i<4;i++) lcd_disp_hex( dev[i] );
+			lcd_putch( ' ' );
+			for(i=4;i<8;i++) lcd_disp_hex( dev[i] );
+			lcd_putch( '\n' );
 		}else if( at[0] == 'I'){
 			unsigned short pan_id_s;
 			
@@ -628,8 +650,10 @@ int main(int argc,char **argv){
 			print_atvr(i);
 			pan_id_s=xbee_atop(dev_tmp);
 			printf("PAN ID      :");
-			for(i=0;i<4;i++) lcd_disp_hex( dev_tmp[i] ); lcd_putch( ' ' );
-			for(i=0;i<4;i++) lcd_disp_hex( dev_tmp[4+i] ); lcd_putch( ' ' );
+			for(i=0;i<4;i++) lcd_disp_hex( dev_tmp[i] );
+			lcd_putch( ' ' );
+			for(i=0;i<4;i++) lcd_disp_hex( dev_tmp[4+i] );
+			lcd_putch( ' ' );
 			printf("%04X\n",pan_id_s);
 			i=xbee_atai();
 			printf("xbee_atai   :%02X ", i );
@@ -637,12 +661,17 @@ int main(int argc,char **argv){
 			xbee_myaddress( dev_tmp );
 			printf("xbee_atnc   :%d\n", xbee_atnc() );
 			printf("my address  :");
-			for(i=0;i<4;i++) lcd_disp_hex( dev_tmp[i] ); lcd_putch( ' ' );
-			for(i=0;i<4;i++) lcd_disp_hex( dev_tmp[4+i] ); lcd_putch( '\n' );
+			for(i=0;i<4;i++) lcd_disp_hex( dev_tmp[i] );
+			lcd_putch( ' ' );
+			for(i=0;i<4;i++) lcd_disp_hex( dev_tmp[4+i] );
+			lcd_putch( '\n' );
 			printf("dest address:");
-			for(i=0;i<4;i++) lcd_disp_hex( dev[i] ); lcd_putch( ' ' );
-			for(i=0;i<4;i++) lcd_disp_hex( dev[4+i] ); lcd_putch( ' ' );
-			for(i=0;i<2;i++) lcd_disp_hex( SADR_DEST[i] ); lcd_putch( '\n' );
+			for(i=0;i<4;i++) lcd_disp_hex( dev[i] );
+			lcd_putch( ' ' );
+			for(i=0;i<4;i++) lcd_disp_hex( dev[4+i] );
+			lcd_putch( ' ' );
+			for(i=0;i<2;i++) lcd_disp_hex( SADR_DEST[i] );
+			lcd_putch( '\n' );
 		}else if( at[0] == 'N' && at[1] == 'C' ){
 			xbee_log(3,"Number of Children; End Devices ",strlen(at)-2);
 			printf("Coordinator  :");
@@ -655,8 +684,10 @@ int main(int argc,char **argv){
 		}else if( at[0] == 'P' && at[1] == 'I' ){
 			xbee_log(3,"XBee Ping ",strlen(at)-2);
 			printf("dest   :");
-			for(i=0;i<4;i++) lcd_disp_hex( dev[i] ); lcd_putch( ' ' );
-			for(i=4;i<8;i++) lcd_disp_hex( dev[i] ); lcd_putch( '\n' );
+			for(i=0;i<4;i++) lcd_disp_hex( dev[i] );
+			lcd_putch( ' ' );
+			for(i=4;i<8;i++) lcd_disp_hex( dev[i] );
+			lcd_putch( '\n' );
 			i=xbee_ping(dev);
 			printf("result :");
 			switch(i){
@@ -694,8 +725,10 @@ int main(int argc,char **argv){
 			for(i=1;i<(AT_LEN-1);i++) at[i-1] = at[i];
 			for(i=2;i<(AT_LEN-1);i++) if( at[i] >='a' && at[i] <= 'z' ) at[i] -= ('a'-'A');
 			printf("dest   :");
-			for(i=0;i<4;i++) lcd_disp_hex( dev[i] ); lcd_putch( ' ' );
-			for(i=4;i<8;i++) lcd_disp_hex( dev[i] ); lcd_putch( '\n' );
+			for(i=0;i<4;i++) lcd_disp_hex( dev[i] );
+			lcd_putch( ' ' );
+			for(i=4;i<8;i++) lcd_disp_hex( dev[i] );
+			lcd_putch( '\n' );
 			printf("xbee_rat(%s)\n",at);
 			printf("return(0x%02X)\n",xbee_rat(dev,at) );
 		}else if( at[0] == 'J' && at[1] == 'H' && at[2] == 'J' && at[3] == 'h' ){
@@ -721,8 +754,10 @@ int main(int argc,char **argv){
 			at[0] = 'T';
 			at[1] = 'X';
 			printf("dest   :");
-			for(i=0;i<4;i++) lcd_disp_hex( dev[i] ); lcd_putch( ' ' );
-			for(i=4;i<8;i++) lcd_disp_hex( dev[i] ); lcd_putch( '\n' );
+			for(i=0;i<4;i++) lcd_disp_hex( dev[i] );
+			lcd_putch( ' ' );
+			for(i=4;i<8;i++) lcd_disp_hex( dev[i] );
+			lcd_putch( '\n' );
 			for(i=3;i<(AT_LEN-1);i++) if( at[i] >='a' && at[i] <= 'z' ) at[i] -= ('a'-'A');
 			printf("xbee_rat_tx(%s) = 0x%02X\n",at, xbee_rat(dev,at) );
 		}else if( 	(at[0] == 'V' && at[1] == 'R') ){
@@ -748,7 +783,8 @@ int main(int argc,char **argv){
 				for(i=0;i<2;i++) zcl_dest[i]=SADR_DEST[i];
 			}
 			printf("Short Address :");
-			for(i=0;i<2;i++) lcd_disp_hex( zcl_dest[i] ); lcd_putch( '\n' );
+			for(i=0;i<2;i++) lcd_disp_hex( zcl_dest[i] );
+			lcd_putch( '\n' );
 		}else if( at[0] == 'Z' && at[1] == 'C' && at[2] == 'S' && at[3] == 'e' ){
 			if(at[4] != '\0' && at[6] == '\0'){
 				zcl_sep = hex2byte(&at[4]);
@@ -807,9 +843,12 @@ int main(int argc,char **argv){
 			for(i=0;i<8;i++) ADR_DEST[i]  = dev[i];
 			for(i=0;i<2;i++) SADR_DEST[i] = zcl_dest[i];
 			printf("Destination:");
-			for(i=0;i<4;i++) lcd_disp_hex( ADR_DEST[i] ); lcd_putch( ' ' );
-			for(i=4;i<8;i++) lcd_disp_hex( ADR_DEST[i] ); lcd_putch( ' ' );
-			for(i=0;i<2;i++) lcd_disp_hex( SADR_DEST[i] ); lcd_putch( '\n' );
+			for(i=0;i<4;i++) lcd_disp_hex( ADR_DEST[i] );
+			lcd_putch( ' ' );
+			for(i=4;i<8;i++) lcd_disp_hex( ADR_DEST[i] );
+			lcd_putch( ' ' );
+			for(i=0;i<2;i++) lcd_disp_hex( SADR_DEST[i] );
+			lcd_putch( '\n' );
 			printf("Source End :%02X\n",zcl_sep);
 			printf("Dest End   :%02X\n",zcl_dep);
 			printf("Cluster ID :%02X%02X\n",zcl_clid[0],zcl_clid[1]);
@@ -909,9 +948,12 @@ ZCL
 			at[0] = 'Z';
 			at[1] = 'C';
 			printf("dest   :");
-			for(i=0;i<4;i++) lcd_disp_hex( ADR_DEST[i] ); lcd_putch( ' ' );
-			for(i=4;i<8;i++) lcd_disp_hex( ADR_DEST[i] ); lcd_putch( ' ' );
-			for(i=0;i<2;i++) lcd_disp_hex( SADR_DEST[i] ); lcd_putch( '\n' );
+			for(i=0;i<4;i++) lcd_disp_hex( ADR_DEST[i] );
+			lcd_putch( ' ' );
+			for(i=4;i<8;i++) lcd_disp_hex( ADR_DEST[i] );
+			lcd_putch( ' ' );
+			for(i=0;i<2;i++) lcd_disp_hex( SADR_DEST[i] );
+			lcd_putch( '\n' );
 			for(i=3;i<(AT_LEN-1);i++) if( at[i] >='a' && at[i] <= 'z' ) at[i] -= ('a'-'A');
 			printf("xbee_rat_tx(%s) = 0x%02X\n",at, xbee_rat(dev,at) );
 			if(zcl_seq!=0 ){
@@ -936,8 +978,10 @@ ZCL
 					if( at[1] == 'A' && at[2] == 'T' ){
 						printf("RemoteAT command [dev]\n");
 						printf("dest   :");
-						for(i=0;i<4;i++) lcd_disp_hex( dev[i] ); lcd_putch( ' ' );
-						for(i=4;i<8;i++) lcd_disp_hex( dev[i] ); lcd_putch( '\n' );
+						for(i=0;i<4;i++) lcd_disp_hex( dev[i] );
+						lcd_putch( ' ' );
+						for(i=4;i<8;i++) lcd_disp_hex( dev[i] );
+						lcd_putch( '\n' );
 						at_len=3;
 						r_dat = 10; r_at=1;
 						if( at[3] == 'W' && at[4] == 'R' ) wait_add = 100;	// RATWR 220～2200ms
@@ -947,8 +991,10 @@ ZCL
 					if( at[1] == 'X' ){
 						printf("uartTX command [dev]\n");
 						printf("dest   :");
-						for(i=0;i<4;i++) lcd_disp_hex( dev[i] ); lcd_putch( ' ' );
-						for(i=4;i<8;i++) lcd_disp_hex( dev[i] ); lcd_putch( '\n' );
+						for(i=0;i<4;i++) lcd_disp_hex( dev[i] );
+						lcd_putch( ' ' );
+						for(i=4;i<8;i++) lcd_disp_hex( dev[i] );
+						lcd_putch( '\n' );
 						printf("sending:\n");
 						i=3;
 						while( at[i] != '\0' && at[i] != '\n' && at[i] != '\r' && i < AT_LEN && i < FO_LEN ){
@@ -980,8 +1026,10 @@ ZCL
 						printf("open '%s'\n",filename);
 						if( (i > 3) && (fp = fopen( filename,"r")) != NULL ){
 							printf("dest   :");
-							for(i=0;i<4;i++) lcd_disp_hex( dev[i] ); lcd_putch( ' ' );
-							for(i=4;i<8;i++) lcd_disp_hex( dev[i] ); lcd_putch( '\n' );
+							for(i=0;i<4;i++) lcd_disp_hex( dev[i] );
+							lcd_putch( ' ' );
+							for(i=4;i<8;i++) lcd_disp_hex( dev[i] );
+							lcd_putch( '\n' );
 							printf("sending:\n");
 							while( feof(fp) == 0 ){
 								for( i= 0; i < FO_LEN-1 ; i++ ) s[i] = '\0';
@@ -1050,7 +1098,8 @@ ZCL
 				/* コマンド送信 */
 				xbee_address(dev);
 				printf("xbee_tx:%s[%d]",at,val_len);
-				for( i=0 ; i< val_len ; i++) lcd_disp_hex( data[i] ); printf("\n");
+				for( i=0 ; i< val_len ; i++) lcd_disp_hex( data[i] );
+				printf("\n");
 				if( xbee_at_tx( at ,data ,val_len ) > 0){
 					err = 12;							// 受信なしエラー
 					for( retry = 10 ; ( retry > 0 && err == 12 ) ; retry-- ){
@@ -1059,7 +1108,8 @@ ZCL
 							wait_millisec( wait_add );	// 追加ウェイト
 							printf("added wait time\n");
 						}
-						for(j=0;j<(API_SIZE-1);j++) data[j] = 0x00;  data[API_SIZE-1] = 0x00;
+						for(j=0;j<(API_SIZE-1);j++) data[j] = 0x00;
+						data[API_SIZE-1] = 0x00;
 						res_len = xbee_at_rx( data );
 						if( res_len > 0){
 							if( data[4] == PACKET_ID
@@ -1120,8 +1170,10 @@ ZCL
 					case MODE_RESP:	
 						printf("\n--------------------\nrecieved RAT_RESP\n--------------------\n");
 						printf("from   :");
-						for(i=0;i<4;i++) lcd_disp_hex( data[5+i] ); lcd_putch( ' ' );
-						for(i=0;i<4;i++) lcd_disp_hex( data[9+i] ); lcd_putch( '\n' );
+						for(i=0;i<4;i++) lcd_disp_hex( data[5+i] );
+						lcd_putch( ' ' );
+						for(i=0;i<4;i++) lcd_disp_hex( data[9+i] );
+						lcd_putch( '\n' );
 						printf("id     :%02X\n", data[4]);
 						printf("status :%02X", data[17]);
 						print_status( data[17] );
