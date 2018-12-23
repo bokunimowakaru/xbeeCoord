@@ -12,14 +12,20 @@ XBee ZigBee、XBee Wi-Fi によるセンサネットワークを構築するた�
 - examples_h8 ：H8 Tiny用サンプル  
 - xbee_mbed ：Nucleo Board STM32F401用サンプル  
 
+# 対応XBeeモジュール
+
+- XBee Series 2 (ZB)
+- XBee ZB S2C
+- XBee3
+ 
 ボクにもわかるXBee用センサネットワーク：  
-	http://www.geocities.jp/bokunimowakaru/diy/xbee/  
+	http://bokunimo.net/xbee/  
   
 ボクにもわかるRaspberry Pi：  
-	http://www.geocities.jp/bokunimowakaru/q/pi/  
+	http://bokunimo.net/raspi/  
 
-							   Copyright (c) 2010-2016 Wataru KUNINO
-							   http://www.geocities.jp/bokunimowakaru/
+							   Copyright (c) 2010-2018 Wataru KUNINO
+							   http://bokunimo.net/
 
 -----------------------------------------------------------------------------------------
 
