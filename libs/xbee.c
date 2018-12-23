@@ -247,6 +247,7 @@ XBee AT commands.
 						- gcc Version 4.9.2対応
 	2016/08/04	1.96	- XBee ZB S2Cシリーズ対応
 						- ZigBee Raspberry Pi版の正式対応版の作成完了
+	2018/12/24	1.97	- XBee3 ZBシリーズ対応
 
 *********************************************************************/
 /*
@@ -254,7 +255,7 @@ XBee AT commands.
 */
 #ifndef VERSION
 
-	#define 	VERSION "1.96"		// 1.XX 4バイト形式 XXは半角文字
+	#define 	VERSION "1.97"		// 1.XX 4バイト形式 XXは半角文字
 
 #endif
 /*
