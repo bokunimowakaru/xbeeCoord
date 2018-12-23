@@ -3042,10 +3042,22 @@ byte xbee_reset( void ){
 			if( ret > 0){
 				#ifndef XBEE_WIFI
 					DEVICE_TYPE = value[8];
+					if(	DEVICE_TYPE == ZB_TYPE_TH_Reg ||
+						DEVICE_TYPE == 0x10 ){
+						xbee_tx_rx( "ATCE", value ,0 );
+						if( value[8] == 0x01 ){
+							DEVICE_TYPE = ZB_TYPE_COORD;
+						}else{
+							xbee_tx_rx( "ATSM", value ,0 );
+							if( value[8] == 0x00 ) DEVICE_TYPE = ZB_TYPE_ROUTER;
+							if( value[8] == 0x04 ) DEVICE_TYPE = ZB_TYPE_ENDDEV;
+						}
+					}
 					if( DEVICE_TYPE != ZB_TYPE_COORD && 
 						DEVICE_TYPE != ZB_TYPE_ROUTER && 
 						DEVICE_TYPE != ZB_TYPE_ENDDEV && 
-						DEVICE_TYPE != ZB_TYPE_TH_Reg){ // VRの確認
+						DEVICE_TYPE != ZB_TYPE_TH_Reg &&
+						DEVICE_TYPE != 0x10 ){ // VRの確認
 						#ifdef LCD_H
 							lcd_cls();
 							#ifdef H3694
