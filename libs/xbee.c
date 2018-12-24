@@ -10,8 +10,8 @@ the functions of this C language library. You can control XBee devices
 through the API software modules in this library, without using any
 XBee AT commands.
 
-							   Copyright (c) 2010-2015 Wataru KUNINO
-							   http://www.geocities.jp/bokunimowakaru/
+                               Copyright (c) 2010-2018 Wataru KUNINO
+                               http://bokunimo.net/
 *********************************************************************/
 
 //	for ARM mbed Compiler

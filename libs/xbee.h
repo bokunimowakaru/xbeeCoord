@@ -1,10 +1,18 @@
 //#define ARM_MBED
 /*********************************************************************
-本ソースリストおよびソフトウェアは、ライセンスフリーです。
+本ソースリストおよびソフトウェアは、ライセンスフリーです。(詳細は別記)
 利用、編集、再配布等が自由に行えますが、著作権表示の改変は禁止します。
 
-							   Copyright (c) 2010-2016 Wataru KUNINO
-							   http://www.geocities.jp/bokunimowakaru/
+ZB Coord API for XBee
+
+This XBee library drives Digi XBee ZB Modules in API Operation mode.
+Most of XBee commands include remote communication are supported by
+the functions of this C language library. You can control XBee devices
+through the API software modules in this library, without using any
+XBee AT commands.
+
+                               Copyright (c) 2010-2018 Wataru KUNINO
+                               http://bokunimo.net/
 *********************************************************************/
 
 /*********************************************************************
