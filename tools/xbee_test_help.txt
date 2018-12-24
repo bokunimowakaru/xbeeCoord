@@ -4,6 +4,10 @@ at      ATコマンド          AT>atop     ネットワークアドレスを取
                             AT>atd4=05  PC親機のXBee DIOポート4をHに設定
 rat     リモートATコマンド  AT>ratd4=05 リモート子機のDIOポート4をHに設定
                             AT>ratis    リモート子機のGPIO値を取得して表示
+zbmod   デバイスタイプ変更  AT>zbmod    設定オプションの表示
+                            AT>zbmod=10 Coordinator API
+                            AT>zbmod=11 Router API
+                            AT>zbmod=12 End Device API
 ie      宛先アドレス設定    AT>ieXX～XX 16進数16桁の宛先IEEEアドレス設定 
 id      FROMアドレス保存    AT>id       最後に受信した受信アドレスを宛先に
 ping    XBee Pingを実行     AT>ping     リモート子機との通信状態を確認

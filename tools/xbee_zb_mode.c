@@ -115,7 +115,7 @@ int main(int argc,char **argv){
         port=j;
     }
     
-    printf("ZIGBEE Device Type Switcher for XBee ZB S2C Series\n");
+	printf("ZIGBEE Device Type Switcher for XBee ZB S2C / XBee3 Series\n");
     printf("00:Coordinator AT,  01:Router AT,  02:End Device AT\n");
     printf("10:Coordinator API, 11:Router API, 12:End Device API\n");
     printf("Mode = ");

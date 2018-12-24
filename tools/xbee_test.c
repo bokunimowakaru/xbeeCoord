@@ -214,6 +214,7 @@ void print_atvr(const byte i){
 		case	ZB_TYPE_ROUTER:	printf("ZB_TYPE_ROUTER\n"); break;
 		case	ZB_TYPE_ENDDEV:	printf("ZB_TYPE_ENDDEV\n"); break;
 		case	XB_TYPE_WIFI10:	printf("XB_TYPE_WIFI10\n"); break;
+		default : printf("VERSION\n"); break;
 	}
 }
 
@@ -595,7 +596,7 @@ int main(int argc,char **argv){
 				printf("\n");
 				fclose( fp );                                // Output
 			}
-		}else if(at[0] == 'H' ){
+		}else if(at[0] == 'H' || at[0] == '?'){
 			xbee_log(3,"Help ('hz' for more) ",strlen(at)-1);
 			if( (fp = fopen("xbee_test_help.txt","r")) == NULL ){
 				if( (fp = fopen("tools/xbee_test_help.txt","r")) == NULL ){
@@ -761,15 +762,124 @@ int main(int argc,char **argv){
 			for(i=3;i<(AT_LEN-1);i++) if( at[i] >='a' && at[i] <= 'z' ) at[i] -= ('a'-'A');
 			printf("xbee_rat_tx(%s) = 0x%02X\n",at, xbee_rat(dev,at) );
 		}else if( 	(at[0] == 'V' && at[1] == 'R') ){
-			xbee_log(3,"XBee Device Type ",strlen(at)-2);
+			xbee_log(3,"XBee Version ",strlen(at)-2);
 			printf("result :");
 			i=xbee_atvr();
 			print_atvr(i);
+			
+			if( xbee_tx_rx( "ATVR", data ,0 ) > 0 ){
+				DEVICE_TYPE = data[8];
+				if(	data[8] == ZB_TYPE_TH_Reg ||
+					DEVICE_TYPE == 0x10 ){
+					xbee_tx_rx( "ATCE", data ,0 );
+					if( data[8] == 0x01 ){
+						DEVICE_TYPE = ZB_TYPE_COORD;
+					}else{
+						xbee_tx_rx( "ATSM", data ,0 );
+						if( data[8] == 0x00 ) DEVICE_TYPE = ZB_TYPE_ROUTER;
+						if( data[8] == 0x04 ) DEVICE_TYPE = ZB_TYPE_ENDDEV;
+					}
+				}
+				if( DEVICE_TYPE != ZB_TYPE_COORD && 
+					DEVICE_TYPE != ZB_TYPE_ROUTER && 
+					DEVICE_TYPE != ZB_TYPE_ENDDEV && 
+					DEVICE_TYPE != ZB_TYPE_TH_Reg &&
+					DEVICE_TYPE != 0x10 ){ // VRの確認
+					xbee_log( 5, "EXIT:UNKNOWN DEV. TYPE" , DEVICE_TYPE );
+					exit(-1);
+				}
+			}
+			lcd_putstr("ZigBee Type =");
+			switch( DEVICE_TYPE ){
+				case ZB_TYPE_COORD: 	lcd_putstr( " COORD."); break;
+				case ZB_TYPE_ROUTER:	lcd_putstr( " ROUTER"); break;
+				case ZB_TYPE_ENDDEV:	lcd_putstr( " ENDDEV"); break;
+				case ZB_TYPE_TH_Reg:	lcd_putstr( " TH Reg"); break;
+				default:	lcd_putstr( " UNKNWON"); break;
+			}
+			lcd_putstr("\n\n");
 		}else if( at[0] == 'X' && at[1] == 'B' ){
 			xbee_log(3,"XBee ZB Mode ",strlen(at)-2);
 			printf("ATAO00(0x%02X)\n", xbee_at("ATAO00") );
 			printf("ATZS00(0x%02X)\n", xbee_at("ATZS00") );
 			printf("ATWR(0x%02X)\n", xbee_at("ATWR") );
+		}else if( strncmp(at,"ZBM",3) ==0 ){
+		//	printf("debug :[%s][%c]",at,at[strlen(at)-3]);
+			if( at[strlen(at)-3] != '=' ){
+				printf("ZIGBEE Device Type Switcher for XBee ZB S2C / XBee3 Series\n");
+				printf("10:Coordinator API, 11:Router API, 12:End Device API\n");
+				if( xbee_tx_rx( "ATVR", data ,0 ) > 0 ){
+					DEVICE_TYPE = data[8];
+					if(	data[8] == ZB_TYPE_TH_Reg ||
+						DEVICE_TYPE == 0x10 ){
+						xbee_tx_rx( "ATCE", data ,0 );
+						if( data[8] == 0x01 ){
+							DEVICE_TYPE = ZB_TYPE_COORD;
+						}else{
+							xbee_tx_rx( "ATSM", data ,0 );
+							if( data[8] == 0x00 ) DEVICE_TYPE = ZB_TYPE_ROUTER;
+							if( data[8] == 0x04 ) DEVICE_TYPE = ZB_TYPE_ENDDEV;
+						}
+					}
+					if( DEVICE_TYPE != ZB_TYPE_COORD && 
+						DEVICE_TYPE != ZB_TYPE_ROUTER && 
+						DEVICE_TYPE != ZB_TYPE_ENDDEV && 
+						DEVICE_TYPE != ZB_TYPE_TH_Reg &&
+						DEVICE_TYPE != 0x10 ){ // VRの確認
+						xbee_log( 5, "EXIT:UNKNOWN DEV. TYPE" , DEVICE_TYPE );
+						exit(-1);
+					}
+				}
+				lcd_putstr("ZigBee Type =");
+				switch( DEVICE_TYPE ){
+					case ZB_TYPE_COORD: 	lcd_putstr( " COORD."); break;
+					case ZB_TYPE_ROUTER:	lcd_putstr( " ROUTER"); break;
+					case ZB_TYPE_ENDDEV:	lcd_putstr( " ENDDEV"); break;
+					case ZB_TYPE_TH_Reg:	lcd_putstr( " TH Reg"); break;
+					default:	lcd_putstr( " UNKNWON"); break;
+				}
+				lcd_putstr("\n\n");
+			}else{
+				i=atoi( &at[strlen(at)-2] );
+				if(i >= 10) i += 6;
+				xbee_log(3,"ZigBee Device Type", i);
+				data[0]='1';	// API mode
+				printf("ZigBee Device Type = ");
+				switch( i ){
+					case 0x10:
+						printf("Coordinator API\n");
+						data[1]='1';
+						data[2]='0';
+						break;
+					case 0x12:	printf("End Device API\n");
+						data[1]='0';
+						data[2]='4';
+						break;
+					default: printf("Router API\n");
+						data[1]='0';
+						data[2]='0';
+						break;
+		    	}
+				j=0;
+			    sprintf(s,"ATAP0%c",data[0]);
+			    j+=xbee_at(s);
+			    sprintf(s,"ATCE0%c",data[1]);
+			    j+=xbee_at(s);
+			    sprintf(s,"ATSM0%c",data[2]);
+			    j+=xbee_at(s);
+			    sprintf(s,"ATWR");
+			    j+=xbee_at(s);
+			    sleep(3);
+			    sprintf(s,"ATFR");
+			    j+=xbee_at(s);
+			    sleep(3);
+			    xbee_log(3,"Wrote ZigBee Type", i);
+			    if(j==0){
+				    xbee_log(3,"SUCCESS: ZBMODE",j);
+				}else{
+				    xbee_log(5,"ERROR (%d/6): ZBMODE",j);
+				}
+			}
 		}else if( at[0] == 'Z' && at[1] == 'B' ){
 			xbee_log(3,"ZigBee Mode ",strlen(at)-2);
 			printf("ATAO01(0x%02X)\n", xbee_at("ATAO01") );
