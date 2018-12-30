@@ -6,13 +6,13 @@
 '''
 import xbee
 import sys, time
-TEMP_OFFSET=14.0			# 内部温度上昇
+TEMP_OFFSET=14.0                            # 内部温度上昇
 
-def temp():
-	temp = xbee.atcmd('TP') - TEMP_OFFSET
-	volt = xbee.atcmd('%V') / 1000
-	return {'temp':temp, 'volt':volt}
+def getTemp():                              # getTemp関数を定義する
+    temp = xbee.atcmd('TP') - TEMP_OFFSET   # XBeeモジュールから温度値を取得する
+    volt = xbee.atcmd('%V') / 1000          # XBeeモジュールから電圧値を取得する
+    return {'temp':temp, 'volt':volt}       # 取得結果を応答する
 
 while True:
-	temp()
-	time.sleep_ms(3000)
+    print(getTemp())                        # センサ値を取得
+    time.sleep_ms(3000)                     # 3秒間の待ち時間処理
