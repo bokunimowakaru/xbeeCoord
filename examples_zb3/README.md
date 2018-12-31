@@ -1,6 +1,6 @@
-# �{�N�ɂ��킩�� XBee3 ZigBee�p Digi MicroPython
+# ボクにもわかる XBee3 ZigBee用 Digi MicroPython
 
-�T�u���W���[���p�t�H���_�uxbee3_micropython�v�́AXBee3 ZigBee�ŃT�|�[�g���ꂽ Digi MicroPython �𗘗p�����T���v���W�ł��B
+サブモジュール用フォルダ「xbee3_micropython」は、XBee3 ZigBeeでサポートされた Digi MicroPython を利用したサンプル集です。
 
-�����N��F
+リンク先：
 https://github.com/bokunimowakaru/xbee3_micropython.git
