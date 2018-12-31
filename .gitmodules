@@ -1,0 +1,3 @@
+[submodule "examples_zb3/xbee3_micropython"]
+	path = examples_zb3/xbee3_micropython
+	url = https://github.com/bokunimowakaru/xbee3_micropython.git
