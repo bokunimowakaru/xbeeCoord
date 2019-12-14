@@ -1,9 +1,18 @@
+//#define ARM_MBED
 /*********************************************************************
-本ソースリストおよびソフトウェアは、ライセンスフリーです。
+本ソースリストおよびソフトウェアは、ライセンスフリーです。(詳細は別記)
 利用、編集、再配布等が自由に行えますが、著作権表示の改変は禁止します。
 
-							   Copyright (c) 2010-2014 Wataru KUNINO
-							   http://www.geocities.jp/bokunimowakaru/
+ZB Coord API for XBee
+
+This XBee library drives Digi XBee ZB Modules in API Operation mode.
+Most of XBee commands include remote communication are supported by
+the functions of this C language library. You can control XBee devices
+through the API software modules in this library, without using any
+XBee AT commands.
+
+                               Copyright (c) 2010-2018 Wataru KUNINO
+                               http://bokunimo.net/
 *********************************************************************/
 
 /*********************************************************************
@@ -91,13 +100,13 @@
 			#include "mbed.h"
 			#ifdef DEBUG
 				#define LCD_H
-				#define ERRLOG
 				#define 	LCD_ROW_1		0x00	//１行目先頭アドレス
 				#define 	LCD_ROW_2		0x40	//２行目先頭アドレス
 				#define 	LCD_ROW_3		0x14	//３行目先頭アドレス
 				#define 	LCD_ROW_4		0x54	//４行目先頭アドレス
 			#endif
 		#else // PC
+			#define LINUX_PC
 			#include <stdio.h>
 			#include <stdlib.h>
 			#include <string.h>
@@ -117,7 +126,7 @@
 			#endif
 			#define BAUDRATE B9600
 			#ifndef LCD_ROW_1
-				#include "lcd_pc.c"
+				#include "lcd_pc.h"
 			#endif
 			#include <time.h>			// クロックタイマー用
 		#endif
@@ -131,17 +140,12 @@
 #ifndef XB_DEFINE_H
 	#define XB_DEFINE_H
 	#ifndef NAME
-		#ifdef LITE // BeeBee Lite by 蘭
-			#define 	NAME		"BeeBee Lite"
-			#define 	COPYRIGHT	"by Wataru & Ran"
-		#else
-			#define 	NAME		"ZB Coord"
-			#define 	COPYRIGHT	"by Wataru KUNINO"
-		#endif
+		#define 	NAME		"ZB Coord"
+		#define 	COPYRIGHT	"by Wataru KUNINO"
 	#endif
 
 	#ifdef H3694
-		#define ERRLOG
+		#define ERRLOG		24				// エラーログ 24バイト
 		#define LED1_OUT	IO.PDR8.BIT.B0	// LED赤の接続ポート(エラー用)
 		#define LED2_OUT	IO.PDR8.BIT.B1	// LED緑の接続ポート(動作確認用)
 		#define LCD_EN		IO.PDR8.BIT.B6	// 液晶用電源
@@ -202,14 +206,14 @@
 			// #define DEBUG					// デバッグモード
 			// #define DEBUG_TX 				// 送信パケットの表示
 			// #define DEBUG_RX 				// 受信パケットの表示
-			#define 	ERRLOG					// エラー時にログを出力
-		//	#define 	XBEE_ERROR_TIME 		// エラー時のログに日時を付与
 			#ifdef LITE
 				#define 	API_SIZE	48		// 受信用APIデータ長(32～255)
 				#define 	API_TXSIZE	34		// 送信用APIデータ長(32～255)
 				#define 	CALL_SIZE	16		// xbee_rx_call用戻りデータ(10～256)
 				#define 	XB_AT_SIZE	16		// ATコマンドの最大長
 			#else
+				#define 	ERRLOG		32			// エラーログ 24バイト+8
+				#define 	XBEE_ERROR_TIME 		// エラー時のログに日時を付与
 				#define 	CACHE_RES	5			// 応答時のキャッシュ数（無効にするには定義を消す）
 				#define 	API_SIZE	128 		// 受信用APIデータ長(32～255)
 				#define 	API_TXSIZE	64			// 送信用APIデータ長(32～255)
@@ -259,6 +263,7 @@
 	#define 	ZB_TYPE_COORD	0x21		// ZigBee Coordinator
 	#define 	ZB_TYPE_ROUTER	0x23		// ZigBee Router
 	#define 	ZB_TYPE_ENDDEV	0x29		// ZigBee End Device
+	#define 	ZB_TYPE_TH_Reg	0x40		// ZigBee TH Reg
 	#define 	XB_TYPE_NULL	0x00		// XBee Wi-Fi バージョン未取得
 	#define 	XB_TYPE_WIFI10	0x10		// XBee Wi-Fi Ver. 10xx
 	#define 	XB_TYPE_WIFI20	0x20		// XBee Wi-Fi Ver. 20xx
@@ -293,6 +298,7 @@ public:
 	byte DATA[CALL_SIZE];	// ペイロードデータ／ZCLヘッダ＋受信データ
 } XBEE_RESULT;				// 構造体の型名
 #endif
+
 #ifdef ARM_MBED
 typedef unsigned char byte;
 typedef struct{
@@ -316,6 +322,50 @@ public:
 	byte DATA[CALL_SIZE];	// 受信データ
 } XBEE_RESULT;				// 構造体の型名
 #endif
+
+#ifndef ARDUINO
+#ifndef ARM_MBED	// PC
+#ifndef XB_GLOBAL_H
+	#define XB_GLOBAL_H
+	typedef unsigned char byte;
+	#define TIMER_SEC	time1s256() 	// TIMER_SECのカウントアップの代わり
+	volatile byte LED1_OUT;
+	volatile byte LED2_OUT;
+	volatile byte LCD_EN;
+	enum xbee_sensor_type{ LIGHT,TEMP,HUMIDITY,WATT,BATT,PRESS,VALUE,TIMES,NA };	// センサタイプの型
+	enum xbee_port_type{ DISABLE=0, VENDER=1, AIN=2, DIN=3, DOUT_L=4, DOUT_H=5 };
+															// GPIOの設定の型
+	typedef struct{
+		byte MODE;				// 受信モード(Frame Type)
+		byte FROM[8];			// 送信元IEEEアドレス
+		byte SHORT[2];			// 送信元ショートアドレス
+		byte AT[2]; 			// ATコマンド
+		byte ID;				// 応答パケットID(Frame ID)
+		byte STATUS;			// 応答結果(0:OK 1:ERROR)／AT結果／UART状態
+		union { 				// GPIOデータ
+			byte BYTE[2];
+			struct {
+				#ifdef H3694	// H8ではバイト毎に上位ビットから代入(ビッグエンディアン)
+				byte D7 :1; byte D6 :1; byte D5 :1; byte D4 :1; // BYTE[1]
+				byte D3 :1; byte D2 :1; byte D1 :1; byte D0 :1;
+				byte	:1; byte	:1; byte	:1; byte D12:1; // BYTE[0]
+				byte D11:1; byte D10:1; byte	:1; byte	:1;
+				#else			// PCではバイト毎に下位ビットから代入(リトルエンディアン)
+				byte D0 :1; byte D1 :1; byte D2 :1; byte D3 :1; // BYTE[1]
+				byte D4 :1; byte D5 :1; byte D6 :1; byte D7 :1;
+				byte	:1; byte	:1; byte D10:1; byte D11:1; // BYTE[0]
+				byte D12:1; byte	:1; byte	:1; byte	:1;
+				#endif
+			} PORT;
+		} GPI;
+		unsigned int ADCIN[4];	// ADCデータ
+		byte ZCL[6];			// [0]送信元EndPoint, [1]宛先EndPoint, [2-3]クラスタID, [4-5]プロファイルID
+		byte DATA[CALL_SIZE];	// ペイロードデータ／ZCLヘッダ＋受信データ
+	} XBEE_RESULT;
+#endif
+#endif
+#endif
+
 
 /*********************************************************************
 アプリ向け hardware 提供関数

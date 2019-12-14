@@ -5,12 +5,13 @@
 ZB Coord API for XBee
 
 This XBee library drives Digi XBee ZB Modules in API Operation mode.
-Most commands include remote communication's are supported by the
-functions of this library. You can control XBee devices through the
-API software modules in this, without using any AT commands.
+Most of XBee commands include remote communication are supported by
+the functions of this C language library. You can control XBee devices
+through the API software modules in this library, without using any
+XBee AT commands.
 
-							   Copyright (c) 2010-2014 Wataru KUNINO
-							   http://www.geocities.jp/bokunimowakaru/
+                               Copyright (c) 2010-2018 Wataru KUNINO
+                               http://bokunimo.net/
 *********************************************************************/
 
 //	for ARM mbed Compiler
@@ -234,6 +235,19 @@ API software modules in this, without using any AT commands.
 						- xbee_end_deviceでRouterへ送信時にIR値を設定
 						　(従来はエラー応答だったが、設定後に正常応答)
 	2014/10/31	1.92	- ARM mbed対応
+	2015/10/26	1.93	- Raspberry Pi対応、xbee_init引数の仕様変更
+						　　　0:自動, 1～63:COM, 64～127:tty0～63,
+						　　　0xA0～0xA9:AMA0～9, 0xB0～0xB9:USB0～9
+						- API受信バッファの超過時処理を破棄→保留に変更
+						- [重要] xbee_gpiの不具合修正・簡易テスト完
+	2015/11/08	1.94	- xbee_delayのwait方法を変更(while->usleep)
+						- init追加 0xAF～0xAA:AMA0～5
+						- [重要] xbee_adcの不具合修正・簡易テスト完
+	2016/02/22	1.95	- エラー時のログ出力機能を追加（RasPi用）
+						- gcc Version 4.9.2対応
+	2016/08/04	1.96	- XBee ZB S2Cシリーズ対応
+						- ZigBee Raspberry Pi版の正式対応版の作成完了
+	2018/12/24	1.97	- XBee3 ZBシリーズ対応
 
 *********************************************************************/
 /*
@@ -241,7 +255,7 @@ API software modules in this, without using any AT commands.
 */
 #ifndef VERSION
 
-	#define 	VERSION "1.92"		// 1.XX 4バイト形式 XXは半角文字
+	#define 	VERSION "1.97"		// 1.XX 4バイト形式 XXは半角文字
 
 #endif
 /*
@@ -366,6 +380,9 @@ API software modules in this, without using any AT commands.
 	Arduino用
 			・Arduino IDE
 	
+	Raspberry Pi用
+			・make ならびに gcc
+	
 	ARM mbed用
 			・https://mbed.org/compiler/
 	
@@ -467,13 +484,13 @@ API software modules in this, without using any AT commands.
 		//	#include "mbed.h"
 			#ifdef DEBUG
 				#define LCD_H
-				#define ERRLOG
 				#define 	LCD_ROW_1		0x00	//１行目先頭アドレス
 				#define 	LCD_ROW_2		0x40	//２行目先頭アドレス
 				#define 	LCD_ROW_3		0x14	//３行目先頭アドレス
 				#define 	LCD_ROW_4		0x54	//４行目先頭アドレス
 			#endif
 		#else // PC
+			#define LINUX_PC
 			#include <stdio.h>
 			#include <stdlib.h>
 			#include <string.h>
@@ -507,17 +524,12 @@ API software modules in this, without using any AT commands.
 #ifndef XB_DEFINE_H
 	#define XB_DEFINE_H
 	#ifndef NAME
-		#ifdef LITE // BeeBee Lite by 蘭
-			#define 	NAME		"BeeBee Lite"
-			#define 	COPYRIGHT	"by Wataru & Ran"
-		#else
-			#define 	NAME		"ZB Coord"
-			#define 	COPYRIGHT	"by Wataru KUNINO"
-		#endif
+		#define 	NAME		"ZB Coord"
+		#define 	COPYRIGHT	"by Wataru KUNINO"
 	#endif
 
 	#ifdef H3694
-		#define ERRLOG
+		#define ERRLOG		24				// エラーログ 24バイト
 		#define LED1_OUT	IO.PDR8.BIT.B0	// LED赤の接続ポート(エラー用)
 		#define LED2_OUT	IO.PDR8.BIT.B1	// LED緑の接続ポート(動作確認用)
 		#define LCD_EN		IO.PDR8.BIT.B6	// 液晶用電源
@@ -532,7 +544,7 @@ API software modules in this, without using any AT commands.
 	//	#define LED2_OUT	16				// 緑色ＬＥＤ(動作確認用)用デジタルポート(16=analog 2)
 	//	#define LCD_EN		 6				// 液晶用電源デジタルポート
 	//	#define BUTN		14				// ボタンの接続ポート(14 = analog 0)
-		#ifdef LITE // BeeBee Lite by 蘭
+		#ifdef LITE // BeeBee Lite 
 			#define 	API_SIZE	48		// 受信用APIデータ長(32～255)
 			#define 	API_TXSIZE	34		// 送信用APIデータ長(32～255) シリアル送信最大長=API_TXSIZE-18バイト
 			#define 	CALL_SIZE	16		// xbee_rx_call用戻りデータ(10～256)
@@ -578,14 +590,15 @@ API software modules in this, without using any AT commands.
 			// #define DEBUG					// デバッグモード
 			// #define DEBUG_TX 				// 送信パケットの表示
 			// #define DEBUG_RX 				// 受信パケットの表示
-			#define 	ERRLOG					// エラー時にログを出力
 		//	#define 	XBEE_ERROR_TIME 		// エラー時のログに日時を付与
-			#ifdef LITE // BeeBee Lite by 蘭
+			#ifdef LITE // BeeBee Lite 
 				#define 	API_SIZE	48		// 受信用APIデータ長(32～255)
 				#define 	API_TXSIZE	34		// 送信用APIデータ長(32～255)
 				#define 	CALL_SIZE	16		// xbee_rx_call用戻りデータ(10～256)
 				#define 	XB_AT_SIZE	16		// ATコマンドの最大長
 			#else
+				#define 	ERRLOG		32			// エラーログ 24バイト+8
+				#define 	XBEE_ERROR_TIME 		// エラー時のログに日時を付与
 				#define 	CACHE_RES	5			// 応答時のキャッシュ数（無効にするには定義を消す）
 				#define 	API_SIZE	128 		// 受信用APIデータ長(32～255)
 				#define 	API_TXSIZE	64			// 送信用APIデータ長(32～255)
@@ -635,6 +648,7 @@ API software modules in this, without using any AT commands.
 	#define 	ZB_TYPE_COORD	0x21		// ZigBee Coordinator
 	#define 	ZB_TYPE_ROUTER	0x23		// ZigBee Router
 	#define 	ZB_TYPE_ENDDEV	0x29		// ZigBee End Device
+	#define 	ZB_TYPE_TH_Reg	0x40		// ZigBee TH Reg
 	#define 	XB_TYPE_NULL	0x00		// XBee Wi-Fi バージョン未取得
 	#define 	XB_TYPE_WIFI10	0x10		// XBee Wi-Fi Ver. 10xx
 	#define 	XB_TYPE_WIFI20	0x20		// XBee Wi-Fi Ver. 20xx
@@ -775,7 +789,7 @@ byte ADR_MY[] = {0xFF,0xFF,0xFF,0xFF};
 /* エラーログ用 */
 #ifdef ERRLOG
 static byte 	TIMER_ERR	=	0	;		//エラー経過時間１秒単位
-static char 	ERR_LOG[API_TXSIZE-18];
+static char 	ERR_LOG[ERRLOG];
 static byte 	ERR_CODE=0x00;
 #endif
 
@@ -792,9 +806,7 @@ static byte PACKET_ID = 0;							//送信パケット番号
 /* XBeeのデバイスタイプ ATVRの上２ケタ */
 static byte DEVICE_TYPE = ZB_TYPE_COORD;			// Coord=0x21 Router=23 ED=29 Wi-Fi=10
 
-#ifndef H3694
-#ifndef ARDUINO
-#ifndef ARM_MBED // PC
+#ifdef LINUX_PC
 	#ifndef XBEE_WIFI
 		static byte xbee_com_port;
 		static int xbeeComFd;
@@ -808,8 +820,6 @@ static byte DEVICE_TYPE = ZB_TYPE_COORD;			// Coord=0x21 Router=23 ED=29 Wi-Fi=1
 		 struct sockaddr_in xbeeR_addr; 		// XBee Wi-Fi 受信アドレス構造体変数
 		 struct sockaddr_in xbeeU_addr; 		// XBee Wi-Fi UARTアドレス構造体変数
 	#endif
-#endif
-#endif
 #endif
 
 /*********************************************************************
@@ -925,7 +935,7 @@ byte timera(void){
 }
 
 /* ミリ秒待ち（250ms以下の高精度用） 入力範囲＝4～250 ms */
-#ifndef ARDUINO // BeeBee Lite by 蘭
+#ifndef ARDUINO // BeeBee Lite 
 void wait_millisec_250( byte ms ){
 	#ifdef H3694
 		byte counter;
@@ -964,6 +974,7 @@ void wait_millisec( const unsigned int ms ){
 		#ifdef ARM_MBED
 			wait((float)ms/1000.0f);
 		#else // PC
+			/*
 			time_t target;
 			
 			target = (time_t)(clock()/(CLOCKS_PER_SEC/1000)) + (time_t)ms;
@@ -973,6 +984,8 @@ void wait_millisec( const unsigned int ms ){
 				while( (time_t)(clock()/(CLOCKS_PER_SEC/1000)) > (time_t)ms );		// クロックがリセットされるまで待つ
 				while( (time_t)(clock()/(CLOCKS_PER_SEC/1000)) <= target );
 			}
+			*/
+			usleep( ms*1000ul );
 		#endif
 	#endif
 }
@@ -987,10 +1000,14 @@ byte xbee_adc_count( byte d ){
 	return( ((d>>1)&0x01)+((d>>2)&0x01)+((d>>3)&0x01) );
 }
 
+void xbee_clear_cache(void){	// 公開コマンド
+	#ifdef CACHE_RES
+		CACHE_COUNTER=0;
+	#endif
+}
+
 /* XBee用シリアル通信ドライバ */
-#ifndef ARDUINO
-#ifndef H3694
-#ifndef ARM_MBED
+#ifdef LINUX_PC
 #ifndef XBEE_WIFI
 	int open_serial_port(char *modem_dev){
 		/*
@@ -1027,9 +1044,9 @@ byte xbee_adc_count( byte d ){
 		}
 		return 0;
 	}
-	void close_serial_port(void){
+	int close_serial_port(void){
 		tcsetattr(xbeeComFd,TCSANOW,&oldtio);
-		close(xbeeComFd);
+		return( close(xbeeComFd) );
 	}
 #else	// XBEE_WIFI（arduino除く）
 	int open_serial_port_tx(const byte *address){				// modem_dev＝IPアドレスのポインタ
@@ -1092,9 +1109,7 @@ byte xbee_adc_count( byte d ){
 		#endif
 	}
 #endif
-#endif	// not ARM
-#endif	// not H3694
-#endif	// not ARDUINO
+#endif	// not PC
 
 #ifdef ARDUINO
 #ifdef XBEE_WIFI
@@ -1177,28 +1192,56 @@ byte sci_init( byte port ){
 		#else // PC  の時(ZigBeeシリアル or WiFi_LAN)
 			#ifndef XBEE_WIFI	// ZigBeeシリアル
 				/* tasasaki様よりポート11～64の拡張対応方法を教えていただいて追加した。*/
-				char modem_dev[12] = "/dev/ttyS00";
+				char modem_dev[13] = "/dev/ttyS00";
+				char alter_dev[13] = "/dev/ttyUSB0";
 				
 				if( port <= 10){
 					modem_dev[9] = (char)( port - 1 + (byte)'0' );
 					modem_dev[10]= '\0';
-				}else if( port <= 64 ){
-					snprintf(&modem_dev[9], 3, "%d", port - 1);
+				}else if( port < 64 ){									// COM64は使用不可
+					snprintf(&modem_dev[9], 3, "%02d", port - 1);
+				}else if( port < 74 ){
+					snprintf(&modem_dev[8], 2, "%1d", port - 64);		// tty0～9
+				}else if( port < 128 ){
+					snprintf(&modem_dev[8], 3, "%02d", port - 64);		// tty10～63
+				}else if( (port&0xF0) == 0xA0 ){
+					if( port > 0xA9 ) port = 0xAF - (port&0xF);
+					snprintf(&modem_dev[8], 5, "AMA%1X", port&0x0F);	// ttyAMA0～9
+				}else if( (port&0xF0) == 0xB0 ){
+					snprintf(&modem_dev[8], 5, "USB%1X", port&0x0F);	// ttyUSB0～9
 				}else{
 					fprintf(stderr,"ERR:sci_init port=%d\n",port);
 					return(0);
 				}
-				if( open_serial_port( modem_dev ) ){
+				if( open_serial_port( modem_dev ) ){	// 失敗
 					wait_millisec( 100 );
 					close_serial_port();	// open出来ていないが念のために閉じる
 					wait_millisec( 100 );
-					fprintf(stderr,"Failed serial COM%d (%s)\n",port,modem_dev);
-					port = 0;
-				}else{
-					fprintf(stderr,"Serial port = COM%d (%s)\n",port,modem_dev);
-					xbee_com_port = port;
+					if( port <= 9 ){
+						snprintf(&alter_dev[8], 5, "USB%1X", port&0x0F);	// ttyUSB0～9
+						if( open_serial_port( alter_dev )==0 ){
+							strcpy(modem_dev,alter_dev);
+							port += 0xB0;
+							xbee_com_port = port;
+						}else xbee_com_port = 0;
+					}else xbee_com_port = 0;
+				}else xbee_com_port = port;
+				if( xbee_com_port ) fprintf(stderr,"Serial port = ");
+				else fprintf(stderr,"FAILED serial ");
+				if( port < 64){
+					fprintf(stderr,"COM%d",port);
+				}else if( port < 73 ){
+					fprintf(stderr,"%1d", port - 64);		// tty0～9
+				}else if( port < 128 ){
+					fprintf(stderr,"%02d", port - 64);		// tty10～63
+				}else if( (port&0xF0) == 0xA0 ){
+					fprintf(stderr,"AMA%1X", port&0x0F);	// ttyAMA0～9
+				}else if( (port&0xF0) == 0xB0 ){
+					fprintf(stderr,"USB%1X", port&0x0F);	// ttyUSB0～9
 				}
-				return( port );
+				fprintf(stderr," (%s,0x%02X)\n",modem_dev,port);
+				
+				return( xbee_com_port );
 			#else	// XBEE_WIFI PC用
 				byte i,j;
 				for(i=0;i<3;i++){
@@ -1263,7 +1306,7 @@ byte sci_read(byte timeout){
 		while( timer != timera() && SCI3_IN_DATA_CHECK() < 1 );
 		if( SCI3_IN_DATA_CHECK() ) ret=(byte)SCI3_IN_DATA();
 		return( ret );
-	#elif ARDUINO	// 蘭様による改良あり
+	#elif ARDUINO	// 濱崎様による改良あり
 		#ifndef XBEE_WIFI
 			byte timer;
 			timer = timera() + (timeout)+1; 	// timeout[ms] = timer/256*1000
@@ -1317,7 +1360,7 @@ byte sci_read(byte timeout){
 				FD_ZERO(&readfds);
 				FD_SET( xbeeComFd , &readfds);
 				tv.tv_sec = 0;
-				#ifdef LITE	// BeeBee Lite by 蘭
+				#ifdef LITE	// BeeBee Lite
 					/*
 					if( timeout > 50 ){
 						tv.tv_usec = timeout*600;
@@ -1352,6 +1395,7 @@ byte sci_read_frame(byte *data){
 	#ifndef ARDUINO // XBEE_WIFI PC受信
 		byte i,ret;
 		int len=0;
+		socklen_t size;
 		struct sockaddr_in xbeeF_addr;					// FROMアドレス入力用
 		struct timeval tv;								// タイムアウト用
 		fd_set readfds;
@@ -1363,8 +1407,8 @@ byte sci_read_frame(byte *data){
 		tv.tv_usec = (long)9000;						// 9ms
 		/* データ受信 */
 		if( select( (xbeeRSFd+1), &readfds, NULL, NULL, &tv) > 0 ){
-			len = sizeof(xbeeF_addr);
-			len = recvfrom(xbeeRSFd, &(data[4]), (API_SIZE-14), 0, (struct sockaddr *)&xbeeF_addr, &len );
+			size = sizeof(xbeeF_addr);
+			len = recvfrom(xbeeRSFd, &(data[4]), (API_SIZE-14), 0, (struct sockaddr *)&xbeeF_addr, &size );
 			if( len > 0 ){
 				len += 4;
 				#ifdef DEBUG
@@ -1380,8 +1424,8 @@ byte sci_read_frame(byte *data){
 			FD_SET(xbeeUSFd, &readfds); 					// 待ちソケットの登録
 			tv.tv_usec = (long)1000;						// 1ms
 			if( select( (xbeeUSFd+1), &readfds, NULL, NULL, &tv) > 0 ){
-				len = sizeof(xbeeU_addr);
-				len = recvfrom(xbeeUSFd, &(data[6]), (API_SIZE-16), 0, (struct sockaddr *)&xbeeU_addr, &len );
+				size = sizeof(xbeeU_addr);
+				len = recvfrom(xbeeUSFd, &(data[6]), (API_SIZE-16), 0, (struct sockaddr *)&xbeeU_addr, &size );
 				if( len > 0 ){								// データはdata[6]以降に入る
 					data[4] = 0x00; // UART受信を示す。
 					data[5] = len;	// UART長を示す（data[]長では無い）。
@@ -1974,7 +2018,7 @@ byte xbee_at_tx(const char *at, const byte *value, const byte value_len){
 			}
 			data_api[2]    =(char)len;
 			data_api[len+3]=(char)check;
-			#ifdef LITE	// BeeBee Lite by 蘭
+			#ifdef LITE	// BeeBee Lite
 				sci_write( data_api, (byte)(len+4) );
 				ret=len+3;
 			#else
@@ -2007,7 +2051,7 @@ byte xbee_at_tx(const char *at, const byte *value, const byte value_len){
 					#ifdef H3694
 						led_red( 1 );
 					#endif
-					#ifdef ERRLOG
+					#ifdef ERRLOG		//  012345678901234567
 						strcopy( ERR_LOG , "ERR:TX Buffer Over" );
 						ERR_CODE = check;
 					#endif
@@ -2104,7 +2148,7 @@ byte xbee_at_tx(const char *at, const byte *value, const byte value_len){
 					#ifdef H3694
 						led_red( 1 );
 					#endif
-					#ifdef ERRLOG
+					#ifdef ERRLOG		//  012345678901234567
 						strcopy( ERR_LOG , "ERR:TX Write Error" );
 						ERR_CODE = 0x00;
 					#endif
@@ -2120,7 +2164,7 @@ byte xbee_at_tx(const char *at, const byte *value, const byte value_len){
 				#ifdef H3694
 					led_red( 1 );
 				#endif
-				#ifdef ERRLOG
+				#ifdef ERRLOG		//  012345678901234567
 					strcopy( ERR_LOG , "ERR:TX Buffer Over" );
 					ERR_CODE = 0x00;
 				#endif
@@ -2155,7 +2199,7 @@ byte xbee_at_rx(byte *data){
 		data[0] = sci_read( 1 );				// 1ms待ち受けで受信
 		if( data[0] == 0x7E ) { 				// 期待デリミタ0x7E時
 			for( i=1;i<=2;i++ ){
-				#ifdef LITE	// BeeBee Lite by 蘭
+				#ifdef LITE	// BeeBee Lite 
 					data[i] = sci_read( 35 );	// 1割だけ緩和しました。sci_read 32⇒35(Wataru)
 				#else
 					data[i] = sci_read( 50 );
@@ -2164,10 +2208,11 @@ byte xbee_at_rx(byte *data){
 			if(data[1] == 0x00) len = data[2];
 			else len = 0xFF - 4;		// API長が255バイトまでの制約(本来は64KB)
 			if( len > (API_SIZE-4) ) len = API_SIZE-4;
-			leni = (unsigned int)data[1] * 256 + (unsigned int)data[2] - (unsigned int)len;
+		//	leni = (unsigned int)data[1] * 256 + (unsigned int)data[2] - (unsigned int)len;
+			leni = (((unsigned int)data[1]) << 8) + (unsigned int)data[2] - (unsigned int)len;
 				// 通常は0。lenが本来の容量よりも少ない場合に不足分が代入されれる
 			for( i=0 ; i <= len ; i++){ // i = lenはチェックサムを入力する
-				#ifdef LITE	// BeeBee Lite by 蘭
+				#ifdef LITE	// BeeBee Lite 
 					data[i+3] = sci_read( 35 );	// 1割だけ緩和しました。sci_read 32⇒35(Wataru)
 				#else
 					data[i+3] = sci_read( 50 );
@@ -2402,7 +2447,7 @@ byte xbee_gpi_acum( byte *data ){
 			#ifdef H3694
 				led_red( 1 );
 			#endif
-			#ifdef ERRLOG
+			#ifdef ERRLOG		//  01234567890123456
 				strcopy( ERR_LOG , "ERR:xbee_gpi acum" );
 				ERR_CODE = xbee_from_acum( data );
 			#endif
@@ -2411,7 +2456,7 @@ byte xbee_gpi_acum( byte *data ){
 		#ifdef H3694
 			led_red( 1 );
 		#endif
-		#ifdef ERRLOG
+		#ifdef ERRLOG		//  01234567890123456
 			strcopy( ERR_LOG , "ERR:xbee_gpi mode" );
 			ERR_CODE = data[3];
 		#endif
@@ -2450,7 +2495,7 @@ byte xbee_uart_acum( byte *data ){
 			#ifdef H3694
 				led_red( 1 );
 			#endif
-			#ifdef ERRLOG
+			#ifdef ERRLOG		//  012345678901234567
 				strcopy( ERR_LOG , "ERR:xbee_uart from" );
 				ERR_CODE = xbee_from_acum( data );
 			#endif
@@ -2465,7 +2510,7 @@ byte xbee_uart_acum( byte *data ){
 			#ifdef H3694
 				led_red( 1 );
 			#endif
-			#ifdef ERRLOG
+			#ifdef ERRLOG		//  0123456789012345678
 				strcopy( ERR_LOG , "ERR:xbee_uart2 from" );
 				ERR_CODE = xbee_from_acum( data );
 			#endif
@@ -2474,7 +2519,7 @@ byte xbee_uart_acum( byte *data ){
 		#ifdef H3694
 			led_red( 1 );
 		#endif
-		#ifdef ERRLOG
+		#ifdef ERRLOG		//  012345678901234567
 			strcopy( ERR_LOG , "ERR:xbee_uart mode" );
 			ERR_CODE = data[3]; 	
 		#endif
@@ -2522,9 +2567,20 @@ byte xbee_tx_rx(const char *at, byte *data, byte len){
 	#endif
 	#ifdef CACHE_RES
 		byte i;
+		/* 最も古いキャッシュを消去してキャッシュ用のメモリを1つぶんだけ確保する */
+		if(CACHE_COUNTER >= CACHE_RES){
+			byte j;
+			CACHE_COUNTER = CACHE_RES -1;
+			for(j=1 ; j < CACHE_RES ; j++)
+				for(i=0 ; i < API_SIZE ; i++) CACHE_MEM[j-1][i] = CACHE_MEM[j][i];
+			#ifdef ERRLOG		//  012345678901234567
+				strcopy( ERR_LOG , "CAUTION:CACHE OVER" );
+				ERR_CODE = CACHE_RES;
+			#endif
+		}
 	#endif
 	
-	#ifndef LITE	// BeeBee Lite by 蘭
+	#ifndef LITE	// BeeBee Lite 
 		sci_write_check();
 	#endif
 	#ifdef H3694
@@ -2541,7 +2597,12 @@ byte xbee_tx_rx(const char *at, byte *data, byte len){
 		}	
 		if( xbee_at_tx( at ,data ,len ) > 0){
 			err = 12;							// 受信なしエラー
+			#ifdef CACHE_RES
+			err = 0xFF;							// 受信バッファオーバー
+			if( CACHE_COUNTER < CACHE_RES ) for( retry = 10 ; ( retry > 0 && err != 0 ) ; retry-- ){
+			#else
 			for( retry = 10 ; ( retry > 0 && err != 0 ) ; retry-- ){
+			#endif
 				wait_millisec( 10 + (unsigned int)r_dat );	// 応答時間待ち AT 10～100ms / RAT 20～200ms
 				if( wait_add != 0 ){
 					wait_millisec( wait_add );	// 追加ウェイト
@@ -2605,8 +2666,8 @@ byte xbee_tx_rx(const char *at, byte *data, byte len){
 					#endif
 					DEVICE_TYPE = XB_TYPE_NULL;
 					#ifdef ERRLOG
-						ERR_CODE=12;
-						strcopy( ERR_LOG ,"ERR:tx_rx no Rx Res. wifi check");
+						ERR_CODE=12;	// 01234567890123456789012	24バイト
+						strcopy( ERR_LOG ,"ERR:tx_rx no Rx Res. wi");
 					#endif
 					return(0); // エラー終了
 				}
@@ -2658,34 +2719,38 @@ byte xbee_tx_rx(const char *at, byte *data, byte len){
 			led_red( 1 );
 		#endif
 		#ifdef ERRLOG
-			ERR_CODE=err;
+			ERR_CODE=err;	// 0123456789
+			strcopy( ERR_LOG ,"ERR:tx_rx ");
 			switch(err){
-				case 2: 			// 01234567890123456789
-					strcopy( ERR_LOG ,"ERR:tx_rx AT Command");
+				case 2: 				//  0123456789
+					strcopy( &ERR_LOG[10] ,"AT Command");
 					break;
 				case 3:
-					strcopy( ERR_LOG ,"ERR:tx_rx AT Param. ");
+					strcopy( &ERR_LOG[10] ,"AT Param. ");
 					break;
 				case 4:
-					strcopy( ERR_LOG ,"ERR:tx_rx AT Commu. ");
+					strcopy( &ERR_LOG[10] ,"AT Commu. ");
 					break;
 				case 10:
-					strcopy( ERR_LOG ,"ERR:tx_rx not AT CMD");
+					strcopy( &ERR_LOG[10] ,"not AT CMD");
 					break;
 				case 11:
-					strcopy( ERR_LOG ,"ERR:tx_rx TX Failed ");
+					strcopy( &ERR_LOG[10] ,"TX Failed ");
 					break;
 				case 12:
-					strcopy( ERR_LOG ,"ERR:tx_rx no Rx Res.");
+					strcopy( &ERR_LOG[10] ,"no Rx Res.");
 					break;
 				case 13:
-					strcopy( ERR_LOG ,"ERR:tx_rx AT Pckt ID");
+					strcopy( &ERR_LOG[10] ,"AT Pckt ID");
 					break;
 				case 14:
-					strcopy( ERR_LOG ,"ERR:tx_rx Diff.Adrs.");
+					strcopy( &ERR_LOG[10] ,"Diff.Adrs.");
+					break;
+				case 0xFF:
+					strcopy( &ERR_LOG[10] ,"RX Buff OV");
 					break;
 				default:
-					strcopy( ERR_LOG ,"ERR:tx_rx AT unknown");
+					strcopy( &ERR_LOG[10] ,"AT unknown");
 					break;
 			}
 			ERR_LOG[20] = ':'; 
@@ -2729,7 +2794,7 @@ void xbee_disp_5(unsigned int x);
 void xbee_log( const byte level, const char *err , const byte x );
 ***********************************************************************/
 
-#ifndef LITE	// BeeBee Lite by 蘭
+#ifndef LITE	// BeeBee Lite 
 byte xbee_putch( const char c ){
 	byte data[2];
 	byte len;
@@ -2756,7 +2821,7 @@ byte xbee_putstr( const char *s ){
 	return( i );
 }
 
-#ifndef LITE	// BeeBee Lite by 蘭
+#ifndef LITE	// BeeBee Lite 
 void xbee_disp_hex( const byte i ){
 	byte data[3];
 	data[0] = i&0xF0;
@@ -2844,15 +2909,13 @@ void xbee_log(const byte level, const char *err, const byte x ){
 */
 	#ifdef ERRLOG
 		/* PCの場合 */
-		#ifndef ARDUINO
-		#ifndef H3694
+		#ifdef LINUX_PC
 		#ifdef XBEE_ERROR_TIME
 			time_t error_time;
 			struct tm *error_time_st;
 			
 			time(&error_time);
 			error_time_st = localtime(&error_time);
-		#endif
 		#endif
 		#endif
 			
@@ -2906,11 +2969,9 @@ void xbee_log(const byte level, const char *err, const byte x ){
 			lcd_putch( 0x0A );				// LF(\n)
 			*/
 			/* PCの場合 */
-			#ifndef ARDUINO
-			#ifndef H3694
-			#ifndef ARM_MBED
+			#ifdef LINUX_PC
 				#ifdef XBEE_ERROR_TIME
-					fprintf(stderr,"%4d/%02d/%02d %02d:%02d:%02d[%02X:%02X]%s(%02X)\n",
+					fprintf(stderr,"%4d/%02d/%02d %02d:%02d:%02d [%02X:%02X] %s (%02X)\n",
 						error_time_st->tm_year+1900,
 						error_time_st->tm_mon+1,
 						error_time_st->tm_mday,
@@ -2922,14 +2983,12 @@ void xbee_log(const byte level, const char *err, const byte x ){
 						err,
 						x);
 				#else
-					fprintf(stderr,"[%02X:%02X]%s(%02X)\n",
+					fprintf(stderr,"[%02X:%02X] %s (%02X)\n",
 						TIMER_SEC,
 						timera(),
 						err,
 						x);
 				#endif
-			#endif
-			#endif
 			#endif
 		}
 		if( level > 3 ) wait_millisec( 500 );	// LEVEL 4以上に対して待ち時間を設定
@@ -2945,7 +3004,7 @@ byte xbee_reset( void ){
 /*	XBeeモジュールのリセット
 	戻り値：0＝エラー、強制終了あり(PC版)、無限定しあり(H8版)
 */
-	#ifndef LITE	// BeeBee Lite by 蘭
+	#ifndef LITE	// BeeBee Lite 
 	byte i;
 	#endif
 	byte ret=0;	// 戻り値 0:異常終了
@@ -2955,14 +3014,14 @@ byte xbee_reset( void ){
 	#endif
 	
 	#ifndef XBEE_WIFI
-	#ifndef LITE	// BeeBee Lite by 蘭
+	#ifndef LITE	// BeeBee Lite 
 		sci_write_check();
 	#endif
 	sci_clear();						// シリアル異常をクリア
 	DEVICE_TYPE = 0x20; 				// タイプ名を初期化
 	#endif
 	
-	#ifdef LITE	// BeeBee Lite by 蘭
+	#ifdef LITE	// BeeBee Lite 
 		ret = xbee_tx_rx( "ATVR", value ,0 );	// ZigBee 種類の取得
 		if( ret == 0 ){
 			#ifdef ARDUINO
@@ -2984,15 +3043,28 @@ byte xbee_reset( void ){
 			if( ret > 0){
 				#ifndef XBEE_WIFI
 					DEVICE_TYPE = value[8];
+					if(	DEVICE_TYPE == ZB_TYPE_TH_Reg ||
+						DEVICE_TYPE == 0x10 ){
+						xbee_tx_rx( "ATCE", value ,0 );
+						if( value[8] == 0x01 ){
+							DEVICE_TYPE = ZB_TYPE_COORD;
+						}else{
+							xbee_tx_rx( "ATSM", value ,0 );
+							if( value[8] == 0x00 ) DEVICE_TYPE = ZB_TYPE_ROUTER;
+							if( value[8] == 0x04 ) DEVICE_TYPE = ZB_TYPE_ENDDEV;
+						}
+					}
 					if( DEVICE_TYPE != ZB_TYPE_COORD && 
 						DEVICE_TYPE != ZB_TYPE_ROUTER && 
-						DEVICE_TYPE != ZB_TYPE_ENDDEV){ // VRの確認
+						DEVICE_TYPE != ZB_TYPE_ENDDEV && 
+						DEVICE_TYPE != ZB_TYPE_TH_Reg &&
+						DEVICE_TYPE != 0x10 ){ // VRの確認
 						#ifdef LCD_H
 							lcd_cls();
 							#ifdef H3694
 								led_red( 1 );
-							#endif
-							lcd_putstr( "EXIT:XBEE NOT IN API MODE" );
+							#endif		//01234567890123456789012	 24バイトまで
+							xbee_log( 5, "EXIT:UNKNOWN DEV. TYPE" , DEVICE_TYPE );
 						#endif
 						#ifdef H3694
 							return(0);
@@ -3011,8 +3083,8 @@ byte xbee_reset( void ){
 						lcd_cls();
 						#ifdef H3694
 							led_red( 1 );
-						#endif
-						lcd_putstr( "EXIT:NO RESPONCE FROM XBEE" );
+						#endif		//01234567890123456789012	 24バイトまで
+						xbee_log( 5, "EXIT:NO RESP. FROM XBEE" , ret );
 					#endif
 					#ifdef H3694
 						return(0);
@@ -3033,8 +3105,8 @@ byte xbee_reset( void ){
 					lcd_cls();
 					#ifdef H3694
 						led_red( 1 );
-					#endif
-					lcd_putstr( "EXIT:CANNOT RESET XBEE" );
+					#endif		//01234567890123456789012	 24バイトまで
+					xbee_log( 5, "EXIT:CANNOT RESET XBEE" , ret );
 				#endif
 				#ifdef H3694
 					return(0);
@@ -3165,15 +3237,11 @@ void xbee_address(const byte *address){
 	#endif
 }
 
-#ifndef XBEE_WIFI
-#ifndef ARDUINO
-#ifndef ARM_MBED
+#ifdef LINUX_PC
 void xbee_short_address(const byte *address){
 	SADR_DEST[0] = address[0];
 	SADR_DEST[1] = address[1];
 }
-#endif
-#endif
 #endif
 
 byte xbee_atd( const byte *address ){
@@ -3624,7 +3692,8 @@ byte xbee_atvr( void ){
 			DEVICE_TYPE = data[8];
 			if( DEVICE_TYPE != ZB_TYPE_COORD &&
 				DEVICE_TYPE != ZB_TYPE_ROUTER &&
-				DEVICE_TYPE != ZB_TYPE_ENDDEV) ret = 0xFF;
+				DEVICE_TYPE != ZB_TYPE_ENDDEV && 
+				DEVICE_TYPE != ZB_TYPE_TH_Reg) ret = 0xFF;
 			else ret = DEVICE_TYPE;
 		}
 		#ifdef LCD_H
@@ -3650,8 +3719,8 @@ byte xbee_atcb( byte cb ){
 		if( cb == 1 || cb == 2 ){
 			if( xbee_tx_rx( "ATCB", data ,1 ) > 0) ret = 0x00;
 		}else if( cb == 4){
-			if( xbee_tx_rx( "ATCB", data ,1 ) > 0){
-				if( DEVICE_TYPE == ZB_TYPE_COORD ){
+			if( xbee_tx_rx( "ATCB", data ,1 ) > 0){	// ATCB実行後のメッセージ対応
+				if( DEVICE_TYPE == ZB_TYPE_COORD ){	// XBee S2Cで何らかの対応が必要かもしれない
 					wait_millisec(1000);
 					sci_clear();
 					wait_millisec(5000);
@@ -3773,7 +3842,7 @@ byte xbee_atee_on(const char *key ){
 			if( data[8] == 0x00 ){	// ATEEの応答が00の時
 				data[0] = 0x01; 				// ATEE = 0x01に設定
 				if( xbee_tx_rx( "ATEE", data ,1 ) > 0 ){
-					if( DEVICE_TYPE == ZB_TYPE_COORD ){
+					if( DEVICE_TYPE == ZB_TYPE_COORD ){	// XBee S2Cで何らかの対応が必要かもしれない
 						wait_millisec(1000);
 						sci_clear();
 						wait_millisec(5000);
@@ -3830,14 +3899,19 @@ byte xbee_atee_off( void ){
 						sci_clear();
 						wait_millisec(5000);
 						xbee_at_rx( data );
+					//	printf("data3=%02X data4=%02X\n",data[3],data[4]);
 						if( data[3] == MODE_MODM && data[4] == MODM_STARTED ){
-							data[0] = 0x00; 	// ATNK = 0x00 random network key
-							ret = xbee_tx_rx( "ATNK", data ,1 );
+							data[0] = 0x04;
+							xbee_tx_rx( "ATCB", data ,1 );
+							wait_millisec(8000);
+							xbee_at_rx( data );
+						//	printf("data3=%02X data4=%02X\n",data[3],data[4]);
+							if( data[3] == MODE_MODM && data[4] == MODM_STARTED ) ret = 0x00;
 						}
-					}else ret = 0x01;				
-					if( xbee_tx_rx( "ATWR", data ,0 ) > 0 ){
-						if( ret != 0xFF ) ret = 0x00;
-					}
+					}else ret = 0x00;
+					if(ret==0)xbee_tx_rx( "ATWR", data ,0 );
+					wait_millisec(1000);
+					sci_clear();
 				}
 			}else ret= 0x01;
 		}
@@ -3950,7 +4024,7 @@ byte xbee_atnj(const byte timeout){
 									xbee_log( 1, "Found device " , ret );
 								#endif
 								for(i=0;i<8;i++) ADR_DEST[i]=ADR_FROM[i];			// 宛先を発見デバイスに設定
-								#ifndef LITE	// BeeBee Lite by 蘭
+								#ifndef LITE	// BeeBee Lite 
 									sci_write_check();
 								#endif
 								sci_clear();
@@ -4334,36 +4408,33 @@ AINはxbee_adcを使用する。
 */
 	byte data[API_SIZE];
 	byte ret=0xFF;
-
+	char s[6]="RATIS";
+			// 01234
 	xbee_address(address);								// 宛先のアドレスを設定
-	if( xbee_tx_rx("RATIS", data , 0) > 0 ){
-	//	if( data[3]==MODE_RESP ){						// d[3] flame ID = 97(RAT応答)
-														// tx_rxで data[3]はチェック済み
-			if( port == 0xFF) ret = (data[23] & data[20]);
-			else{
-				if( (port >= 1) && (port <= 4) ){
-					if( ((data[20]>>port)&0x01) == 0x00 ){	// MASK_L(20)の該当ビットが否の時
-						data[0]=0x03; // リモート端末のポート1～3をデジタル入力(0x03)に設定
-						if( port ==1 ) xbee_tx_rx( "RATD1", data ,1 );
-						if( port ==2 ) xbee_tx_rx( "RATD2", data ,1 );
-						if( port ==3 ) xbee_tx_rx( "RATD3", data ,1 );
-						if( port ==4 ) xbee_tx_rx( "RATD4", data ,1 );
-						wait_millisec(200);
-						xbee_tx_rx("RATIS", data , 0);	// 再度ISを実行
-					}
-					if( data[3]==MODE_RESP ) ret= ((data[23] >> port ) & 0x01); // 取得データDATA_L(23)を戻り値に
-				} else if( (port >= 11) && (port <= 12) ){
-					if( ((data[19]>>(port-8))&0x01) == 0x00 ){	// MASK_H(19)の該当ビットが否の時
-						data[0]=0x03; // リモート端末のポート11～12をデジタル入力(0x03)に設定
-						if( port ==11 ) xbee_tx_rx( "RATP1", data ,1 );
-						if( port ==12 ) xbee_tx_rx( "RATP2", data ,1 );
-						wait_millisec(200);
-						xbee_tx_rx("RATIS", data , 0);	// 再度ISを実行
-					}
-					if( data[3]==MODE_RESP ) ret= ((data[22] >> (port-8))& 0x01);	// 取得データDATA_H(22)を戻り値に
-				}
+	if( (xbee_tx_rx(s, data , 0) > 0) && (port == 0xFF)){
+		ret = (data[23] & data[20]); // "RATIS"
+	}else{
+		data[0]=0x03; // リモート端末のポート1～3をデジタル入力(0x03)に設定
+		//	printf("data[17]=%02X\n",data[17]);
+		if( (port >= 1) && (port <= 4) ){
+			if( ((data[20]>>port)&0x01) == 0x00 || data[17] ){	// MASK_L(20)の該当ビットが否の時 又は data[17]確認
+				s[3]='D'; s[4]='0'+port;	// "RATD1～4"
+				xbee_tx_rx( s, data ,1 );
+				wait_millisec(200);
+				s[3]='I';s[4]='S';
+				xbee_tx_rx(s, data , 0);	// 再度ISを実行
 			}
-	//	}
+			if( data[3]==MODE_RESP ) ret= ((data[23] >> port ) & 0x01); // 取得データDATA_L(23)を戻り値に
+		}else if( (port >= 11) && (port <= 12) ){
+			if( ((data[19]>>(port-8))&0x01) == 0x00 || data[17] ){	// MASK_H(19)の該当ビットが否の時 又は data[17]確認
+				s[3]='P'; s[4]='0'+(port-10);	// "RATP1～2"
+				xbee_tx_rx( s, data ,1 );
+				wait_millisec(200);
+				s[3]='I';s[4]='S';
+				xbee_tx_rx(s, data , 0);	// 再度ISを実行
+			}
+			if( data[3]==MODE_RESP ) ret= ((data[22] >> (port-8))& 0x01);	// 取得データDATA_H(22)を戻り値に
+		}
 	}
 	#ifdef DEBUG
 		lcd_goto(LCD_ROW_3);
@@ -4406,27 +4477,32 @@ portは1～3が指定できる。指定したportがADC入力でない場合はA
 	byte data[API_SIZE];
 	byte ports=1;
 	unsigned int ret=0xFFFF;
+	char s[6]="RATIS";
 
 	xbee_address(address);								// 宛先のアドレスを設定
-	if( xbee_tx_rx("RATIS", data , 0) > 0 ){
-		if( data[3]==MODE_RESP ){						// d[3] flame ID = 97(MODE_RESP)
-			if( (port >= 1) && (port <= 3) ){
-				if( ((data[21]>>port ) & 0x01) == 0x00 ){	// MASKの該当ビットが否の時
-					data[0]=0x02; // リモート端末のポート1～3をADC入力(0x02)に設定
-					if( port == 1 ) xbee_tx_rx( "RATD1", data ,1 );
-					if( port == 2 ) xbee_tx_rx( "RATD2", data ,1 );
-					if( port == 3 ) xbee_tx_rx( "RATD3", data ,1 );
-					wait_millisec(1000);
-					xbee_tx_rx("RATIS", data , 0);	// 再度ISを実行
-				}
+	xbee_tx_rx(s, data , 0);
+	if( data[3]==MODE_RESP ){
+		if( (port >= 1) && (port <= 3) ){
+			if( ((data[21]>>port ) & 0x01) == 0x00 || data[17] ){	// MASK_L(20)の該当ビットが否の時 又は data[17]確認
+				data[0]=0x02; // リモート端末のポート1～3をADC入力(0x02)に設定
+				s[3]='D'; s[4]='0'+port;	// "RATD1～3"
+				xbee_tx_rx( s, data ,1 );
+				wait_millisec(200);
+				s[3]='I';s[4]='S';
+				xbee_tx_rx(s, data , 0);	// 再度ISを実行
+			}
+			if( data[3]==MODE_RESP ){
 				if( (port == 2) && ((data[21]>>1)&0x01) ) ports =2; 	// port2指定でport1がADCならデータは2個
 				else if ( port == 3 ){
 					if( (data[21]>>2)&(data[21]>>1)&0x01 ) ports =3; // port3指定でport1と2がADCならデータは3個
 					else if( ((data[21]>>2)|(data[21]>>1))&0x01 ) ports =2; // port3指定でport1か2の片方がADCならデータは2個
 				}
-				if( data[3]==MODE_RESP ) ret= (unsigned int)data[22+ports*2]*256 + (unsigned int)data[23+ports*2];
-																		// 取得データを戻り値に
+				if( data[19] == 0x00 && data[20] == 0x00 ) ports--;
+				ret = (unsigned int)data[22+ports*2];
+				ret <<= 8;
+				ret +=(unsigned int)data[23+ports*2];
 			}
+																	// 取得データを戻り値に
 		}
 	}
 	#ifdef DEBUG
@@ -4655,10 +4731,8 @@ byte xbee_rx_call( XBEE_RESULT *xbee_result ){
 		switch( return_MODE ){
 			case MODE_RESP: // 0x97 リモートATコマンドの結果を受信 Remote Command Response
 				for(i=0;i<8;i++) xbee_result->FROM[i] = data[5+i];		// アドレスはdata[5]から
-				#ifndef ARDUINO
-				#ifndef ARM_MBED
+				#ifdef LINUX_PC
 					for(i=0;i<2;i++) xbee_result->SHORT[i] = data[13+i];// アドレスはdata[13]から
-				#endif
 				#endif
 			//	for( i=0 ; i<2 ; i++ ) xbee_result->AT[i] = data[15+i]; // ATはdata[15]から
 				xbee_result->AT[0] = data[15];
@@ -4680,7 +4754,7 @@ byte xbee_rx_call( XBEE_RESULT *xbee_result ){
 						for( i=0; i < 4 ; i++ ){							// この中でjを使用している
 							if( (data[21]>>i) & 0x01 ){ 					// data[21] ADCマスク
 								xbee_result->ADCIN[i] =  (unsigned int)(data[(2*i+24-2*j)]);
-								xbee_result->ADCIN[i] *= (unsigned int)256;
+								xbee_result->ADCIN[i] <<= 8;
 								xbee_result->ADCIN[i] += (unsigned int)(data[2*i+25-2*j]);
 								xbee_result->DATA[i*2+2] = data[24+2*i-2*j];
 								xbee_result->DATA[i*2+3] = data[25+2*i-2*j];
@@ -4703,10 +4777,8 @@ byte xbee_rx_call( XBEE_RESULT *xbee_result ){
 			case MODE_GPIN: // 0x92 GPI data を受信するモード (ZigBee IO Data Sample Ex Indicator)
 				ret=xbee_gpi_acum( data );
 				for(i=0;i<8;i++) xbee_result->FROM[i] = data[4+i];		// アドレスはdata[4]から
-				#ifndef ARDUINO
-				#ifndef ARM_MBED
+				#ifdef LINUX_PC
 					for(i=0;i<2;i++) xbee_result->SHORT[i] = data[12+i];// アドレスはdata[12]から
-				#endif
 				#endif
 				xbee_result->STATUS = data[14]; 						// statusはdata[14] 0x01=Ack 0x02=broadcast
 				if( data[16] == 0x00 && data[17] == 0x00 ){
@@ -4720,7 +4792,7 @@ byte xbee_rx_call( XBEE_RESULT *xbee_result ){
 				for( i=0; i < 4 ; i++ ){								// この中でjを使用している
 					if( (data[18]>>i) & 0x01 ){
 						xbee_result->ADCIN[i] =  (unsigned int)(data[2*i+21-2*j]);
-						xbee_result->ADCIN[i] *= (unsigned int)256;
+						xbee_result->ADCIN[i] <<= 8;
 						xbee_result->ADCIN[i] += (unsigned int)(data[2*i+22-2*j]);
 						xbee_result->DATA[i*2+2] = data[21+2*i-2*j];
 						xbee_result->DATA[i*2+3] = data[22+2*i-2*j];
@@ -4738,10 +4810,8 @@ byte xbee_rx_call( XBEE_RESULT *xbee_result ){
 				break;
 			case MODE_UART: // 0x90 UART data を受信するモード 戻り値はlength
 				for(i=0;i<8;i++) xbee_result->FROM[i] = data[4+i];		// アドレスはdata[4]から
-				#ifndef ARDUINO
-				#ifndef ARM_MBED
+				#ifdef LINUX_PC
 					for(i=0;i<2;i++) xbee_result->SHORT[i] = data[12+i];// アドレスはdata[12]から
-				#endif
 				#endif
 				xbee_result->STATUS = data[14]; 						// statusはdata[14]
 				if( ( xbee_uart_acum( data )) > 0 ){					// 以上の値は仕様書に記述誤り
@@ -4752,14 +4822,12 @@ byte xbee_rx_call( XBEE_RESULT *xbee_result ){
 					xbee_result->STATUS = data[14];
 				}
 				break;
-			#ifndef LITE	// BeeBee Lite by 蘭
+			#ifndef LITE	// BeeBee Lite 
 			case MODE_UAR2: // 0x91 UART data 2を受信するモード
 				for(i=0;i<8;i++) xbee_result->FROM[i] = data[4+i];		// アドレスはdata[4]から
-				#ifndef ARDUINO
-				#ifndef ARM_MBED
+				#ifdef LINUX_PC
 					for(i=0;i<2;i++) xbee_result->SHORT[i] = data[12+i];// アドレスはdata[12]から
 					for(i=0;i<6;i++) xbee_result->ZCL[i] = data[14+i];	// ZCL情報data[14]から
-				#endif
 				#endif
 				xbee_result->STATUS = data[20]; 						// statusはdata[20]
 				if( ( xbee_uart_acum( data )) > 0 ){
@@ -4770,26 +4838,23 @@ byte xbee_rx_call( XBEE_RESULT *xbee_result ){
 				}
 				break;
 			#endif // LITE
-			#ifndef LITE	// BeeBee Lite by 蘭
+			#ifndef LITE	// BeeBee Lite 
 			case MODE_SENS: // 0x94 XB Sensor(1-wire)を受信するモード(未確認)
 				for(i=0;i<8;i++) xbee_result->FROM[i] = data[4+i];		// アドレスはdata[4]から
-				#ifndef ARDUINO
-				#ifndef ARM_MBED
+				#ifdef LINUX_PC
 					for(i=0;i<2;i++) xbee_result->SHORT[i] = data[12+i];// アドレスはdata[12]から
 				#endif
-				#endif
 				xbee_result->STATUS = data[14]; 						// statusはdata[14]
-				xbee_result->ADCIN[0] = 256*(unsigned int)data[24] + (unsigned int)data[25];
+				xbee_result->ADCIN[0] = (((unsigned int)data[24])<<8) + (unsigned int)data[25];
 				for( i=1; i < 4 ; i++ ) 				// ADC値を代入、ただしAIN[0]へは代入しない
-					xbee_result->ADCIN[i] = 256*(unsigned int)data[2*i+16] + (unsigned int)data[2*i+16];
+					xbee_result->ADCIN[i] = (((unsigned int)data[2*i+16])<<8) + (unsigned int)data[2*i+16];
 				for( i=0; i<10 ; i++ ) xbee_result->DATA[i] = data[16+i];
 				xbee_result->DATA[10] = data[16+i]; 	// sensor 01:ADC 02:Temp. 60:water present
 				break;
 			#endif // LITE
 			case MODE_IDNT: // 0x95 Node Identifyを受信するモード
 				for(i=0;i<8;i++) xbee_result->FROM[i] = data[4+i];		// アドレスはdata[4]から
-				#ifndef ARDUINO
-				#ifndef ARM_MBED
+				#ifdef LINUX_PC
 					for(i=0;i<2;i++) xbee_result->SHORT[i] = data[12+i];	// アドレスはdata[12]から
 					for(i=0;i<CALL_SIZE && i<20;i++){
 						xbee_result->DATA[i] = data[15+i];
@@ -4804,7 +4869,6 @@ byte xbee_rx_call( XBEE_RESULT *xbee_result ){
 							18	33 Manufacture ID 10 1F
 						*/
 					}
-				#endif
 				#endif
 				xbee_result->STATUS = data[14]; 						// // statusはdata[14] 0x01=Ack 0x02=broadcast
 				ret = data[14];
@@ -4829,11 +4893,9 @@ byte xbee_rx_call( XBEE_RESULT *xbee_result ){
 			case MODE_TXST: // 0x8B UART Transmit Status を受信
 				xbee_result->STATUS = data[8];							// delivery statusはdata[8] 0x00=Success
 				ret = data[9];											// Discovery status data[9]
-			#ifndef ARDUINO
-			#ifndef ARM_MBED
+			#ifdef LINUX_PC
 			case 0x00:
 				break;
-			#endif
 			#endif
 			default:
 				#ifdef LCD_H
@@ -4848,12 +4910,6 @@ byte xbee_rx_call( XBEE_RESULT *xbee_result ){
 		// xbee_log( 1, "done:xbee_rx_call" , ret );
 	#endif
 	return( ret );
-}
-
-void xbee_clear_cache(void){
-	#ifdef CACHE_RES
-		CACHE_COUNTER=0;
-	#endif
 }
 
 #ifdef EASY_SENSOR
@@ -4946,8 +5002,10 @@ byte xbee_init( const byte port ){
 				j = sci_init( port );		// シリアル初期化
 			}else{
 				// ポート検索
-				for( i=10 ; i>0; i--){
-					j = sci_init( i );
+				for( i=14 ; i>0; i--){
+					if( i > 4 ) j = sci_init( i-4 );
+					else if(i>1) j = sci_init( 0xAE + i );
+					else j = sci_init( 0xA0 );
 					if( j != 0 ){
 						k = xbee_reset();
 						if( k > 0 ) i = 1; else j = 0;
@@ -4955,7 +5013,9 @@ byte xbee_init( const byte port ){
 				}
 			}
 			if( j == 0 ){
-				fprintf(stderr,"EXIT:Serial Open Error\n");
+				#ifdef LCD_H	//01234567890123456789012	 24バイトまで
+					xbee_log( 5, "EXIT:Serial Open Error" , port );
+				#endif
 				exit(-1);
 			}
 			i=1;
@@ -4995,19 +5055,15 @@ byte xbee_init( const byte port ){
 		#endif
 		xbee_log( 1, "xbee_reset" , 0 );
 	#endif
-	#ifdef LITE	// by 蘭
+	#ifdef LITE	// 
 		k = xbee_reset();
-		#ifndef H3694
-		#ifndef ARDUINO
-		#ifndef ARM_MBED	// PC
+		#ifdef LINUX_PC
 			if(k==0){
-				#ifdef LCD_H
-					xbee_log( 5, "EXIT:xbee_init:myaddress" , 0 );
+				#ifdef LCD_H	//012345678901234567890123
+					xbee_log( 5, "EXIT:xbee_init:myaddress" , port );
 				#endif
 				exit(-1);
 			}
-		#endif
-		#endif
 		#endif
 	#else // Normal mode
 		k=1;
@@ -5018,15 +5074,11 @@ byte xbee_init( const byte port ){
 			wait_millisec(1000);
 		}
 		if(k==0){
-			#ifndef H3694
-			#ifndef ARDUINO
-			#ifndef ARM_MBED	// PC
-				#ifdef LCD_H
-					xbee_log( 5, "EXIT:xbee_init:myaddress" , 0 );
+			#ifdef LINUX_PC
+				#ifdef LCD_H	//01234567890123456789012	 24バイトまで
+					xbee_log( 5, "EXIT:xbee_init my ADRS" , port );
 				#endif
 				exit(-1);
-			#endif
-			#endif
 			#endif
 		}else{	// k>0 すなわち reset成功時  以下、kは使用しないこと（戻り値にする）
 			#ifdef LCD_H
@@ -5037,7 +5089,7 @@ byte xbee_init( const byte port ){
 					lcd_putstr("\n--------------------\n");
 				#endif
 			#endif
-			#ifdef LCD_H
+			#ifdef LCD_H	//01234567890123456789012	 24バイトまで
 				xbee_log( 1, "xbee_init:myaddress" , port );
 			#endif
 			xbee_myaddress( address );	// 自分自身のアドレスを取得
@@ -5058,6 +5110,7 @@ byte xbee_init( const byte port ){
 						case ZB_TYPE_COORD: 	lcd_putstr( " COORD."); break;
 						case ZB_TYPE_ROUTER:	lcd_putstr( " ROUTER"); break;
 						case ZB_TYPE_ENDDEV:	lcd_putstr( " ENDDEV"); break;
+						case ZB_TYPE_TH_Reg:	lcd_putstr( " TH Reg"); break;
 					#else
 						case XB_TYPE_NULL:		lcd_putstr( " XBee Wi-Fi"); break;
 						case XB_TYPE_WIFI10:	lcd_putstr( " XBee Wi-Fi Ver 1.0"); break;
@@ -5121,6 +5174,7 @@ XBee子機(エンドデバイス)をスリープモードに設定する
 	}else{
 		#ifdef XBEE_WIFI
 			if(DEVICE_TYPE == XB_TYPE_WIFI20){
+				xbee_log( 5, "ERR:no support for XB_TYPE_WIFI20" , 1 );
 				return(1);
 			}		
 			data[0] = 0x01;
@@ -5375,7 +5429,7 @@ byte xbee_delay(unsigned int ms){
 入力：unsigned int(shortを想定) ms	= 時間[ms]
 戻り値：受信パケット数
 */	
-	#ifdef LITE // BeeBee Lite by 蘭
+	#ifdef LITE // BeeBee Lite 
 		wait_millisec( ms );
 		return 0;
 	#else
