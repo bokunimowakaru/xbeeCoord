@@ -4,7 +4,7 @@ XBee ZigBee、XBee Wi-Fi によるセンサネットワークを構築するた�
   
 - examples ：Cygwin for Windows用サンプル  
 - examples_pi ：Raspberry Pi用サンプル  
-	- https://bokunimo.net/xbee/README_raspi.pdf  
+        - https://bokunimo.net/xbee/README_raspi.pdf  
         - https://bokunimo.net/blog/raspberry-pi/167/
 - xbee_arduino ：Arduino用サンプル  
 - examples_h8 ：H8 Tiny用サンプル  
