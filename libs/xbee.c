@@ -1209,6 +1209,8 @@ byte sci_init( byte port ){
 					snprintf(&modem_dev[8], 5, "AMA%1X", port&0x0F);	// ttyAMA0～9
 				}else if( (port&0xF0) == 0xB0 ){
 					snprintf(&modem_dev[8], 5, "USB%1X", port&0x0F);	// ttyUSB0～9
+				}else if( (port&0xF0) == 0xC0 ){
+					snprintf(&modem_dev[8], 5, "ACM%1X", port&0x0F);	// ttyACM0～9
 				}else{
 					fprintf(stderr,"ERR:sci_init port=%d\n",port);
 					return(0);
@@ -1238,6 +1240,8 @@ byte sci_init( byte port ){
 					fprintf(stderr,"AMA%1X", port&0x0F);	// ttyAMA0～9
 				}else if( (port&0xF0) == 0xB0 ){
 					fprintf(stderr,"USB%1X", port&0x0F);	// ttyUSB0～9
+				}else if( (port&0xF0) == 0xC0 ){
+					fprintf(stderr,"ACM%1X", port&0x0F);	// ttyACM0～9
 				}
 				fprintf(stderr," (%s,0x%02X)\n",modem_dev,port);
 				
@@ -4294,6 +4298,9 @@ byte xbee_gpio_init(const byte *address){
 				data[0]=0x02;	xbee_tx_rx( "RATD3", data ,1 ); // ポート3をアナログ入力に設定
 				data[0]=0x04;	xbee_tx_rx( "RATD4", data ,1 ); // ポート4をデジタル出力に設定
 				// breakしない
+				data[0]=0x02;	xbee_tx_rx( "RATD1", data ,1 ); // ポート1をアナログ入力に設定
+				data[0]=0x02;	xbee_tx_rx( "RATD2", data ,1 ); // ポート2をアナログ入力に設定
+				break;
 			case DEV_TYPE_WALL:
 				data[0]=0x02;	xbee_tx_rx( "RATD1", data ,1 ); // ポート1をアナログ入力に設定
 				data[0]=0x02;	xbee_tx_rx( "RATD2", data ,1 ); // ポート2をアナログ入力に設定

@@ -31,7 +31,7 @@ char HTTP_ADDR[16]=     "127.0.0.1";            // HTTPサーバのサーバの�
 #define HTDOCS "htdocs/httpd.html"              // 制御用HTMLファイル(htdocsは固定長)
 #define HTSTAT "htdocs/stat.html"               // 結果HTMLファイル
 
-// #define DEBUG								// デバッグ用
+// #define DEBUG                                // デバッグ用
 
 int readHtml(char *buf,int size,char *filename);
 int writeHtml(char *filename);
@@ -126,15 +126,15 @@ int main(int argc,char **argv){
         
         /* ソケット受信処理 */
         yes = 1;
-		ioctl(sock, FIONBIO, &yes);				// ノンブロッキング設定
+        ioctl(sock, FIONBIO, &yes);             // ノンブロッキング設定
         memset(inbuf, 0, sizeof(inbuf));
     //  usleep(1000);　recv(sock,inbuf,sizeof(inbuf),0);       // パケット受信の実行
-    	len=0;
-    	for(i=0;i<10;i++){						// リトライ10回
-    		len=recvfrom(sock,inbuf,sizeof(inbuf),0,(struct sockaddr *)&client,&addrlen);
-    		if(len>0) break;
-    		usleep(1000);
-    	}
+        len=0;
+        for(i=0;i<10;i++){                      // リトライ10回
+            len=recvfrom(sock,inbuf,sizeof(inbuf),0,(struct sockaddr *)&client,&addrlen);
+            if(len>0) break;
+            usleep(1000);
+        }
         if(!strlen(inbuf) || !len){
             fprintf(stderr,"%s %s ERROR:no HTTP commands ",today_s,time_s);
             fprintf(stderr,"(DEBUG:len=%d, strlen=%d, i=%d)\n",len,strlen(inbuf),i);
@@ -146,7 +146,7 @@ int main(int argc,char **argv){
         #endif
      // usleep(1000);                           // クライアント側の切り替え待ち時間
      
-     	/* ヘッダの解析と応答 */
+        /* ヘッダの解析と応答 */
         printf("%s %s ",today_s,time_s);
         if(strncmp(inbuf,"GET",3)==0){          // HTTP-GETの時
             strP=strchr(&inbuf[4],' ');         // スペースを検索
@@ -354,7 +354,7 @@ http://research.nii.ac.jp/~ichiro/syspro98/wwwserver.html
 
 
 /*
-        FD_ZERO(&Mask); FD_SET(sock0,&Mask); 	// FD_SET(0,&Mask);
+        FD_ZERO(&Mask); FD_SET(sock0,&Mask);    // FD_SET(0,&Mask);
         readOk=Mask;
         timeout.tv_sec = 0; 
         timeout.tv_usec = HTTP_TIMEOUT * 1000;
@@ -362,11 +362,11 @@ http://research.nii.ac.jp/~ichiro/syspro98/wwwserver.html
         if(i<0){
             fprintf(stderr,"%s %s ERROR:select\n",today_s,time_s);
             close(sock);
-			continue;
-		}
+            continue;
+        }
         printf("end select (i=%d)\n",i);
-		if(i==0){
+        if(i==0){
             close(sock);
-			continue;
-		}
+            continue;
+        }
 */
