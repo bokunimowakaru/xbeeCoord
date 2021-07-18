@@ -3,7 +3,7 @@
 XBee ZigBee、XBee Wi-Fi によるセンサネットワークを構築するためのRaspberry Pi用ライブラリです。XBeeのAPIモードによるリモートコマンドを利用することが出来ます。  
 Arduino / Cygwin for Windows / H8 3694F / mbed ARM用については、masterブランチを参照ください。
   
-- Raspberry Pi 用 xbeedCoord ブランチ（raspi）
+- Raspberry Pi 用 xbeedCoord ブランチ（raspi）  
 	https://bokunimo.net/git/xbeeCoord/tree/raspi
 
 - examples_pi ：Raspberry Pi用サンプル プログラム集  
@@ -15,7 +15,7 @@ Arduino / Cygwin for Windows / H8 3694F / mbed ARM用については、masterブ
 - Raspberry Pi 用 XBee ZigBee セットアップマニュアル  
 	https://bokunimo.net/blog/raspberry-pi/167/
 
-- Digi XBee3 ZB対応
+- Digi XBee3 ZB対応  
 	https://bokunimo.net/blog/raspberry-pi/17/
 
 - その他(Raspberry Pi 以外)のプラットフォーム用 masterブランチ  
