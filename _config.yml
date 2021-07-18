@@ -1,5 +1,5 @@
 theme: jekyll-theme-cayman
 show_downloads: true
-repository_url: https://github.com/bokunimowakaru/xbeeCoord/tree/raspi
+repository_url: "https://github.com/bokunimowakaru/xbeeCoord/tree/raspi"
 plugins:
  - jekyll-sitemap
