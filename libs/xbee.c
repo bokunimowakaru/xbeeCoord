@@ -1194,6 +1194,7 @@ byte sci_init( byte port ){
 				/* tasasaki様よりポート11～64の拡張対応方法を教えていただいて追加した。*/
 				char modem_dev[13] = "/dev/ttyS00";
 				char alter_dev[13] = "/dev/ttyUSB0";
+				xbee_com_port = port;
 				
 				if( port <= 10){
 					modem_dev[9] = (char)( port - 1 + (byte)'0' );
@@ -1224,11 +1225,10 @@ byte sci_init( byte port ){
 						if( open_serial_port( alter_dev )==0 ){
 							strcpy(modem_dev,alter_dev);
 							port += 0xB0;
-							xbee_com_port = port;
-						}else xbee_com_port = 0;
-					}else xbee_com_port = 0;
-				}else xbee_com_port = port;
-				if( xbee_com_port ) fprintf(stderr,"Serial port = ");
+						}else port = 0;
+					}else port = 0;
+				}
+				if( port ) fprintf(stderr,"Serial port = ");
 				else fprintf(stderr,"FAILED serial ");
 				if( port < 64){
 					fprintf(stderr,"COM%d",port);
@@ -1245,7 +1245,7 @@ byte sci_init( byte port ){
 				}
 				fprintf(stderr," (%s,0x%02X)\n",modem_dev,port);
 				
-				return( xbee_com_port );
+				return( port );
 			#else	// XBEE_WIFI PC用
 				byte i,j;
 				for(i=0;i<3;i++){
