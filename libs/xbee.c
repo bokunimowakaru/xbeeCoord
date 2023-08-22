@@ -248,6 +248,7 @@ XBee AT commands.
 	2016/08/04	1.96	- XBee ZB S2Cシリーズ対応
 						- ZigBee Raspberry Pi版の正式対応版の作成完了
 	2018/12/24	1.97	- XBee3 ZBシリーズ対応
+	2023/08/22	1.98	- S2Cシリーズで変化通知が動作しない不具合修正
 
 *********************************************************************/
 /*
@@ -255,7 +256,7 @@ XBee AT commands.
 */
 #ifndef VERSION
 
-	#define 	VERSION "1.97"		// 1.XX 4バイト形式 XXは半角文字
+	#define 	VERSION "1.98"		// 1.XX 4バイト形式 XXは半角文字
 
 #endif
 /*
@@ -3379,6 +3380,9 @@ byte xbee_ratd_myaddress(const byte *address){
 				if( xbee_tx_rx( "RATDL", data ,4 ) > 0 ){			// 下位４バイトを設定
 					if( xbee_tx_rx( "RATDD", data ,0 ) > 0 ){		// デバイス名を取得
 						if( data[18]==0x00 && data[19]==0x03 && data[20]==0x00 ){	// XBeeデバイス
+							dd=data[21];							// デバイス名をddに代入
+						}
+						if( data[18]==0x00 && data[19]==0x0A && data[20]==0x00 ){	// XBee S2Cデバイス
 							dd=data[21];							// デバイス名をddに代入
 						}
 					}else{
