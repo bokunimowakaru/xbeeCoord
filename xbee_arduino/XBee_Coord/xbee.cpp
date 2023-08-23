@@ -248,6 +248,8 @@ XBee AT commands.
 	2016/08/04	1.96	- XBee ZB S2Cシリーズ対応
 						- ZigBee Raspberry Pi版の正式対応版の作成完了
 	2018/12/24	1.97	- XBee3 ZBシリーズ対応
+	2023/08/22	1.98	- S2Cシリーズで変化通知が動作しない不具合修正
+	2023/08/23	1.98a	- Ver1.98の修正漏れ
 
 *********************************************************************/
 /*
@@ -255,7 +257,7 @@ XBee AT commands.
 */
 #ifndef VERSION
 
-	#define 	VERSION "1.97"		// 1.XX 4バイト形式 XXは半角文字
+	#define 	VERSION "1.98"		// 1.XX 4バイト形式 XXは半角文字
 
 #endif
 /*
@@ -3292,6 +3294,9 @@ byte xbee_ratd(const byte *dev_address, const byte *set_address ){
 					if( data[18]==0x00 && data[19]==0x03 && data[20]==0x00 ){	// XBeeデバイス
 						dd=data[21];							// デバイス名をddに代入
 					}
+					if( data[18]==0x00 && data[19]==0x0A && data[20]==0x00 && data[21]==0x00 ){	// XBee S2Cデバイス
+						dd=DEV_TYPE_XBEE;						// デバイス名をddに代入
+					}
 				}else{
 					#ifdef LCD_H
 						xbee_log( 4, "ERR:tx_rx RATDD at ratd" , 1 );
@@ -3376,6 +3381,9 @@ byte xbee_ratd_myaddress(const byte *address){
 					if( xbee_tx_rx( "RATDD", data ,0 ) > 0 ){		// デバイス名を取得
 						if( data[18]==0x00 && data[19]==0x03 && data[20]==0x00 ){	// XBeeデバイス
 							dd=data[21];							// デバイス名をddに代入
+						}
+						if( data[18]==0x00 && data[19]==0x0A && data[20]==0x00 && data[21]==0x00 ){	// XBee S2Cデバイス
+							dd=DEV_TYPE_XBEE;						// デバイス名をddに代入
 						}
 					}else{
 						#ifdef LCD_H
@@ -4112,7 +4120,7 @@ byte xbee_ping(const byte *address ){
 			(data[18]==0x20 && data[19]==0x00 && data[20]==0x20 && data[21]==0x24) ){	// XBee WiFiデバイス
 			data[21]=0x00;
 		#else
-		if( data[18]==0x00 && data[19]==0x03 && data[20]==0x00 ){	// XBeeデバイス
+		if( data[18]==0x00 && (data[19]==0x03 || data[19]==0x0A) && data[20]==0x00 ){	// XBeeデバイス
 		#endif
 			for(i=0;i<8;i++) ADR_FROM[i]=data[5+i]; // 2013.9.15 追加
 			ret=data[21];							// デバイス名をddに代入
